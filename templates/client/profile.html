@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Profile — OlehDev{% endblock %}
+
+{% block content %}
+<section class="page-section">
+
+    <div class="page-heading">
+        <div class="section-label">Account</div>
+
+        <h1>Profile</h1>
+
+        <p>
+            Your account information and project activity.
+        </p>
+    </div>
+
+
+    <div class="profile-card">
+
+        <div class="profile-row">
+            <span>Name</span>
+            <strong>
+                {{ user.get_full_name|default:user.username }}
+            </strong>
+        </div>
+
+        <div class="profile-row">
+            <span>Email</span>
+            <strong>
+                {{ user.email|default:"Not provided" }}
+            </strong>
+        </div>
+
+        <div class="profile-row">
+            <span>Total requests</span>
+            <strong>{{ total_requests }}</strong>
+        </div>
+
+        <div class="profile-row">
+            <span>Completed projects</span>
+            <strong>{{ completed_requests }}</strong>
+        </div>
+
+        <div class="profile-row">
+            <span>Active requests</span>
+            <strong>{{ active_requests }}</strong>
+        </div>
+
+        <div class="profile-row">
+            <span>Member since</span>
+            <strong>{{ user.date_joined|date:"F Y" }}</strong>
+        </div>
+
+    </div>
+
+
+    <div class="profile-card" style="margin-top: 24px;">
+
+        <div class="profile-row">
+            <span>About</span>
+
+            <strong>
+                I build backend applications with Python,
+                Django and FastAPI.
+                I focus on clean APIs, databases and practical solutions.
+            </strong>
+        </div>
+
+    </div>
+
+</section>
+{% endblock %}

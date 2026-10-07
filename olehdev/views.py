@@ -1,11 +1,13 @@
+from functools import wraps
+
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import ProjectRequestForm
-from .models import Project, ProjectRequest, Skill
+from .forms import MessageForm, ProjectRequestForm
+from .models import Message, Project, ProjectRequest, Skill
 
 
 def home(request):
@@ -18,9 +20,7 @@ def portfolio(request):
     return render(
         request,
         "public/portfolio.html",
-        {
-            "projects": projects,
-        },
+        {"projects": projects},
     )
 
 
@@ -30,14 +30,11 @@ def skills(request):
     return render(
         request,
         "public/skills.html",
-        {
-            "skills": skills,
-        },
+        {"skills": skills},
     )
 
 
 def register(request):
-
     if request.user.is_authenticated:
         return redirect("client_dashboard")
 
@@ -46,7 +43,6 @@ def register(request):
 
         if form.is_valid():
             user = form.save()
-
             login(request, user)
 
             return redirect("client_dashboard")
@@ -57,14 +53,11 @@ def register(request):
     return render(
         request,
         "public/register.html",
-        {
-            "form": form,
-        },
+        {"form": form},
     )
 
 
 def login_view(request):
-
     if request.user.is_authenticated:
         return redirect("client_dashboard")
 
@@ -92,9 +85,7 @@ def login_view(request):
     return render(
         request,
         "public/login.html",
-        {
-            "form": form,
-        },
+        {"form": form},
     )
 
 
@@ -107,7 +98,6 @@ def logout_view(request):
 
 @login_required
 def start_project(request):
-
     if request.method == "POST":
         form = ProjectRequestForm(request.POST)
 
@@ -115,7 +105,6 @@ def start_project(request):
             project_request = form.save(commit=False)
 
             project_request.user = request.user
-
             project_request.save()
 
             form.save_m2m()
@@ -126,63 +115,106 @@ def start_project(request):
             )
 
     else:
-        form = ProjectRequestForm(
-            initial={
-                "name": request.user.get_full_name(),
-                "email": request.user.email,
-            }
-        )
+        form = ProjectRequestForm()
 
     return render(
         request,
         "public/start_project.html",
-        {
-            "form": form,
-        },
+        {"form": form},
     )
 
 
 @login_required
 def client_dashboard(request):
     requests = ProjectRequest.objects.filter(
-        user=request.user,
+        user=request.user
     )
 
     return render(
         request,
         "client/dashboard.html",
-        {
-            "requests": requests,
-        },
+        {"requests": requests},
     )
 
 
 @login_required
 def client_request_detail(request, request_id):
     project_request = get_object_or_404(
-        ProjectRequest,
+        ProjectRequest.objects.prefetch_related(
+            "skills",
+            "messages__sender",
+        ),
         id=request_id,
         user=request.user,
     )
+
+    if request.method == "POST":
+        message_form = MessageForm(request.POST)
+
+        if message_form.is_valid():
+            message = message_form.save(commit=False)
+
+            message.project_request = project_request
+            message.sender = request.user
+
+            message.save()
+
+            return redirect(
+                "client_request_detail",
+                request_id=project_request.id,
+            )
+
+    else:
+        message_form = MessageForm()
+
+    chat_messages = project_request.messages.select_related(
+        "sender"
+    ).all()
 
     return render(
         request,
         "client/request_detail.html",
         {
             "project_request": project_request,
+            "chat_messages": chat_messages,
+            "message_form": message_form,
         },
     )
 
+
 @login_required
 def client_profile(request):
+    user_requests = ProjectRequest.objects.filter(
+        user=request.user
+    )
+
+    total_requests = user_requests.count()
+
+    completed_requests = user_requests.filter(
+        status=ProjectRequest.Status.COMPLETED
+    ).count()
+
+    active_requests = user_requests.exclude(
+        status__in=[
+            ProjectRequest.Status.COMPLETED,
+            ProjectRequest.Status.REJECTED,
+        ]
+    ).count()
+
     return render(
         request,
         "client/profile.html",
+        {
+            "total_requests": total_requests,
+            "completed_requests": completed_requests,
+            "active_requests": active_requests,
+        },
     )
 
-def admin_required(view_func):
-    def wrapper(request, *args, **kwargs):
 
+def admin_required(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect("login")
 
@@ -199,19 +231,19 @@ def admin_dashboard(request):
     requests = ProjectRequest.objects.all()
 
     new_count = requests.filter(
-        status=ProjectRequest.Status.NEW,
+        status=ProjectRequest.Status.NEW
     ).count()
 
     accepted_count = requests.filter(
-        status=ProjectRequest.Status.ACCEPTED,
+        status=ProjectRequest.Status.ACCEPTED
     ).count()
 
     completed_count = requests.filter(
-        status=ProjectRequest.Status.COMPLETED,
+        status=ProjectRequest.Status.COMPLETED
     ).count()
 
     rejected_count = requests.filter(
-        status=ProjectRequest.Status.REJECTED,
+        status=ProjectRequest.Status.REJECTED
     ).count()
 
     return render(
@@ -234,46 +266,78 @@ def admin_requests(request):
     return render(
         request,
         "admin/requests.html",
-        {
-            "requests": requests,
-        },
+        {"requests": requests},
     )
 
 
 @admin_required
 def admin_request_detail(request, request_id):
     project_request = get_object_or_404(
-        ProjectRequest,
+        ProjectRequest.objects.prefetch_related(
+            "skills",
+            "messages__sender",
+        ),
         id=request_id,
     )
 
     if request.method == "POST":
 
-        status = request.POST.get("status")
+        action = request.POST.get("action")
 
-        valid_statuses = {
-            choice[0]
-            for choice in ProjectRequest.Status.choices
-        }
+        if action == "status":
+            status = request.POST.get("status")
 
-        if status in valid_statuses:
-            project_request.status = status
-            project_request.save()
+            valid_statuses = {
+                choice[0]
+                for choice in ProjectRequest.Status.choices
+            }
 
-            messages.success(
-                request,
-                "Request status updated.",
+            if status in valid_statuses:
+                project_request.status = status
+                project_request.save()
+
+                messages.success(
+                    request,
+                    "Request status updated.",
+                )
+
+            return redirect(
+                "admin_request_detail",
+                request_id=project_request.id,
             )
 
-        return redirect(
-            "admin_request_detail",
-            request_id=project_request.id,
-        )
+        if action == "message":
+            message_form = MessageForm(request.POST)
+
+            if message_form.is_valid():
+                message = message_form.save(commit=False)
+
+                message.project_request = project_request
+                message.sender = request.user
+
+                message.save()
+
+                return redirect(
+                    "admin_request_detail",
+                    request_id=project_request.id,
+                )
+
+        else:
+            message_form = MessageForm()
+
+    else:
+        message_form = MessageForm()
+
+    chat_messages = project_request.messages.select_related(
+        "sender"
+    ).all()
 
     return render(
         request,
         "admin/request_detail.html",
         {
             "project_request": project_request,
+            "chat_messages": chat_messages,
+            "message_form": message_form,
         },
     )
