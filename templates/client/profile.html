@@ -15,11 +15,21 @@
         </p>
     </div>
 
+    {% if messages %}
+        <div class="profile-messages">
+            {% for message in messages %}
+                <div class="profile-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <div class="profile-card">
 
         <div class="profile-row">
             <span>Name</span>
+
             <strong>
                 {{ user.get_full_name|default:user.username }}
             </strong>
@@ -27,45 +37,229 @@
 
         <div class="profile-row">
             <span>Email</span>
+
             <strong>
                 {{ user.email|default:"Not provided" }}
             </strong>
         </div>
 
         <div class="profile-row">
+            <span>Country</span>
+
+            <strong>
+                {{ profile_form.country.value|default:"Not provided" }}
+            </strong>
+        </div>
+
+        <div class="profile-row">
             <span>Total requests</span>
-            <strong>{{ total_requests }}</strong>
+
+            <strong>
+                {{ total_requests }}
+            </strong>
         </div>
 
         <div class="profile-row">
             <span>Completed projects</span>
-            <strong>{{ completed_requests }}</strong>
+
+            <strong>
+                {{ completed_requests }}
+            </strong>
         </div>
 
         <div class="profile-row">
             <span>Active requests</span>
-            <strong>{{ active_requests }}</strong>
+
+            <strong>
+                {{ active_requests }}
+            </strong>
         </div>
 
         <div class="profile-row">
             <span>Member since</span>
-            <strong>{{ user.date_joined|date:"F Y" }}</strong>
+
+            <strong>
+                {{ user.date_joined|date:"F Y" }}
+            </strong>
         </div>
 
     </div>
 
 
-    <div class="profile-card" style="margin-top: 24px;">
+    <div class="profile-card profile-about-card">
 
-        <div class="profile-row">
+        <div class="profile-row profile-about-row">
             <span>About</span>
 
             <strong>
-                I build backend applications with Python,
-                Django and FastAPI.
-                I focus on clean APIs, databases and practical solutions.
+                {{ profile_form.about.value|default:"Tell something about yourself." }}
             </strong>
         </div>
+
+    </div>
+
+
+    <div class="profile-edit-trigger">
+
+        <button
+            type="button"
+            class="client-action"
+            id="edit-profile-button"
+            onclick="
+                document.getElementById('profile-edit-section').hidden = false;
+                this.style.display = 'none';
+            "
+        >
+            Edit profile
+        </button>
+
+    </div>
+
+
+    <div
+        class="profile-edit-section"
+        id="profile-edit-section"
+        {% if profile_form.errors %}{% else %}hidden{% endif %}
+    >
+
+        <div class="profile-edit-heading">
+
+            <div class="section-label">
+                Personal information
+            </div>
+
+            <h2>Edit profile</h2>
+
+            <p>
+                Update the information shown on your profile.
+            </p>
+
+        </div>
+
+
+        <form method="post" class="profile-form">
+
+            {% csrf_token %}
+
+            {% if profile_form.non_field_errors %}
+                <div class="form-errors">
+                    {{ profile_form.non_field_errors }}
+                </div>
+            {% endif %}
+
+
+            <div class="form-row">
+
+                <div class="form-field">
+
+                    {{ profile_form.first_name.label_tag }}
+
+                    {{ profile_form.first_name }}
+
+                    {% if profile_form.first_name.errors %}
+                        <div class="form-errors">
+                            {{ profile_form.first_name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-field">
+
+                    {{ profile_form.last_name.label_tag }}
+
+                    {{ profile_form.last_name }}
+
+                    {% if profile_form.last_name.errors %}
+                        <div class="form-errors">
+                            {{ profile_form.last_name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="form-field">
+
+                {{ profile_form.email.label_tag }}
+
+                {{ profile_form.email }}
+
+                {% if profile_form.email.errors %}
+                    <div class="form-errors">
+                        {{ profile_form.email.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-field">
+
+                {{ profile_form.country.label_tag }}
+
+                {{ profile_form.country }}
+
+                {% if profile_form.country.errors %}
+                    <div class="form-errors">
+                        {{ profile_form.country.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-field">
+
+                {{ profile_form.about.label_tag }}
+
+                {{ profile_form.about }}
+
+                {% if profile_form.about.errors %}
+                    <div class="form-errors">
+                        {{ profile_form.about.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-submit-area">
+
+                <p>
+                    You can update your profile information at any time.
+                </p>
+
+                <div>
+
+                    <button
+                        type="button"
+                        class="client-action"
+                        id="cancel-profile-button"
+                        onclick="
+                            document.getElementById('profile-edit-section').hidden = true;
+                            document.getElementById('edit-profile-button').style.display = '';
+                        "
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="form-submit"
+                    >
+                        Save changes
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
 
     </div>
 

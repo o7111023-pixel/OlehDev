@@ -20,6 +20,16 @@ class Profile(models.Model):
         default=Role.CLIENT,
     )
 
+    country = models.CharField(
+        max_length=100,
+        blank=True,
+    )
+
+    about = models.TextField(
+        max_length=500,
+        blank=True,
+    )
+
     def __str__(self):
         return f"{self.user.username} — {self.get_role_display()}"
 

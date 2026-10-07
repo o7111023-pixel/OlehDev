@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import MessageForm, ProjectRequestForm
+from .forms import MessageForm, ProfileForm, ProjectRequestForm
 from .models import Message, Project, ProjectRequest, Skill
 
 
@@ -201,10 +201,32 @@ def client_profile(request):
         ]
     ).count()
 
+    if request.method == "POST":
+        profile_form = ProfileForm(
+            request.user,
+            request.POST,
+        )
+
+        if profile_form.is_valid():
+            profile_form.save()
+
+            messages.success(
+                request,
+                "Profile updated successfully.",
+            )
+
+            return redirect("client_profile")
+
+    else:
+        profile_form = ProfileForm(
+            request.user,
+        )
+
     return render(
         request,
         "client/profile.html",
         {
+            "profile_form": profile_form,
             "total_requests": total_requests,
             "completed_requests": completed_requests,
             "active_requests": active_requests,

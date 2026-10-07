@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (description && counter) {
-
         const updateCounter = () => {
             counter.textContent = description.value.length;
         };
@@ -28,9 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     ideaButtons.forEach((button) => {
-
         button.addEventListener("click", () => {
-
             if (!description) {
                 return;
             }
@@ -44,9 +41,53 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             description.focus();
+        });
+    });
 
+
+    const editProfileButton = document.querySelector(
+        "#edit-profile-button"
+    );
+
+    const cancelProfileButton = document.querySelector(
+        "#cancel-profile-button"
+    );
+
+    const profileEditSection = document.querySelector(
+        "#profile-edit-section"
+    );
+
+    if (
+        editProfileButton &&
+        cancelProfileButton &&
+        profileEditSection
+    ) {
+        editProfileButton.addEventListener("click", () => {
+            profileEditSection.hidden = false;
+
+            profileEditSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+
+            const firstInput = profileEditSection.querySelector(
+                "input"
+            );
+
+            if (firstInput) {
+                firstInput.focus();
+            }
         });
 
-    });
+
+        cancelProfileButton.addEventListener("click", () => {
+            profileEditSection.hidden = true;
+
+            editProfileButton.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+        });
+    }
 
 });
