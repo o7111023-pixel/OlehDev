@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Login — OlehDev
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-section">
+
+    <div class="section-label">
+        CLIENT LOGIN
+    </div>
+
+    <div class="page-heading">
+
+        <h1>
+            Welcome back.
+        </h1>
+
+        <p>
+            Log in to view your project requests.
+        </p>
+
+    </div>
+
+
+    <form method="post" class="auth-form">
+
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div class="form-field">
+
+            <label for="{{ form.username.id_for_label }}">
+                Username
+            </label>
+
+            {{ form.username }}
+
+            {{ form.username.errors }}
+
+        </div>
+
+
+        <div class="form-field">
+
+            <label for="{{ form.password.id_for_label }}">
+                Password
+            </label>
+
+            {{ form.password }}
+
+            {{ form.password.errors }}
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="form-submit"
+        >
+            Login
+        </button>
+
+    </form>
+
+
+    <p class="auth-switch">
+
+        Don't have an account?
+
+        <a href="{% url 'register' %}">
+            Create one
+        </a>
+
+    </p>
+
+</section>
+
+{% endblock %}

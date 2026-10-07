@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Requests — Admin — OlehDev
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-section">
+
+    <a href="{% url 'admin_dashboard' %}" class="back-link">
+        ← Back to dashboard
+    </a>
+
+
+    <div class="section-label">
+        ADMIN · REQUESTS
+    </div>
+
+
+    <div class="page-heading">
+
+        <h1>
+            All requests.
+        </h1>
+
+        <p>
+            Review every project request submitted by clients.
+        </p>
+
+    </div>
+
+
+    {% if requests %}
+
+        <div class="request-list">
+
+            {% for project_request in requests %}
+
+                <a
+                    href="{% url 'admin_request_detail' project_request.id %}"
+                    class="request-card"
+                >
+
+                    <div class="request-card-main">
+
+                        <span class="request-number">
+                            #{{ project_request.id }}
+                        </span>
+
+                        <h2>
+                            {{ project_request.name }}
+                        </h2>
+
+                        <p>
+                            {{ project_request.description|truncatewords:25 }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="request-card-status">
+
+                        <span class="status status-{{ project_request.status }}">
+                            {{ project_request.get_status_display }}
+                        </span>
+
+                        <span class="request-date">
+                            {{ project_request.created_at|date:"d.m.Y H:i" }}
+                        </span>
+
+                    </div>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h2>
+                No requests.
+            </h2>
+
+            <p>
+                There are no project requests yet.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

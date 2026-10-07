@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Request #{{ project_request.id }} — Admin — OlehDev
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-section">
+
+    <a href="{% url 'admin_requests' %}" class="back-link">
+        ← Back to requests
+    </a>
+
+
+    <div class="section-label">
+        ADMIN · REQUEST #{{ project_request.id }}
+    </div>
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="empty-state">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <div class="request-detail">
+
+        <div class="request-detail-header">
+
+            <div>
+
+                <h1>
+                    {{ project_request.name }}
+                </h1>
+
+                <p>
+                    {{ project_request.email }}
+                </p>
+
+                <p>
+                    Created
+                    {{ project_request.created_at|date:"d.m.Y H:i" }}
+                </p>
+
+            </div>
+
+
+            <span class="status status-{{ project_request.status }}">
+                {{ project_request.get_status_display }}
+            </span>
+
+        </div>
+
+
+        <div class="request-detail-section">
+
+            <h2>
+                Client
+            </h2>
+
+            {% if project_request.user %}
+
+                <p>
+                    Username:
+                    {{ project_request.user.username }}
+                </p>
+
+            {% else %}
+
+                <p>
+                    No registered account.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="request-detail-section">
+
+            <h2>
+                Description
+            </h2>
+
+            <p>
+                {{ project_request.description }}
+            </p>
+
+        </div>
+
+
+        {% if project_request.skills.exists %}
+
+            <div class="request-detail-section">
+
+                <h2>
+                    Interested in
+                </h2>
+
+                <div class="request-skills">
+
+                    {% for skill in project_request.skills.all %}
+
+                        <span>
+                            {{ skill.name }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+        {% if project_request.budget %}
+
+            <div class="request-detail-section">
+
+                <h2>
+                    Budget
+                </h2>
+
+                <p>
+                    {{ project_request.budget }}
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        {% if project_request.deadline %}
+
+            <div class="request-detail-section">
+
+                <h2>
+                    Deadline
+                </h2>
+
+                <p>
+                    {{ project_request.deadline }}
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <div class="request-detail-section">
+
+            <h2>
+                Change status
+            </h2>
+
+
+            <form method="post">
+
+                {% csrf_token %}
+
+                <div class="form-field">
+
+                    <label for="status">
+                        Status
+                    </label>
+
+                    <select
+                        name="status"
+                        id="status"
+                    >
+
+                        {% for value, label in project_request.Status.choices %}
+
+                            <option
+                                value="{{ value }}"
+                                {% if project_request.status == value %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ label }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="form-submit"
+                >
+                    Update status
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

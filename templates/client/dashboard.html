@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}
+    My Requests — OlehDev
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-section">
+
+    <div class="section-label">
+        CLIENT AREA
+    </div>
+
+    <div class="page-heading">
+
+        <h1>
+            My requests.
+        </h1>
+
+        <p>
+            Track your submitted project requests and
+            their current status.
+        </p>
+
+    </div>
+
+
+    {% if requests %}
+
+        <div class="request-list">
+
+            {% for project_request in requests %}
+
+                <a
+                    href="{% url 'client_request_detail' project_request.id %}"
+                    class="request-card"
+                >
+
+                    <div class="request-card-main">
+
+                        <span class="request-number">
+                            #{{ project_request.id }}
+                        </span>
+
+                        <h2>
+                            {{ project_request.name }}
+                        </h2>
+
+                        <p>
+                            {{ project_request.description|truncatewords:20 }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="request-card-status">
+
+                        <span class="status status-{{ project_request.status }}">
+                            {{ project_request.get_status_display }}
+                        </span>
+
+                        <span class="request-date">
+                            {{ project_request.created_at|date:"d.m.Y" }}
+                        </span>
+
+                    </div>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h2>
+                No requests yet.
+            </h2>
+
+            <p>
+                Your submitted project requests will appear here.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

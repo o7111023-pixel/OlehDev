@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Request #{{ project_request.id }} — OlehDev
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-section">
+
+    <div class="section-label">
+        REQUEST #{{ project_request.id }}
+    </div>
+
+
+    <div class="request-detail">
+
+        <div class="request-detail-header">
+
+            <div>
+
+                <h1>
+                    {{ project_request.name }}
+                </h1>
+
+                <p>
+                    Created {{ project_request.created_at|date:"d.m.Y H:i" }}
+                </p>
+
+            </div>
+
+
+            <span class="status status-{{ project_request.status }}">
+                {{ project_request.get_status_display }}
+            </span>
+
+        </div>
+
+
+        <div class="request-detail-section">
+
+            <h2>
+                Description
+            </h2>
+
+            <p>
+                {{ project_request.description }}
+            </p>
+
+        </div>
+
+
+        {% if project_request.skills.exists %}
+
+            <div class="request-detail-section">
+
+                <h2>
+                    Interested in
+                </h2>
+
+                <div class="request-skills">
+
+                    {% for skill in project_request.skills.all %}
+
+                        <span>
+                            {{ skill.name }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+        {% if project_request.budget %}
+
+            <div class="request-detail-section">
+
+                <h2>
+                    Budget
+                </h2>
+
+                <p>
+                    {{ project_request.budget }}
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        {% if project_request.deadline %}
+
+            <div class="request-detail-section">
+
+                <h2>
+                    Deadline
+                </h2>
+
+                <p>
+                    {{ project_request.deadline }}
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

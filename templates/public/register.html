@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Register — OlehDev
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-section">
+
+    <div class="section-label">
+        CREATE ACCOUNT
+    </div>
+
+    <div class="page-heading">
+
+        <h1>
+            Start working together.
+        </h1>
+
+        <p>
+            Create an account to submit and track your project requests.
+        </p>
+
+    </div>
+
+
+    <form method="post" class="auth-form">
+
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+
+        <div class="form-field">
+
+            <label for="{{ form.username.id_for_label }}">
+                Username
+            </label>
+
+            {{ form.username }}
+
+            {{ form.username.errors }}
+
+        </div>
+
+
+        <div class="form-field">
+
+            <label for="{{ form.password1.id_for_label }}">
+                Password
+            </label>
+
+            {{ form.password1 }}
+
+            {{ form.password1.errors }}
+
+        </div>
+
+
+        <div class="form-field">
+
+            <label for="{{ form.password2.id_for_label }}">
+                Confirm password
+            </label>
+
+            {{ form.password2 }}
+
+            {{ form.password2.errors }}
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="form-submit"
+        >
+            Create account
+        </button>
+
+    </form>
+
+
+    <p class="auth-switch">
+
+        Already have an account?
+
+        <a href="{% url 'login' %}">
+            Login
+        </a>
+
+    </p>
+
+</section>
+
+{% endblock %}

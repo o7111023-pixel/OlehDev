@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Skills — OlehDev
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-section">
+
+    <a href="{% url 'home' %}" class="back-link">
+        ← Back to home
+    </a>
+
+    <div class="section-label">
+        SKILLS
+    </div>
+
+    <div class="page-heading">
+
+        <h1>
+            My current stack.
+        </h1>
+
+        <p>
+            Technologies I use confidently, technologies
+            I am improving, and tools I have already worked with.
+        </p>
+
+    </div>
+
+
+    <div class="skills-columns">
+
+        <div class="skills-column">
+
+            <div class="skills-column-header">
+
+                <span class="skills-column-number">
+                    01
+                </span>
+
+                <h2>
+                    Confident
+                </h2>
+
+                <p>
+                    I can work with these independently.
+                </p>
+
+            </div>
+
+
+            <div class="skills-list">
+
+                {% for skill in skills %}
+
+                    {% if skill.level == "confident" %}
+
+                        <div class="skill-item">
+                            <span>{{ skill.name }}</span>
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <div class="skills-column">
+
+            <div class="skills-column-header">
+
+                <span class="skills-column-number">
+                    02
+                </span>
+
+                <h2>
+                    Good, still growing
+                </h2>
+
+                <p>
+                    I have practical experience and continue to improve.
+                </p>
+
+            </div>
+
+
+            <div class="skills-list">
+
+                {% for skill in skills %}
+
+                    {% if skill.level == "growing" %}
+
+                        <div class="skill-item">
+                            <span>{{ skill.name }}</span>
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <div class="skills-column">
+
+            <div class="skills-column-header">
+
+                <span class="skills-column-number">
+                    03
+                </span>
+
+                <h2>
+                    Used, want to learn more
+                </h2>
+
+                <p>
+                    I have used these and want to deepen my knowledge.
+                </p>
+
+            </div>
+
+
+            <div class="skills-list">
+
+                {% for skill in skills %}
+
+                    {% if skill.level == "learning" %}
+
+                        <div class="skill-item">
+                            <span>{{ skill.name }}</span>
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Admin Panel — OlehDev
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-section">
+
+    <a href="{% url 'home' %}" class="back-link">
+        ← Back to home
+    </a>
+
+
+    <div class="section-label">
+        ADMIN PANEL
+    </div>
+
+
+    <div class="page-heading">
+
+        <h1>
+            Dashboard.
+        </h1>
+
+        <p>
+            Manage project requests and monitor their status.
+        </p>
+
+    </div>
+
+
+    <div class="request-list">
+
+        <div class="request-card">
+
+            <div class="request-card-main">
+
+                <span class="request-number">
+                    NEW
+                </span>
+
+                <h2>
+                    {{ new_count }}
+                </h2>
+
+                <p>
+                    New project requests
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="request-card">
+
+            <div class="request-card-main">
+
+                <span class="request-number">
+                    ACCEPTED
+                </span>
+
+                <h2>
+                    {{ accepted_count }}
+                </h2>
+
+                <p>
+                    Accepted projects
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="request-card">
+
+            <div class="request-card-main">
+
+                <span class="request-number">
+                    COMPLETED
+                </span>
+
+                <h2>
+                    {{ completed_count }}
+                </h2>
+
+                <p>
+                    Completed projects
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="request-card">
+
+            <div class="request-card-main">
+
+                <span class="request-number">
+                    REJECTED
+                </span>
+
+                <h2>
+                    {{ rejected_count }}
+                </h2>
+
+                <p>
+                    Rejected requests
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="page-heading">
+
+        <h2>
+            Recent requests.
+        </h2>
+
+    </div>
+
+
+    {% if requests %}
+
+        <div class="request-list">
+
+            {% for project_request in requests %}
+
+                <a
+                    href="{% url 'admin_request_detail' project_request.id %}"
+                    class="request-card"
+                >
+
+                    <div class="request-card-main">
+
+                        <span class="request-number">
+                            #{{ project_request.id }}
+                        </span>
+
+                        <h2>
+                            {{ project_request.name }}
+                        </h2>
+
+                        <p>
+                            {{ project_request.description|truncatewords:20 }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="request-card-status">
+
+                        <span class="status status-{{ project_request.status }}">
+                            {{ project_request.get_status_display }}
+                        </span>
+
+                        <span class="request-date">
+                            {{ project_request.created_at|date:"d.m.Y" }}
+                        </span>
+
+                    </div>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h2>
+                No requests yet.
+            </h2>
+
+            <p>
+                Client requests will appear here.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <div class="client-actions">
+
+        <a
+            href="{% url 'admin_requests' %}"
+            class="client-action"
+        >
+            View all requests →
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}
