@@ -4,28 +4,23 @@
     Skills — OlehDev
 {% endblock %}
 
-
 {% block content %}
 
 <section class="page-section">
 
-    <a href="{% url 'home' %}" class="back-link">
-        ← Back to home
-    </a>
-
     <div class="section-label">
-        SKILLS
+        Skills
     </div>
 
     <div class="page-heading">
 
         <h1>
-            My current stack.
+            What I work with.
         </h1>
 
         <p>
-            Technologies I use confidently, technologies
-            I am improving, and tools I have already worked with.
+            Technologies and tools I use while building
+            backend applications and APIs.
         </p>
 
     </div>
@@ -33,36 +28,56 @@
 
     <div class="skills-columns">
 
+        <!-- CONFIDENT -->
+
         <div class="skills-column">
 
             <div class="skills-column-header">
 
-                <span class="skills-column-number">
+                <div class="skills-column-number">
                     01
-                </span>
+                </div>
 
-                <h2>
-                    Confident
-                </h2>
+                <div class="skills-title-row">
 
-                <p>
-                    I can work with these independently.
-                </p>
+                    <div>
+                        <h2>
+                            Confident
+                        </h2>
+
+                        <p>
+                            Technologies I can use independently.
+                        </p>
+                    </div>
+
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a
+                            href="{% url 'admin_add_skill' %}?level=confident"
+                            class="skill-add-button"
+                            title="Add skill"
+                        >
+                            +
+                        </a>
+                    {% endif %}
+
+                </div>
 
             </div>
 
 
             <div class="skills-list">
 
-                {% for skill in skills %}
+                {% for skill in confident_skills %}
 
-                    {% if skill.level == "confident" %}
+                    <span class="skill-item">
+                        {{ skill.name }}
+                    </span>
 
-                        <div class="skill-item">
-                            <span>{{ skill.name }}</span>
-                        </div>
+                {% empty %}
 
-                    {% endif %}
+                    <span class="skill-empty">
+                        No skills yet.
+                    </span>
 
                 {% endfor %}
 
@@ -71,36 +86,56 @@
         </div>
 
 
+        <!-- GROWING -->
+
         <div class="skills-column">
 
             <div class="skills-column-header">
 
-                <span class="skills-column-number">
+                <div class="skills-column-number">
                     02
-                </span>
+                </div>
 
-                <h2>
-                    Good, still growing
-                </h2>
+                <div class="skills-title-row">
 
-                <p>
-                    I have practical experience and continue to improve.
-                </p>
+                    <div>
+                        <h2>
+                            Growing
+                        </h2>
+
+                        <p>
+                            Technologies I actively improve.
+                        </p>
+                    </div>
+
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a
+                            href="{% url 'admin_add_skill' %}?level=growing"
+                            class="skill-add-button"
+                            title="Add skill"
+                        >
+                            +
+                        </a>
+                    {% endif %}
+
+                </div>
 
             </div>
 
 
             <div class="skills-list">
 
-                {% for skill in skills %}
+                {% for skill in growing_skills %}
 
-                    {% if skill.level == "growing" %}
+                    <span class="skill-item">
+                        {{ skill.name }}
+                    </span>
 
-                        <div class="skill-item">
-                            <span>{{ skill.name }}</span>
-                        </div>
+                {% empty %}
 
-                    {% endif %}
+                    <span class="skill-empty">
+                        No skills yet.
+                    </span>
 
                 {% endfor %}
 
@@ -109,36 +144,56 @@
         </div>
 
 
+        <!-- LEARNING -->
+
         <div class="skills-column">
 
             <div class="skills-column-header">
 
-                <span class="skills-column-number">
+                <div class="skills-column-number">
                     03
-                </span>
+                </div>
 
-                <h2>
-                    Used, want to learn more
-                </h2>
+                <div class="skills-title-row">
 
-                <p>
-                    I have used these and want to deepen my knowledge.
-                </p>
+                    <div>
+                        <h2>
+                            Learning
+                        </h2>
+
+                        <p>
+                            Technologies I want to explore deeper.
+                        </p>
+                    </div>
+
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a
+                            href="{% url 'admin_add_skill' %}?level=learning"
+                            class="skill-add-button"
+                            title="Add skill"
+                        >
+                            +
+                        </a>
+                    {% endif %}
+
+                </div>
 
             </div>
 
 
             <div class="skills-list">
 
-                {% for skill in skills %}
+                {% for skill in learning_skills %}
 
-                    {% if skill.level == "learning" %}
+                    <span class="skill-item">
+                        {{ skill.name }}
+                    </span>
 
-                        <div class="skill-item">
-                            <span>{{ skill.name }}</span>
-                        </div>
+                {% empty %}
 
-                    {% endif %}
+                    <span class="skill-empty">
+                        No skills yet.
+                    </span>
 
                 {% endfor %}
 

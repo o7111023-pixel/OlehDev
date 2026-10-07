@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add project — OlehDev
+{% endblock %}
+
+{% block content %}
+
+<section class="page-section">
+
+    <a
+        href="{% url 'portfolio' %}"
+        class="back-link"
+    >
+        ← Back to portfolio
+    </a>
+
+    <div class="section-label">
+        Portfolio
+    </div>
+
+    <div class="page-heading">
+
+        <h1>
+            Add a project.
+        </h1>
+
+        <p>
+            Add a project that will appear in your portfolio.
+        </p>
+
+    </div>
+
+
+    <form
+        method="post"
+        class="project-request-form"
+    >
+
+        {% csrf_token %}
+
+
+        <div class="form-section">
+
+            <div class="form-section-heading">
+
+                <span class="form-section-number">
+                    01
+                </span>
+
+                <div>
+
+                    <h2>
+                        Project information
+                    </h2>
+
+                    <p>
+                        Basic information about the project.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if form.non_field_errors %}
+
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <div class="form-field">
+
+                <label for="{{ form.title.id_for_label }}">
+                    {{ form.title.label }}
+                </label>
+
+                {{ form.title }}
+
+                {{ form.title.errors }}
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label for="{{ form.description.id_for_label }}">
+                    {{ form.description.label }}
+                </label>
+
+                {{ form.description }}
+
+                {{ form.description.errors }}
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label for="{{ form.tech_stack.id_for_label }}">
+                    {{ form.tech_stack.label }}
+                </label>
+
+                {{ form.tech_stack }}
+
+                {{ form.tech_stack.errors }}
+
+            </div>
+
+        </div>
+
+
+        <div class="form-section">
+
+            <div class="form-section-heading">
+
+                <span class="form-section-number">
+                    02
+                </span>
+
+                <div>
+
+                    <h2>
+                        Project links
+                    </h2>
+
+                    <p>
+                        Add GitHub and deployment links.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label for="{{ form.github_url.id_for_label }}">
+                    {{ form.github_url.label }}
+                </label>
+
+                {{ form.github_url }}
+
+                {{ form.github_url.errors }}
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label for="{{ form.live_url.id_for_label }}">
+                    {{ form.live_url.label }}
+                </label>
+
+                {{ form.live_url }}
+
+                {{ form.live_url.errors }}
+
+            </div>
+
+        </div>
+
+
+        <div class="form-submit-area">
+
+            <p>
+                GitHub and deploy links are optional.
+            </p>
+
+            <button
+                type="submit"
+                class="form-submit"
+            >
+                Add project
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

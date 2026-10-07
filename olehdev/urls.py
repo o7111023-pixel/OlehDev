@@ -1,63 +1,96 @@
 from django.urls import path
 
-from .views import (
-    admin_dashboard,
-    admin_request_detail,
-    admin_requests,
-    client_dashboard,
-    client_profile,
-    client_request_detail,
-    home,
-    login_view,
-    logout_view,
-    portfolio,
-    register,
-    skills,
-    start_project,
-)
+from . import views
 
 
 urlpatterns = [
-    path("", home, name="home"),
-    path("portfolio/", portfolio, name="portfolio"),
-    path("skills/", skills, name="skills"),
-    path("start-project/", start_project, name="start_project"),
-    path("register/", register, name="register"),
-    path("login/", login_view, name="login"),
-    path("logout/", logout_view, name="logout"),
+    path(
+        "",
+        views.home,
+        name="home",
+    ),
+
+    path(
+        "portfolio/",
+        views.portfolio,
+        name="portfolio",
+    ),
+
+    path(
+        "skills/",
+        views.skills,
+        name="skills",
+    ),
+
+    path(
+        "register/",
+        views.register,
+        name="register",
+    ),
+
+    path(
+        "login/",
+        views.login_view,
+        name="login",
+    ),
+
+    path(
+        "logout/",
+        views.logout_view,
+        name="logout",
+    ),
+
+    path(
+        "start-project/",
+        views.start_project,
+        name="start_project",
+    ),
 
     path(
         "client/",
-        client_dashboard,
+        views.client_dashboard,
         name="client_dashboard",
     ),
 
     path(
-        "client/profile/",
-        client_profile,
-        name="client_profile",
+        "client/requests/<int:request_id>/",
+        views.client_request_detail,
+        name="client_request_detail",
     ),
 
     path(
-        "client/requests/<int:request_id>/",
-        client_request_detail,
-        name="client_request_detail",
+        "client/profile/",
+        views.client_profile,
+        name="client_profile",
     ),
+
+    # ADMIN PANEL
     path(
         "admin-panel/",
-        admin_dashboard,
+        views.admin_dashboard,
         name="admin_dashboard",
     ),
 
     path(
         "admin-panel/requests/",
-        admin_requests,
+        views.admin_requests,
         name="admin_requests",
     ),
 
     path(
         "admin-panel/requests/<int:request_id>/",
-        admin_request_detail,
+        views.admin_request_detail,
         name="admin_request_detail",
+    ),
+
+    path(
+        "admin-panel/portfolio/add/",
+        views.admin_add_project,
+        name="admin_add_project",
+    ),
+    path(
+        "admin-panel/skills/add/",
+        views.admin_add_skill,
+        name="admin_add_skill",
     ),
 ]

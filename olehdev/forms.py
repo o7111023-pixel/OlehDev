@@ -1,6 +1,98 @@
 from django import forms
 
-from .models import Message, Profile, ProjectRequest, Skill
+from .models import Message, Profile, Project, ProjectRequest, Skill
+
+
+class ProjectForm(forms.ModelForm):
+
+    description = forms.CharField(
+        max_length=300,
+        label="Short description",
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "Shortly describe what this project does...",
+                "rows": 4,
+                "maxlength": 300,
+            }
+        ),
+    )
+
+    tech_stack = forms.CharField(
+        max_length=300,
+        label="Type / Tech stack",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": (
+                    "For example: Django REST API · PostgreSQL · Docker"
+                ),
+            }
+        ),
+    )
+
+    github_url = forms.URLField(
+        required=False,
+        label="GitHub URL",
+        widget=forms.URLInput(
+            attrs={
+                "placeholder": "https://github.com/...",
+            }
+        ),
+    )
+
+    live_url = forms.URLField(
+        required=False,
+        label="Deploy URL",
+        widget=forms.URLInput(
+            attrs={
+                "placeholder": "https://...",
+            }
+        ),
+    )
+
+    class Meta:
+        model = Project
+
+        fields = (
+            "title",
+            "description",
+            "tech_stack",
+            "github_url",
+            "live_url",
+        )
+
+        widgets = {
+            "title": forms.TextInput(
+                attrs={
+                    "placeholder": "Project name",
+                }
+            ),
+        }
+
+
+class SkillForm(forms.ModelForm):
+
+    class Meta:
+        model = Skill
+
+        fields = (
+            "name",
+            "level",
+            "order",
+        )
+
+        widgets = {
+            "name": forms.TextInput(
+                attrs={
+                    "placeholder": "For example: FastAPI",
+                }
+            ),
+            "level": forms.Select(),
+            "order": forms.NumberInput(
+                attrs={
+                    "min": 0,
+                }
+            ),
+        }
 
 
 class ProjectRequestForm(forms.ModelForm):

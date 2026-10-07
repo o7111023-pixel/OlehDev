@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add skill — OlehDev
+{% endblock %}
+
+{% block content %}
+
+<section class="page-section">
+
+    <a
+        href="{% url 'skills' %}"
+        class="back-link"
+    >
+        ← Back to skills
+    </a>
+
+    <div class="section-label">
+        Skills
+    </div>
+
+    <div class="page-heading">
+
+        <h1>
+            Add a skill.
+        </h1>
+
+        <p>
+            Add a technology or tool to your skills list.
+        </p>
+
+    </div>
+
+
+    <form
+        method="post"
+        class="project-request-form"
+    >
+
+        {% csrf_token %}
+
+
+        <div class="form-section">
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+
+            <div class="form-field">
+
+                <label for="{{ form.name.id_for_label }}">
+                    Skill name
+                </label>
+
+                {{ form.name }}
+
+                {{ form.name.errors }}
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label for="{{ form.level.id_for_label }}">
+                    Level
+                </label>
+
+                {{ form.level }}
+
+                {{ form.level.errors }}
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label for="{{ form.order.id_for_label }}">
+                    Order
+                </label>
+
+                {{ form.order }}
+
+                {{ form.order.errors }}
+
+            </div>
+
+
+            <div class="form-submit-area">
+
+                <p>
+                    Choose where this skill should appear.
+                </p>
+
+                <button
+                    type="submit"
+                    class="form-submit"
+                >
+                    Add skill
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

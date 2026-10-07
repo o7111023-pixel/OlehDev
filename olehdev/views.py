@@ -6,7 +6,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import MessageForm, ProfileForm, ProjectRequestForm
+from .forms import (
+    MessageForm,
+    ProfileForm,
+    ProjectForm,
+    ProjectRequestForm,
+    SkillForm,
+)
 from .models import Message, Project, ProjectRequest, Skill
 
 
@@ -20,22 +26,41 @@ def portfolio(request):
     return render(
         request,
         "public/portfolio.html",
-        {"projects": projects},
+        {
+            "projects": projects,
+        },
     )
 
 
 def skills(request):
-    skills = Skill.objects.all()
+    confident_skills = Skill.objects.filter(
+        level=Skill.SkillLevel.CONFIDENT
+    )
+
+    growing_skills = Skill.objects.filter(
+        level=Skill.SkillLevel.GROWING
+    )
+
+    learning_skills = Skill.objects.filter(
+        level=Skill.SkillLevel.LEARNING
+    )
 
     return render(
         request,
         "public/skills.html",
-        {"skills": skills},
+        {
+            "confident_skills": confident_skills,
+            "growing_skills": growing_skills,
+            "learning_skills": learning_skills,
+        },
     )
 
 
 def register(request):
     if request.user.is_authenticated:
+        if request.user.is_staff:
+            return redirect("admin_dashboard")
+
         return redirect("client_dashboard")
 
     if request.method == "POST":
@@ -53,12 +78,17 @@ def register(request):
     return render(
         request,
         "public/register.html",
-        {"form": form},
+        {
+            "form": form,
+        },
     )
 
 
 def login_view(request):
     if request.user.is_authenticated:
+        if request.user.is_staff:
+            return redirect("admin_dashboard")
+
         return redirect("client_dashboard")
 
     if request.method == "POST":
@@ -77,6 +107,9 @@ def login_view(request):
             if next_url:
                 return redirect(next_url)
 
+            if user.is_staff:
+                return redirect("admin_dashboard")
+
             return redirect("client_dashboard")
 
     else:
@@ -85,7 +118,9 @@ def login_view(request):
     return render(
         request,
         "public/login.html",
-        {"form": form},
+        {
+            "form": form,
+        },
     )
 
 
@@ -120,7 +155,9 @@ def start_project(request):
     return render(
         request,
         "public/start_project.html",
-        {"form": form},
+        {
+            "form": form,
+        },
     )
 
 
@@ -133,7 +170,9 @@ def client_dashboard(request):
     return render(
         request,
         "client/dashboard.html",
-        {"requests": requests},
+        {
+            "requests": requests,
+        },
     )
 
 
@@ -288,7 +327,9 @@ def admin_requests(request):
     return render(
         request,
         "admin/requests.html",
-        {"requests": requests},
+        {
+            "requests": requests,
+        },
     )
 
 
@@ -361,5 +402,70 @@ def admin_request_detail(request, request_id):
             "project_request": project_request,
             "chat_messages": chat_messages,
             "message_form": message_form,
+        },
+    )
+
+
+@admin_required
+def admin_add_project(request):
+    if request.method == "POST":
+        form = ProjectForm(request.POST)
+
+        if form.is_valid():
+            project = form.save()
+
+            messages.success(
+                request,
+                f'Project "{project.title}" added successfully.',
+            )
+
+            return redirect("portfolio")
+
+    else:
+        form = ProjectForm()
+
+    return render(
+        request,
+        "admin/project_form.html",
+        {
+            "form": form,
+        },
+    )
+
+
+@admin_required
+def admin_add_skill(request):
+    level = request.GET.get("level")
+
+    if request.method == "POST":
+        form = SkillForm(request.POST)
+
+        if form.is_valid():
+            skill = form.save()
+
+            messages.success(
+                request,
+                f'Skill "{skill.name}" added successfully.',
+            )
+
+            return redirect("skills")
+
+    else:
+        form = SkillForm(
+            initial={
+                "level": level
+                if level in {
+                    choice[0]
+                    for choice in Skill.SkillLevel.choices
+                }
+                else Skill.SkillLevel.GROWING,
+            }
+        )
+
+    return render(
+        request,
+        "admin/skill_form.html",
+        {
+            "form": form,
         },
     )

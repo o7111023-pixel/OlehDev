@@ -90,10 +90,10 @@ class ProjectRequest(models.Model):
         COMPLETED = "completed", "Completed"
 
     class Deadline(models.TextChoices):
-        ONE_TWO_DAYS = "1_2_days", "1–2 days"
-        THREE_SEVEN_DAYS = "3_7_days", "3–7 days"
+        FIVE_SEVEN_DAYS = "5_7_days", "5–7 days"
         ONE_TWO_WEEKS = "1_2_weeks", "1–2 weeks"
-        TWO_FOUR_WEEKS = "2_4_weeks", "2–4 weeks"
+        THREE_FOUR_WEEKS = "3_4_weeks", "3–4 weeks"
+        ONE_TWO_MONTHS = "1_2_months", "1–2 months"
         NOT_SURE = "not_sure", "Not sure"
 
     user = models.ForeignKey(

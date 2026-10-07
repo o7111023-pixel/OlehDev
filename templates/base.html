@@ -5,7 +5,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>
         {% block title %}
@@ -13,36 +17,64 @@
         {% endblock %}
     </title>
 
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link
+        rel="stylesheet"
+        href="{% static 'css/main.css' %}"
+    >
 </head>
 
 <body>
 
 <header class="site-header">
 
-    <a href="{% url 'home' %}" class="brand">
+    <a
+        href="{% url 'home' %}"
+        class="brand"
+    >
         Oleh<span>Dev</span>
     </a>
 
 
     <nav class="navigation">
 
-        {% block navigation %}
+        {% if user.is_authenticated and user.is_staff %}
 
-        <a href="{% url 'home' %}">
-            Home
-        </a>
+            <!-- ADMIN NAVIGATION -->
+            <a href="{% url 'admin_requests' %}">
+                Requests
+            </a>
 
-        <a href="{% url 'portfolio' %}">
-            Portfolio
-        </a>
+            <a href="{% url 'portfolio' %}">
+                Portfolio
+            </a>
 
-        <a href="{% url 'skills' %}">
-            Skills
-        </a>
+            <a href="{% url 'skills' %}">
+                Skills
+            </a>
 
+            <a href="{% url 'admin_dashboard' %}">
+                Admin Panel
+            </a>
 
-        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        {% elif user.is_authenticated %}
+
+            <!-- CLIENT NAVIGATION -->
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'portfolio' %}">
+                Portfolio
+            </a>
+
+            <a href="{% url 'skills' %}">
+                Skills
+            </a>
 
             <a href="{% url 'start_project' %}">
                 Start a project
@@ -62,13 +94,25 @@
 
         {% else %}
 
+            <!-- PUBLIC NAVIGATION -->
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'portfolio' %}">
+                Portfolio
+            </a>
+
+            <a href="{% url 'skills' %}">
+                Skills
+            </a>
+
             <a href="{% url 'login' %}">
                 Login
             </a>
 
         {% endif %}
-
-        {% endblock %}
 
     </nav>
 
@@ -112,6 +156,7 @@
 
         {% endif %}
 
+
         <a
             href="https://t.me/oleh_murachov"
             target="_blank"
@@ -125,7 +170,9 @@
 </footer>
 
 
-<script src="{% static 'js/main.js' %}"></script>
+<script
+    src="{% static 'js/main.js' %}"
+></script>
 
 </body>
 
