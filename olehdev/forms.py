@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import ProjectRequest, Skill
+from .models import ProjectRequest, Skill, Message
 
 
 class ProjectRequestForm(forms.ModelForm):
@@ -26,7 +26,7 @@ class ProjectRequestForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(
                 attrs={
-                    "placeholder": "Your name",
+                    "placeholder": "Project name",
                 }
             ),
             "email": forms.EmailInput(
@@ -54,6 +54,8 @@ class ProjectRequestForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.fields["name"].label = "Project name"
+
         self.fields["description"].help_text = (
             "Maximum 500 characters."
         )
@@ -61,3 +63,20 @@ class ProjectRequestForm(forms.ModelForm):
         self.fields["deadline"].label = "Estimated time"
 
         self.fields["budget"].label = "Budget"
+
+
+class MessageForm(forms.ModelForm):
+
+    class Meta:
+        model = Message
+
+        fields = ("text",)
+
+        widgets = {
+            "text": forms.Textarea(
+                attrs={
+                    "placeholder": "Write a message...",
+                    "rows": 3,
+                }
+            ),
+        }

@@ -4,18 +4,21 @@
     Start a Project — OlehDev
 {% endblock %}
 
-
 {% block content %}
-
 <section class="page-section">
+
+    <a
+        href="{% url 'client_dashboard' %}"
+        class="back-link"
+    >
+        ← Back to my requests
+    </a>
 
     <div class="section-label">
         START A PROJECT
     </div>
 
-
     <div class="page-heading">
-
         <h1>
             Tell me what you want to build.
         </h1>
@@ -24,100 +27,314 @@
             Send me a short description of your idea.
             I will review it and decide whether we can work together.
         </p>
-
     </div>
 
-
-    <form
-        method="post"
-        class="project-request-form"
-    >
-
+    <form method="post" class="project-request-form">
         {% csrf_token %}
 
-
         {% if form.non_field_errors %}
-
             <div class="form-errors">
-
                 {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <!-- CONTACT -->
+        <div class="form-section">
+
+            <div class="form-section-heading">
+                <span class="form-section-number">
+                    01
+                </span>
+
+                <div>
+                    <h2>
+                        Contact
+                    </h2>
+
+                    <p>
+                        Tell me how I can contact you.
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-field">
+
+                    <label for="{{ form.name.id_for_label }}">
+                        Project name
+                    </label>
+
+                    {{ form.name }}
+                    {{ form.name.errors }}
+
+                </div>
+
+                <div class="form-field">
+
+                    <label for="{{ form.email.id_for_label }}">
+                        Contact email
+                    </label>
+
+                    {{ form.email }}
+                    {{ form.email.errors }}
+
+                </div>
 
             </div>
 
-        {% endif %}
+        </div>
 
+        <!-- DESCRIPTION -->
+        <div class="form-section">
 
-        <div class="form-field">
+            <div class="form-section-heading">
 
-            <label for="{{ form.name.id_for_label }}">
-                Name
-            </label>
+                <span class="form-section-number">
+                    02
+                </span>
 
-            {{ form.name }}
+                <div>
+                    <h2>
+                        Project
+                    </h2>
 
-            {{ form.name.errors }}
+                    <p>
+                        Briefly describe what you want to build.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="form-field">
+
+                <label for="{{ form.description.id_for_label }}">
+                    Project description
+                </label>
+
+                {{ form.description }}
+
+                <div class="character-counter">
+                    <span id="description-count">0</span>
+                    / 500
+                </div>
+
+                {{ form.description.errors }}
+
+            </div>
 
         </div>
 
+        <!-- PROJECT IDEAS -->
+        <div class="project-ideas">
 
-        <div class="form-field">
+            <div class="project-ideas-header">
 
-            <label for="{{ form.email.id_for_label }}">
-                Email
-            </label>
+                <span>💡</span>
 
-            {{ form.email }}
+                <div>
+                    <h2>
+                        Need an idea?
+                    </h2>
 
-            {{ form.email.errors }}
+                    <p>
+                        Choose a starting point or describe your own project.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="project-ideas-list">
+
+                <button
+                    type="button"
+                    class="project-idea"
+                    data-idea="I need a Django project."
+                >
+                    <strong>
+                        Django project
+                    </strong>
+
+                    <span>
+                        Full web application with Django.
+                    </span>
+                </button>
+
+                <button
+                    type="button"
+                    class="project-idea"
+                    data-idea="I need a Django REST API."
+                >
+                    <strong>
+                        Django REST API
+                    </strong>
+
+                    <span>
+                        REST API with Django REST Framework.
+                    </span>
+                </button>
+
+                <button
+                    type="button"
+                    class="project-idea"
+                    data-idea="I need a FastAPI backend or API."
+                >
+                    <strong>
+                        FastAPI project
+                    </strong>
+
+                    <span>
+                        Modern API or backend with FastAPI.
+                    </span>
+                </button>
+
+                <button
+                    type="button"
+                    class="project-idea"
+                    data-idea="I need a backend for my project, including API, database and business logic."
+                >
+                    <strong>
+                        Backend only
+                    </strong>
+
+                    <span>
+                        API, database, authentication and logic.
+                    </span>
+                </button>
+
+                <button
+                    type="button"
+                    class="project-idea"
+                    data-idea="I need a website with a backend and a simple frontend."
+                >
+                    <strong>
+                        Website + backend
+                    </strong>
+
+                    <span>
+                        Simple frontend connected to a backend.
+                    </span>
+                </button>
+
+                <button
+                    type="button"
+                    class="project-idea"
+                    data-idea="I need a Telegram bot for my project."
+                >
+                    <strong>
+                        Telegram bot
+                    </strong>
+
+                    <span>
+                        Bots for orders, notifications or automation.
+                    </span>
+                </button>
+
+            </div>
 
         </div>
 
+        <!-- TECHNOLOGIES -->
+        <div class="form-section">
 
-        <div class="form-field">
+            <div class="form-section-heading">
 
-            <label for="{{ form.description.id_for_label }}">
-                What do you need?
-            </label>
+                <span class="form-section-number">
+                    03
+                </span>
 
-            {{ form.description }}
+                <div>
+                    <h2>
+                        Technologies
+                    </h2>
 
-            {{ form.description.errors }}
+                    <p>
+                        Select everything you are interested in.
+                    </p>
+                </div>
 
-        </div>
-
-
-        <div class="form-field">
-
-            <label>
-                What are you interested in?
-            </label>
-
+            </div>
 
             <div class="skill-checkboxes">
 
                 {% for checkbox in form.skills %}
 
                     <label class="skill-checkbox">
-
                         {{ checkbox.tag }}
 
                         <span>
                             {{ checkbox.choice_label }}
                         </span>
-
                     </label>
+
+                {% empty %}
+
+                    <p>
+                        No technologies have been added yet.
+                    </p>
 
                 {% endfor %}
 
             </div>
 
-
             {{ form.skills.errors }}
 
         </div>
 
+        <!-- DEADLINE -->
+        <div class="form-section">
 
-        <div class="form-row">
+            <div class="form-section-heading">
+
+                <span class="form-section-number">
+                    04
+                </span>
+
+                <div>
+                    <h2>
+                        Deadline
+                    </h2>
+
+                    <p>
+                        When would you like the project completed?
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="form-field">
+
+                <label for="{{ form.deadline.id_for_label }}">
+                    Estimated time
+                </label>
+
+                {{ form.deadline }}
+                {{ form.deadline.errors }}
+
+            </div>
+
+        </div>
+
+        <!-- BUDGET -->
+        <div class="form-section">
+
+            <div class="form-section-heading">
+
+                <span class="form-section-number">
+                    05
+                </span>
+
+                <div>
+                    <h2>
+                        Budget
+                    </h2>
+
+                    <p>
+                        Give me an approximate budget.
+                    </p>
+                </div>
+
+            </div>
 
             <div class="form-field">
 
@@ -126,36 +343,29 @@
                 </label>
 
                 {{ form.budget }}
-
                 {{ form.budget.errors }}
-
-            </div>
-
-
-            <div class="form-field">
-
-                <label for="{{ form.deadline.id_for_label }}">
-                    Deadline
-                </label>
-
-                {{ form.deadline }}
-
-                {{ form.deadline.errors }}
 
             </div>
 
         </div>
 
+        <!-- SUBMIT -->
+        <div class="form-submit-area">
 
-        <button
-            type="submit"
-            class="form-submit"
-        >
-            Send request
-        </button>
+            <p>
+                I will review your request and get back to you.
+            </p>
+
+            <button
+                type="submit"
+                class="form-submit"
+            >
+                Send request
+            </button>
+
+        </div>
 
     </form>
 
 </section>
-
 {% endblock %}

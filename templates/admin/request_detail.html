@@ -1,215 +1,324 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Request #{{ project_request.id }} — Admin — OlehDev
+    {{ project_request.name }} — Admin — OlehDev
 {% endblock %}
 
-
 {% block content %}
-
 <section class="page-section">
 
-    <a href="{% url 'admin_requests' %}" class="back-link">
+    <a
+        href="{% url 'admin_requests' %}"
+        class="back-link"
+    >
         ← Back to requests
     </a>
 
-
     <div class="section-label">
-        ADMIN · REQUEST #{{ project_request.id }}
+        ADMIN · PROJECT REQUEST
     </div>
 
 
-    {% if messages %}
+    <div class="page-heading request-heading">
 
-        {% for message in messages %}
+        <div>
 
-            <div class="empty-state">
-                {{ message }}
-            </div>
-
-        {% endfor %}
-
-    {% endif %}
-
-
-    <div class="request-detail">
-
-        <div class="request-detail-header">
-
-            <div>
-
-                <h1>
-                    {{ project_request.name }}
-                </h1>
-
-                <p>
-                    {{ project_request.email }}
-                </p>
-
-                <p>
-                    Created
-                    {{ project_request.created_at|date:"d.m.Y H:i" }}
-                </p>
-
-            </div>
-
-
-            <span class="status status-{{ project_request.status }}">
-                {{ project_request.get_status_display }}
-            </span>
-
-        </div>
-
-
-        <div class="request-detail-section">
-
-            <h2>
-                Client
-            </h2>
-
-            {% if project_request.user %}
-
-                <p>
-                    Username:
-                    {{ project_request.user.username }}
-                </p>
-
-            {% else %}
-
-                <p>
-                    No registered account.
-                </p>
-
-            {% endif %}
-
-        </div>
-
-
-        <div class="request-detail-section">
-
-            <h2>
-                Description
-            </h2>
+            <h1>
+                {{ project_request.name }}
+            </h1>
 
             <p>
-                {{ project_request.description }}
+                {{ project_request.email }}
+                ·
+                {{ project_request.created_at|date:"d M Y, H:i" }}
             </p>
 
         </div>
 
+        <span class="status-badge status-{{ project_request.status }}">
+            {{ project_request.get_status_display }}
+        </span>
 
-        {% if project_request.skills.exists %}
-
-            <div class="request-detail-section">
-
-                <h2>
-                    Interested in
-                </h2>
-
-                <div class="request-skills">
-
-                    {% for skill in project_request.skills.all %}
-
-                        <span>
-                            {{ skill.name }}
-                        </span>
-
-                    {% endfor %}
-
-                </div>
-
-            </div>
-
-        {% endif %}
+    </div>
 
 
-        {% if project_request.budget %}
+    <!-- DESCRIPTION -->
 
-            <div class="request-detail-section">
+    <div class="request-detail-section">
 
-                <h2>
-                    Budget
-                </h2>
+        <h2>
+            Project description
+        </h2>
 
-                <p>
-                    {{ project_request.budget }}
-                </p>
+        <p>
+            {{ project_request.description }}
+        </p>
 
-            </div>
-
-        {% endif %}
+    </div>
 
 
-        {% if project_request.deadline %}
+    <!-- PROJECT DETAILS -->
 
-            <div class="request-detail-section">
+    <div class="request-detail-grid">
 
-                <h2>
-                    Deadline
-                </h2>
+        <div class="request-detail-section">
 
-                <p>
-                    {{ project_request.deadline }}
-                </p>
+            <h2>
+                Technologies
+            </h2>
+
+            <div class="skill-tags">
+
+                {% for skill in project_request.skills.all %}
+
+                    <span class="skill-tag">
+                        {{ skill.name }}
+                    </span>
+
+                {% empty %}
+
+                    <span>
+                        No technologies selected.
+                    </span>
+
+                {% endfor %}
 
             </div>
 
-        {% endif %}
+        </div>
 
 
         <div class="request-detail-section">
 
             <h2>
-                Change status
+                Project details
             </h2>
 
+            <div class="request-meta">
 
-            <form method="post">
+                <div>
+                    <span>
+                        Contact email
+                    </span>
+
+                    <strong>
+                        {{ project_request.email }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>
+                        Budget
+                    </span>
+
+                    <strong>
+                        {% if project_request.budget %}
+                            {{ project_request.budget }}
+                        {% else %}
+                            Not specified
+                        {% endif %}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>
+                        Estimated time
+                    </span>
+
+                    <strong>
+                        {{ project_request.get_deadline_display }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div class="request-detail-section">
+
+        <h2>
+            Request status
+        </h2>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="action"
+                value="status"
+            >
+
+            <div class="form-field">
+
+                <label for="status">
+                    Status
+                </label>
+
+                <select
+                    name="status"
+                    id="status"
+                >
+
+                    {% for value, label in project_request.Status.choices %}
+
+                        <option
+                            value="{{ value }}"
+                            {% if project_request.status == value %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ label }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <button
+                type="submit"
+                class="form-submit"
+            >
+                Update status
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- CHAT -->
+
+    <details class="request-detail-section chat-details">
+
+        <summary class="chat-summary">
+
+            <div>
+
+                <h2>
+                    Messages
+                </h2>
+
+                <p>
+                    Private conversation with the client.
+                </p>
+
+            </div>
+
+            <span class="chat-toggle">
+                Open conversation
+            </span>
+
+        </summary>
+
+
+        <div class="chat-content">
+
+            <div class="chat-messages">
+
+                {% for message in chat_messages %}
+
+                    <div
+                        class="
+                            chat-message
+                            {% if message.sender == user %}
+                                chat-message-own
+                            {% else %}
+                                chat-message-client
+                            {% endif %}
+                        "
+                    >
+
+                        <div class="chat-message-meta">
+
+                            <strong>
+                                {% if message.sender == user %}
+                                    You
+                                {% else %}
+                                    {{ message.sender.username }}
+                                {% endif %}
+                            </strong>
+
+                            <span>
+                                {{ message.created_at|date:"d M Y, H:i" }}
+                            </span>
+
+                        </div>
+
+                        <p>
+                            {{ message.text|linebreaksbr }}
+                        </p>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="messages-empty">
+
+                        <p>
+                            No messages yet.
+                        </p>
+
+                        <span>
+                            Start the conversation with the client.
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <form
+                method="post"
+                class="chat-form"
+            >
 
                 {% csrf_token %}
 
+                <input
+                    type="hidden"
+                    name="action"
+                    value="message"
+                >
+
                 <div class="form-field">
 
-                    <label for="status">
-                        Status
+                    <label for="{{ message_form.text.id_for_label }}">
+                        Message
                     </label>
 
-                    <select
-                        name="status"
-                        id="status"
-                    >
+                    {{ message_form.text }}
 
-                        {% for value, label in project_request.Status.choices %}
-
-                            <option
-                                value="{{ value }}"
-                                {% if project_request.status == value %}
-                                    selected
-                                {% endif %}
-                            >
-                                {{ label }}
-                            </option>
-
-                        {% endfor %}
-
-                    </select>
+                    {{ message_form.text.errors }}
 
                 </div>
 
+                <div class="chat-submit">
 
-                <button
-                    type="submit"
-                    class="form-submit"
-                >
-                    Update status
-                </button>
+                    <button
+                        type="submit"
+                        class="form-submit"
+                    >
+                        Send message
+                    </button>
+
+                </div>
 
             </form>
 
         </div>
 
-    </div>
+    </details>
 
 </section>
-
 {% endblock %}

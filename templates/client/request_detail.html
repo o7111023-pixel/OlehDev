@@ -1,39 +1,84 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Request #{{ project_request.id }} — OlehDev
+    {{ project_request.name }} — OlehDev
 {% endblock %}
 
-
 {% block content %}
-
 <section class="page-section">
 
+    <a
+        href="{% url 'client_dashboard' %}"
+        class="back-link"
+    >
+        ← Back to my requests
+    </a>
+
     <div class="section-label">
-        REQUEST #{{ project_request.id }}
+        PROJECT REQUEST
+    </div>
+
+    <div class="page-heading request-heading">
+
+        <div>
+            <h1>
+                {{ project_request.name }}
+            </h1>
+
+            <p>
+                Submitted {{ project_request.created_at|date:"d M Y" }}
+            </p>
+        </div>
+
+        <span class="status-badge status-{{ project_request.status }}">
+            {{ project_request.get_status_display }}
+        </span>
+
     </div>
 
 
-    <div class="request-detail">
+    <!-- DESCRIPTION -->
 
-        <div class="request-detail-header">
+    <div class="request-detail-section">
 
-            <div>
+        <h2>
+            Project description
+        </h2>
 
-                <h1>
-                    {{ project_request.name }}
-                </h1>
+        <p>
+            {{ project_request.description }}
+        </p>
 
-                <p>
-                    Created {{ project_request.created_at|date:"d.m.Y H:i" }}
-                </p>
+    </div>
+
+
+    <!-- PROJECT DETAILS -->
+
+    <div class="request-detail-grid">
+
+        <div class="request-detail-section">
+
+            <h2>
+                Technologies
+            </h2>
+
+            <div class="skill-tags">
+
+                {% for skill in project_request.skills.all %}
+
+                    <span class="skill-tag">
+                        {{ skill.name }}
+                    </span>
+
+                {% empty %}
+
+                    <span>
+                        No technologies selected.
+                    </span>
+
+                {% endfor %}
 
             </div>
-
-
-            <span class="status status-{{ project_request.status }}">
-                {{ project_request.get_status_display }}
-            </span>
 
         </div>
 
@@ -41,76 +86,170 @@
         <div class="request-detail-section">
 
             <h2>
-                Description
+                Project details
             </h2>
 
-            <p>
-                {{ project_request.description }}
-            </p>
+            <div class="request-meta">
 
-        </div>
+                <div>
+                    <span>
+                        Contact email
+                    </span>
 
+                    <strong>
+                        {{ project_request.email }}
+                    </strong>
+                </div>
 
-        {% if project_request.skills.exists %}
+                <div>
+                    <span>
+                        Budget
+                    </span>
 
-            <div class="request-detail-section">
+                    <strong>
+                        {% if project_request.budget %}
+                            {{ project_request.budget }}
+                        {% else %}
+                            Not specified
+                        {% endif %}
+                    </strong>
+                </div>
 
-                <h2>
-                    Interested in
-                </h2>
+                <div>
+                    <span>
+                        Estimated time
+                    </span>
 
-                <div class="request-skills">
-
-                    {% for skill in project_request.skills.all %}
-
-                        <span>
-                            {{ skill.name }}
-                        </span>
-
-                    {% endfor %}
-
+                    <strong>
+                        {{ project_request.get_deadline_display }}
+                    </strong>
                 </div>
 
             </div>
 
-        {% endif %}
-
-
-        {% if project_request.budget %}
-
-            <div class="request-detail-section">
-
-                <h2>
-                    Budget
-                </h2>
-
-                <p>
-                    {{ project_request.budget }}
-                </p>
-
-            </div>
-
-        {% endif %}
-
-
-        {% if project_request.deadline %}
-
-            <div class="request-detail-section">
-
-                <h2>
-                    Deadline
-                </h2>
-
-                <p>
-                    {{ project_request.deadline }}
-                </p>
-
-            </div>
-
-        {% endif %}
+        </div>
 
     </div>
 
-</section>
 
+    <!-- CHAT -->
+
+    <details class="request-detail-section chat-details">
+
+        <summary class="chat-summary">
+
+            <div>
+
+                <h2>
+                    Messages
+                </h2>
+
+                <p>
+                    Communicate with me directly about your project.
+                </p>
+
+            </div>
+
+            <span class="chat-toggle">
+                Open conversation
+            </span>
+
+        </summary>
+
+
+        <div class="chat-content">
+
+            <div class="chat-messages">
+
+                {% for message in chat_messages %}
+
+                    <div
+                        class="
+                            chat-message
+                            {% if message.sender == user %}
+                                chat-message-own
+                            {% else %}
+                                chat-message-admin
+                            {% endif %}
+                        "
+                    >
+
+                        <div class="chat-message-meta">
+
+                            <strong>
+                                {% if message.sender == user %}
+                                    You
+                                {% else %}
+                                    OlehDev
+                                {% endif %}
+                            </strong>
+
+                            <span>
+                                {{ message.created_at|date:"d M Y, H:i" }}
+                            </span>
+
+                        </div>
+
+                        <p>
+                            {{ message.text|linebreaksbr }}
+                        </p>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="messages-empty">
+
+                        <p>
+                            No messages yet.
+                        </p>
+
+                        <span>
+                            Send a message if you have any questions about your project.
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <form
+                method="post"
+                class="chat-form"
+            >
+
+                {% csrf_token %}
+
+                <div class="form-field">
+
+                    <label for="{{ message_form.text.id_for_label }}">
+                        Message
+                    </label>
+
+                    {{ message_form.text }}
+
+                    {{ message_form.text.errors }}
+
+                </div>
+
+                <div class="chat-submit">
+
+                    <button
+                        type="submit"
+                        class="form-submit"
+                    >
+                        Send message
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </details>
+
+</section>
 {% endblock %}
