@@ -1,0 +1,146 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f4f3ee;
+    color: #101412;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    border-bottom: 1px solid #dfe2db;
+    background: #f8f7f2;
+}
+
+.brand {
+    font-size: 25px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #101412;
+}
+
+.brand span {
+    color: #678d61;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: #4d5650;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.hero {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 100px 24px;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #6c786f;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 70px;
+    line-height: 0.98;
+    margin: 0 0 25px;
+}
+
+h1 span {
+    color: #718f69;
+}
+
+.hero p {
+    max-width: 650px;
+    font-size: 19px;
+    line-height: 1.6;
+    color: #68706b;
+}
+
+.code {
+    background: #132019;
+    color: #e9f4eb;
+    border-radius: 22px;
+    padding: 25px;
+    box-shadow: 0 25px 60px #173c2d1a;
+}
+
+.code pre {
+    margin-top: 22px;
+    font: 14px/1.8 monospace;
+}
+
+footer {
+    margin-top: 60px;
+    padding: 35px 5%;
+    border-top: 1px solid #dfe2db;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    color: #68706b;
+}
+
+footer b {
+    color: #101412;
+}
+
+footer a {
+    color: #173c2d;
+    font-weight: 700;
+    margin-left: 25px;
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    nav {
+        display: none;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        padding-top: 60px;
+    }
+
+    h1 {
+        font-size: 54px;
+    }
+}
+
+@media (max-width: 560px) {
+    .hero {
+        padding: 50px 17px;
+    }
+
+    h1 {
+        font-size: 44px;
+    }
+
+    footer {
+        display: block;
+        padding: 30px 17px;
+    }
+
+    footer div {
+        margin-top: 20px;
+    }
+}
