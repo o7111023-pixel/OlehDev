@@ -1,15 +1,21 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}
     Skills — OlehDev
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/public.css' %}">
+{% endblock %}
+
 {% block content %}
 
-<section class="page-section">
+<section class="page-section skills-page">
 
     <div class="section-label">
-        Skills
+        SKILLS
     </div>
 
     <div class="page-heading">
@@ -28,6 +34,7 @@
 
     <div class="skills-columns">
 
+
         <!-- CONFIDENT -->
 
         <div class="skills-column">
@@ -41,6 +48,7 @@
                 <div class="skills-title-row">
 
                     <div>
+
                         <h2>
                             Confident
                         </h2>
@@ -48,9 +56,11 @@
                         <p>
                             Technologies I can use independently.
                         </p>
+
                     </div>
 
                     {% if user.is_authenticated and user.is_staff %}
+
                         <a
                             href="{% url 'admin_add_skill' %}?level=confident"
                             class="skill-add-button"
@@ -58,6 +68,7 @@
                         >
                             +
                         </a>
+
                     {% endif %}
 
                 </div>
@@ -69,9 +80,15 @@
 
                 {% for skill in confident_skills %}
 
-                    <span class="skill-item">
-                        {{ skill.name }}
-                    </span>
+                    <div class="skill-item">
+
+                        <span class="skill-item-dot"></span>
+
+                        <span>
+                            {{ skill.name }}
+                        </span>
+
+                    </div>
 
                 {% empty %}
 
@@ -99,6 +116,7 @@
                 <div class="skills-title-row">
 
                     <div>
+
                         <h2>
                             Growing
                         </h2>
@@ -106,9 +124,11 @@
                         <p>
                             Technologies I actively improve.
                         </p>
+
                     </div>
 
                     {% if user.is_authenticated and user.is_staff %}
+
                         <a
                             href="{% url 'admin_add_skill' %}?level=growing"
                             class="skill-add-button"
@@ -116,6 +136,7 @@
                         >
                             +
                         </a>
+
                     {% endif %}
 
                 </div>
@@ -127,9 +148,15 @@
 
                 {% for skill in growing_skills %}
 
-                    <span class="skill-item">
-                        {{ skill.name }}
-                    </span>
+                    <div class="skill-item">
+
+                        <span class="skill-item-dot"></span>
+
+                        <span>
+                            {{ skill.name }}
+                        </span>
+
+                    </div>
 
                 {% empty %}
 
@@ -157,6 +184,7 @@
                 <div class="skills-title-row">
 
                     <div>
+
                         <h2>
                             Learning
                         </h2>
@@ -164,9 +192,11 @@
                         <p>
                             Technologies I want to explore deeper.
                         </p>
+
                     </div>
 
                     {% if user.is_authenticated and user.is_staff %}
+
                         <a
                             href="{% url 'admin_add_skill' %}?level=learning"
                             class="skill-add-button"
@@ -174,6 +204,7 @@
                         >
                             +
                         </a>
+
                     {% endif %}
 
                 </div>
@@ -185,9 +216,15 @@
 
                 {% for skill in learning_skills %}
 
-                    <span class="skill-item">
-                        {{ skill.name }}
-                    </span>
+                    <div class="skill-item">
+
+                        <span class="skill-item-dot"></span>
+
+                        <span>
+                            {{ skill.name }}
+                        </span>
+
+                    </div>
 
                 {% empty %}
 
@@ -200,6 +237,7 @@
             </div>
 
         </div>
+
 
     </div>
 

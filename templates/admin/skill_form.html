@@ -1,53 +1,518 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+
 {% block title %}
-    Add skill — OlehDev
+    Add skill — Admin — OlehDev
 {% endblock %}
+
+
+{% block styles %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/admin.css' %}"
+    >
+
+    <style>
+
+        /* =========================================================
+           ADD SKILL — PAGE ONLY
+        ========================================================= */
+
+        .admin-skill-page {
+            max-width: 900px;
+        }
+
+
+        /* HEADER */
+
+        .admin-skill-page .admin-page-top {
+            margin-bottom: 38px;
+        }
+
+
+        .admin-skill-page .admin-back-link {
+            display: inline-flex;
+
+            margin-bottom: 30px;
+
+            color: rgba(255, 255, 255, 0.48);
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            transition: color 0.2s ease;
+        }
+
+
+        .admin-skill-page .admin-back-link:hover {
+            color: #ffffff;
+        }
+
+
+        .admin-skill-page .admin-page-heading {
+            max-width: 680px;
+        }
+
+
+        .admin-skill-page .admin-eyebrow {
+            margin-bottom: 11px;
+
+            color: #a78bfa;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 0.14em;
+
+            text-transform: uppercase;
+        }
+
+
+        .admin-skill-page .admin-page-heading h1 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: clamp(44px, 6vw, 66px);
+
+            line-height: 1;
+
+            letter-spacing: -0.065em;
+        }
+
+
+        .admin-skill-page .admin-page-heading p {
+            margin: 15px 0 0;
+
+            color: rgba(255, 255, 255, 0.46);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* FORM */
+
+        .admin-skill-page .admin-form-layout {
+            display: block;
+        }
+
+
+        .admin-skill-page .admin-form-card {
+            width: 100%;
+
+            padding: 30px;
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            border-radius: 18px;
+
+            background:
+                radial-gradient(
+                    circle at 100% 0%,
+                    rgba(124, 92, 255, 0.08),
+                    transparent 34%
+                ),
+                linear-gradient(
+                    145deg,
+                    rgba(18, 21, 34, 0.97),
+                    rgba(10, 12, 22, 0.97)
+                );
+
+            box-shadow:
+                0 20px 45px rgba(0, 0, 0, 0.22);
+        }
+
+
+        /* CARD HEADER */
+
+        .admin-skill-page .admin-form-card-header {
+            margin-bottom: 28px;
+
+            padding-bottom: 22px;
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+
+        .admin-skill-page .admin-panel-kicker {
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #a78bfa;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 0.15em;
+
+            text-transform: uppercase;
+        }
+
+
+        .admin-skill-page .admin-form-card-header h2 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 22px;
+
+            letter-spacing: -0.04em;
+        }
+
+
+        .admin-skill-page .admin-form-card-header p {
+            margin: 7px 0 0;
+
+            color: rgba(255, 255, 255, 0.38);
+
+            font-size: 11px;
+        }
+
+
+        /* FIELDS */
+
+        .admin-skill-page .form-field {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+            margin-bottom: 21px;
+        }
+
+
+        .admin-skill-page .form-field label {
+            color: rgba(255, 255, 255, 0.78);
+
+            font-size: 11px;
+
+            font-weight: 650;
+        }
+
+
+        .admin-skill-page .form-field input,
+        .admin-skill-page .form-field textarea,
+        .admin-skill-page .form-field select {
+            width: 100%;
+
+            min-height: 48px;
+
+            padding: 12px 14px;
+
+            box-sizing: border-box;
+
+            color: #ffffff;
+
+            background:
+                rgba(7, 9, 18, 0.86);
+
+            border: 1px solid rgba(255, 255, 255, 0.09);
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .admin-skill-page .form-field input:hover,
+        .admin-skill-page .form-field select:hover {
+            border-color:
+                rgba(255, 255, 255, 0.16);
+        }
+
+
+        .admin-skill-page .form-field input:focus,
+        .admin-skill-page .form-field select:focus {
+            border-color:
+                rgba(139, 92, 246, 0.65);
+
+            background:
+                rgba(10, 12, 24, 0.98);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(139, 92, 246, 0.09),
+                0 0 22px
+                rgba(139, 92, 246, 0.06);
+        }
+
+
+        .admin-skill-page .form-field input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+
+        /* HINT */
+
+        .admin-skill-page .admin-field-hint {
+            color: rgba(255, 255, 255, 0.30);
+
+            font-size: 10px;
+
+            line-height: 1.4;
+        }
+
+
+        /* ERRORS */
+
+        .admin-skill-page .form-errors {
+            padding: 10px 12px;
+
+            color: #fca5a5;
+
+            background:
+                rgba(127, 29, 29, 0.12);
+
+            border: 1px solid
+                rgba(248, 113, 113, 0.22);
+
+            border-radius: 9px;
+
+            font-size: 10px;
+        }
+
+
+        .admin-skill-page .admin-form-error-box {
+            margin-bottom: 22px;
+        }
+
+
+        /* ACTIONS */
+
+        .admin-skill-page .admin-form-actions {
+            margin-top: 8px;
+
+            padding-top: 23px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 25px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+
+        .admin-skill-page .admin-form-action-label {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #a78bfa;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.14em;
+        }
+
+
+        .admin-skill-page .admin-form-actions p {
+            margin: 0;
+
+            color: rgba(255, 255, 255, 0.35);
+
+            font-size: 10px;
+        }
+
+
+        /* BUTTON */
+
+        .admin-skill-page .form-submit {
+            min-height: 43px;
+
+            padding: 0 17px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            color: #ffffff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #8b5cf6
+                );
+
+            border: 1px solid
+                rgba(167, 139, 250, 0.35);
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 8px 24px
+                rgba(124, 58, 237, 0.18);
+
+            font-family: inherit;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .admin-skill-page .form-submit span {
+            font-size: 15px;
+
+            transition:
+                transform 0.2s ease;
+        }
+
+
+        .admin-skill-page .form-submit:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(124, 58, 237, 0.30);
+        }
+
+
+        .admin-skill-page .form-submit:hover span {
+            transform: translateX(3px);
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 650px) {
+
+            .admin-skill-page .admin-form-card {
+                padding: 22px;
+            }
+
+
+            .admin-skill-page .admin-form-actions {
+                align-items: stretch;
+
+                flex-direction: column;
+            }
+
+
+            .admin-skill-page .form-submit {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+{% endblock %}
+
 
 {% block content %}
 
-<section class="page-section">
+<section class="admin-dashboard admin-form-page admin-skill-page">
 
-    <a
-        href="{% url 'skills' %}"
-        class="back-link"
-    >
-        ← Back to skills
-    </a>
 
-    <div class="section-label">
-        Skills
+    <!-- HEADER -->
+
+    <div class="admin-page-top">
+
+        <a
+            href="{% url 'skills' %}"
+            class="admin-back-link"
+        >
+            ← Back to skills
+        </a>
+
+
+        <div class="admin-page-heading">
+
+            <div class="admin-eyebrow">
+                ADMIN · SKILLS
+            </div>
+
+            <h1>
+                Add a skill.
+            </h1>
+
+            <p>
+                Add a technology or tool to your skills list.
+            </p>
+
+        </div>
+
     </div>
 
-    <div class="page-heading">
 
-        <h1>
-            Add a skill.
-        </h1>
+    <!-- FORM -->
 
-        <p>
-            Add a technology or tool to your skills list.
-        </p>
+    <div class="admin-form-layout">
 
-    </div>
+        <form
+            method="post"
+            class="admin-form-card"
+        >
 
-
-    <form
-        method="post"
-        class="project-request-form"
-    >
-
-        {% csrf_token %}
+            {% csrf_token %}
 
 
-        <div class="form-section">
+            <div class="admin-form-card-header">
+
+                <div>
+
+                    <span class="admin-panel-kicker">
+                        01 · SKILL INFORMATION
+                    </span>
+
+                    <h2>
+                        Skill details
+                    </h2>
+
+                    <p>
+                        Technology, proficiency and display order.
+                    </p>
+
+                </div>
+
+            </div>
+
 
             {% if form.non_field_errors %}
-                <div class="form-errors">
+
+                <div class="form-errors admin-form-error-box">
                     {{ form.non_field_errors }}
                 </div>
+
             {% endif %}
 
+
+            <!-- SKILL NAME -->
 
             <div class="form-field">
 
@@ -57,10 +522,22 @@
 
                 {{ form.name }}
 
-                {{ form.name.errors }}
+                {% if form.name.errors %}
+
+                    <div class="form-errors">
+                        {{ form.name.errors }}
+                    </div>
+
+                {% endif %}
+
+                <span class="admin-field-hint">
+                    Python, Django, FastAPI, PostgreSQL
+                </span>
 
             </div>
 
+
+            <!-- LEVEL -->
 
             <div class="form-field">
 
@@ -70,42 +547,77 @@
 
                 {{ form.level }}
 
-                {{ form.level.errors }}
+                {% if form.level.errors %}
+
+                    <div class="form-errors">
+                        {{ form.level.errors }}
+                    </div>
+
+                {% endif %}
+
+                <span class="admin-field-hint">
+                    Select the proficiency level.
+                </span>
 
             </div>
 
+
+            <!-- ORDER -->
 
             <div class="form-field">
 
                 <label for="{{ form.order.id_for_label }}">
-                    Order
+                    Display order
                 </label>
 
                 {{ form.order }}
 
-                {{ form.order.errors }}
+                {% if form.order.errors %}
+
+                    <div class="form-errors">
+                        {{ form.order.errors }}
+                    </div>
+
+                {% endif %}
+
+                <span class="admin-field-hint">
+                    Lower numbers appear first.
+                </span>
 
             </div>
 
 
-            <div class="form-submit-area">
+            <!-- ACTIONS -->
 
-                <p>
-                    Choose where this skill should appear.
-                </p>
+            <div class="admin-form-actions">
+
+                <div>
+
+                    <span class="admin-form-action-label">
+                        READY TO PUBLISH
+                    </span>
+
+                    <p>
+                        Skill will appear in your portfolio.
+                    </p>
+
+                </div>
+
 
                 <button
                     type="submit"
                     class="form-submit"
                 >
                     Add skill
+                    <span>→</span>
                 </button>
 
             </div>
 
-        </div>
+        </form>
 
-    </form>
+    </div>
+
 
 </section>
 

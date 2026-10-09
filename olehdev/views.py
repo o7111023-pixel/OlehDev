@@ -154,7 +154,7 @@ def start_project(request):
 
     return render(
         request,
-        "public/start_project.html",
+        "client/start_project.html",
         {
             "form": form,
         },
@@ -344,7 +344,6 @@ def admin_request_detail(request, request_id):
     )
 
     if request.method == "POST":
-
         action = request.POST.get("action")
 
         if action == "status":
@@ -453,12 +452,14 @@ def admin_add_skill(request):
     else:
         form = SkillForm(
             initial={
-                "level": level
-                if level in {
-                    choice[0]
-                    for choice in Skill.SkillLevel.choices
-                }
-                else Skill.SkillLevel.GROWING,
+                "level": (
+                    level
+                    if level in {
+                        choice[0]
+                        for choice in Skill.SkillLevel.choices
+                    }
+                    else Skill.SkillLevel.GROWING
+                ),
             }
         )
 

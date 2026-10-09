@@ -1,12 +1,485 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+
 {% block title %}
-    Add project — OlehDev
+    Add project — Admin — OlehDev
 {% endblock %}
+
+
+{% block styles %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/admin.css' %}"
+    >
+
+    <style>
+
+        /* =========================================================
+           ADD PROJECT — PAGE ONLY
+           These styles are scoped to .admin-form-page
+           and do not affect other admin pages.
+        ========================================================= */
+
+        .admin-form-page {
+            position: relative;
+        }
+
+
+        /* HEADER */
+
+        .admin-form-page .admin-form-header {
+            max-width: 760px;
+            margin-bottom: 42px;
+        }
+
+        .admin-form-page .admin-form-header h1 {
+            margin: 12px 0 14px;
+        }
+
+        .admin-form-page .admin-form-header p {
+            max-width: 650px;
+        }
+
+
+        /* FORM */
+
+        .admin-form-page .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-width: 900px;
+        }
+
+
+        /* CARDS */
+
+        .admin-form-page .admin-form-card {
+            position: relative;
+            overflow: hidden;
+
+            padding: 30px;
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+
+            background:
+                radial-gradient(
+                    circle at 100% 0%,
+                    rgba(124, 92, 255, 0.08),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    145deg,
+                    rgba(18, 21, 34, 0.96),
+                    rgba(10, 12, 22, 0.96)
+                );
+
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, 0.22);
+
+            transition:
+                border-color 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .admin-form-page .admin-form-card:hover {
+            border-color: rgba(139, 92, 246, 0.24);
+
+            box-shadow:
+                0 22px 55px rgba(0, 0, 0, 0.28);
+        }
+
+
+        /* CARD HEADER */
+
+        .admin-form-page .admin-form-card-header {
+            display: grid;
+            grid-template-columns: 52px 1fr;
+            gap: 18px;
+            align-items: start;
+
+            margin-bottom: 30px;
+        }
+
+
+        .admin-form-page .admin-form-number {
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(139, 92, 246, 0.32);
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(124, 92, 255, 0.18),
+                    rgba(124, 92, 255, 0.05)
+                );
+
+            color: #a78bfa;
+
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+
+            box-shadow:
+                inset 0 0 18px rgba(124, 92, 255, 0.06);
+        }
+
+
+        .admin-form-page .admin-form-kicker {
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #a78bfa;
+
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+
+        .admin-form-page .admin-form-card-header h2 {
+            margin: 0 0 7px;
+        }
+
+
+        .admin-form-page .admin-form-card-header p {
+            margin: 0;
+
+            color: rgba(255, 255, 255, 0.48);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* FIELDS */
+
+        .admin-form-page .admin-form-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+
+        .admin-form-page .admin-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+
+        .admin-form-page .admin-field label {
+            color: rgba(255, 255, 255, 0.82);
+
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+
+        /* INPUTS */
+
+        .admin-form-page .admin-field input,
+        .admin-form-page .admin-field textarea,
+        .admin-form-page .admin-field select {
+            width: 100%;
+            box-sizing: border-box;
+
+            min-height: 48px;
+
+            padding: 13px 15px;
+
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 11px;
+
+            outline: none;
+
+            background:
+                rgba(7, 9, 18, 0.82);
+
+            color: #f8fafc;
+
+            font-family: inherit;
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .admin-form-page .admin-field textarea {
+            min-height: 135px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+
+        .admin-form-page .admin-field input::placeholder,
+        .admin-form-page .admin-field textarea::placeholder {
+            color: rgba(255, 255, 255, 0.28);
+        }
+
+
+        .admin-form-page .admin-field input:hover,
+        .admin-form-page .admin-field textarea:hover,
+        .admin-form-page .admin-field select:hover {
+            border-color: rgba(255, 255, 255, 0.16);
+        }
+
+
+        .admin-form-page .admin-field input:focus,
+        .admin-form-page .admin-field textarea:focus,
+        .admin-form-page .admin-field select:focus {
+            border-color: rgba(139, 92, 246, 0.7);
+
+            background:
+                rgba(10, 12, 24, 0.96);
+
+            box-shadow:
+                0 0 0 3px rgba(139, 92, 246, 0.10),
+                0 0 24px rgba(139, 92, 246, 0.07);
+        }
+
+
+        /* SELECT */
+
+        .admin-form-page .admin-field select {
+            cursor: pointer;
+        }
+
+
+        /* HINT */
+
+        .admin-form-page .admin-field-hint {
+            color: rgba(255, 255, 255, 0.38);
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+
+        /* ERRORS */
+
+        .admin-form-page .admin-form-errors,
+        .admin-form-page .admin-field-error {
+            padding: 11px 13px;
+
+            border: 1px solid rgba(248, 113, 113, 0.25);
+            border-radius: 10px;
+
+            background: rgba(127, 29, 29, 0.12);
+
+            color: #fca5a5;
+
+            font-size: 12px;
+        }
+
+
+        .admin-form-page .admin-form-errors {
+            margin-bottom: 2px;
+        }
+
+
+        /* SUBMIT AREA */
+
+        .admin-form-page .admin-form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+
+            margin-top: 2px;
+            padding: 24px 26px;
+
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(17, 20, 32, 0.92),
+                    rgba(10, 12, 20, 0.92)
+                );
+        }
+
+
+        .admin-form-page .admin-form-actions p {
+            margin: 5px 0 0;
+
+            max-width: 520px;
+
+            color: rgba(255, 255, 255, 0.42);
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* BUTTONS */
+
+        .admin-form-page .admin-form-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            flex-shrink: 0;
+        }
+
+
+        .admin-form-page .admin-secondary-button,
+        .admin-form-page .admin-primary-button {
+            min-height: 44px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            padding: 0 17px;
+
+            border-radius: 10px;
+
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .admin-form-page .admin-secondary-button {
+            border: 1px solid rgba(255, 255, 255, 0.10);
+
+            background: rgba(255, 255, 255, 0.025);
+
+            color: rgba(255, 255, 255, 0.62);
+        }
+
+
+        .admin-form-page .admin-secondary-button:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+
+            background: rgba(255, 255, 255, 0.055);
+
+            color: #ffffff;
+
+            transform: translateY(-1px);
+        }
+
+
+        .admin-form-page .admin-primary-button {
+            border: 1px solid rgba(139, 92, 246, 0.65);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #8b5cf6
+                );
+
+            color: #ffffff;
+
+            box-shadow:
+                0 8px 24px rgba(124, 58, 237, 0.20);
+        }
+
+
+        .admin-form-page .admin-primary-button span {
+            font-size: 15px;
+            transition: transform 0.2s ease;
+        }
+
+
+        .admin-form-page .admin-primary-button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 30px rgba(124, 58, 237, 0.30);
+        }
+
+
+        .admin-form-page .admin-primary-button:hover span {
+            transform: translateX(3px);
+        }
+
+
+        .admin-form-page .admin-primary-button:active,
+        .admin-form-page .admin-secondary-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .admin-form-page .admin-form-card {
+                padding: 22px;
+            }
+
+
+            .admin-form-page .admin-form-card-header {
+                grid-template-columns: 44px 1fr;
+                gap: 13px;
+            }
+
+
+            .admin-form-page .admin-form-number {
+                width: 44px;
+                height: 44px;
+            }
+
+
+            .admin-form-page .admin-form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+
+            .admin-form-page .admin-form-buttons {
+                width: 100%;
+            }
+
+
+            .admin-form-page .admin-secondary-button,
+            .admin-form-page .admin-primary-button {
+                flex: 1;
+            }
+
+        }
+
+    </style>
+
+{% endblock %}
+
 
 {% block content %}
 
-<section class="page-section">
+<section class="admin-dashboard admin-form-page">
+
+    <!-- BACK -->
 
     <a
         href="{% url 'portfolio' %}"
@@ -15,43 +488,63 @@
         ← Back to portfolio
     </a>
 
-    <div class="section-label">
-        Portfolio
-    </div>
 
-    <div class="page-heading">
+    <!-- HEADER -->
+
+    <div class="admin-form-header">
+
+        <div class="section-label">
+            ADMIN · PORTFOLIO
+        </div>
 
         <h1>
             Add a project.
         </h1>
 
         <p>
-            Add a project that will appear in your portfolio.
+            Add a new project that will appear in your public portfolio.
         </p>
 
     </div>
 
 
+    <!-- FORM -->
+
     <form
         method="post"
-        class="project-request-form"
+        class="admin-form"
     >
 
         {% csrf_token %}
 
 
-        <div class="form-section">
+        {% if form.non_field_errors %}
 
-            <div class="form-section-heading">
+            <div class="admin-form-errors">
+                {{ form.non_field_errors }}
+            </div>
 
-                <span class="form-section-number">
+        {% endif %}
+
+
+        <!-- PROJECT INFORMATION -->
+
+        <section class="admin-form-card">
+
+            <div class="admin-form-card-header">
+
+                <div class="admin-form-number">
                     01
-                </span>
+                </div>
 
                 <div>
 
+                    <span class="admin-form-kicker">
+                        PROJECT INFORMATION
+                    </span>
+
                     <h2>
-                        Project information
+                        Project details
                     </h2>
 
                     <p>
@@ -63,72 +556,99 @@
             </div>
 
 
-            {% if form.non_field_errors %}
+            <div class="admin-form-fields">
 
-                <div class="form-errors">
-                    {{ form.non_field_errors }}
+
+                <div class="admin-field">
+
+                    <label for="{{ form.title.id_for_label }}">
+                        {{ form.title.label }}
+                    </label>
+
+                    {{ form.title }}
+
+                    {% if form.title.errors %}
+                        <div class="admin-field-error">
+                            {{ form.title.errors }}
+                        </div>
+                    {% endif %}
+
+                    <span class="admin-field-hint">
+                        Give your project a clear and recognizable name.
+                    </span>
+
                 </div>
 
-            {% endif %}
+
+                <div class="admin-field">
+
+                    <label for="{{ form.description.id_for_label }}">
+                        {{ form.description.label }}
+                    </label>
+
+                    {{ form.description }}
+
+                    {% if form.description.errors %}
+                        <div class="admin-field-error">
+                            {{ form.description.errors }}
+                        </div>
+                    {% endif %}
+
+                    <span class="admin-field-hint">
+                        Briefly explain what this project does.
+                    </span>
+
+                </div>
 
 
-            <div class="form-field">
+                <div class="admin-field">
 
-                <label for="{{ form.title.id_for_label }}">
-                    {{ form.title.label }}
-                </label>
+                    <label for="{{ form.tech_stack.id_for_label }}">
+                        {{ form.tech_stack.label }}
+                    </label>
 
-                {{ form.title }}
+                    {{ form.tech_stack }}
 
-                {{ form.title.errors }}
+                    {% if form.tech_stack.errors %}
+                        <div class="admin-field-error">
+                            {{ form.tech_stack.errors }}
+                        </div>
+                    {% endif %}
+
+                    <span class="admin-field-hint">
+                        Example: Django REST · PostgreSQL · Docker
+                    </span>
+
+                </div>
+
 
             </div>
 
-
-            <div class="form-field">
-
-                <label for="{{ form.description.id_for_label }}">
-                    {{ form.description.label }}
-                </label>
-
-                {{ form.description }}
-
-                {{ form.description.errors }}
-
-            </div>
+        </section>
 
 
-            <div class="form-field">
+        <!-- PROJECT LINKS -->
 
-                <label for="{{ form.tech_stack.id_for_label }}">
-                    {{ form.tech_stack.label }}
-                </label>
+        <section class="admin-form-card">
 
-                {{ form.tech_stack }}
+            <div class="admin-form-card-header">
 
-                {{ form.tech_stack.errors }}
-
-            </div>
-
-        </div>
-
-
-        <div class="form-section">
-
-            <div class="form-section-heading">
-
-                <span class="form-section-number">
+                <div class="admin-form-number">
                     02
-                </span>
+                </div>
 
                 <div>
 
+                    <span class="admin-form-kicker">
+                        PROJECT LINKS
+                    </span>
+
                     <h2>
-                        Project links
+                        External links
                     </h2>
 
                     <p>
-                        Add GitHub and deployment links.
+                        Connect the project with GitHub or a live deployment.
                     </p>
 
                 </div>
@@ -136,48 +656,95 @@
             </div>
 
 
-            <div class="form-field">
+            <div class="admin-form-fields">
 
-                <label for="{{ form.github_url.id_for_label }}">
-                    {{ form.github_url.label }}
-                </label>
 
-                {{ form.github_url }}
+                <div class="admin-field">
 
-                {{ form.github_url.errors }}
+                    <label for="{{ form.github_url.id_for_label }}">
+                        {{ form.github_url.label }}
+                    </label>
+
+                    {{ form.github_url }}
+
+                    {% if form.github_url.errors %}
+                        <div class="admin-field-error">
+                            {{ form.github_url.errors }}
+                        </div>
+                    {% endif %}
+
+                    <span class="admin-field-hint">
+                        Optional · GitHub repository URL.
+                    </span>
+
+                </div>
+
+
+                <div class="admin-field">
+
+                    <label for="{{ form.live_url.id_for_label }}">
+                        {{ form.live_url.label }}
+                    </label>
+
+                    {{ form.live_url }}
+
+                    {% if form.live_url.errors %}
+                        <div class="admin-field-error">
+                            {{ form.live_url.errors }}
+                        </div>
+                    {% endif %}
+
+                    <span class="admin-field-hint">
+                        Optional · Live project or deployment URL.
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- SUBMIT -->
+
+        <div class="admin-form-actions">
+
+            <div>
+
+                <span class="admin-form-kicker">
+                    READY TO PUBLISH
+                </span>
+
+                <p>
+                    The project will become available in your portfolio
+                    after submission.
+                </p>
 
             </div>
 
 
-            <div class="form-field">
+            <div class="admin-form-buttons">
 
-                <label for="{{ form.live_url.id_for_label }}">
-                    {{ form.live_url.label }}
-                </label>
+                <a
+                    href="{% url 'portfolio' %}"
+                    class="admin-secondary-button"
+                >
+                    Cancel
+                </a>
 
-                {{ form.live_url }}
-
-                {{ form.live_url.errors }}
+                <button
+                    type="submit"
+                    class="admin-primary-button"
+                >
+                    Add project
+                    <span>→</span>
+                </button>
 
             </div>
 
         </div>
 
-
-        <div class="form-submit-area">
-
-            <p>
-                GitHub and deploy links are optional.
-            </p>
-
-            <button
-                type="submit"
-                class="form-submit"
-            >
-                Add project
-            </button>
-
-        </div>
 
     </form>
 

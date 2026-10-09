@@ -1,15 +1,21 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}
     Portfolio — OlehDev
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/public.css' %}">
+{% endblock %}
+
 {% block content %}
 
-<section class="page-section">
+<section class="page-section portfolio-page">
 
     <div class="section-label">
-        Portfolio
+        PORTFOLIO
     </div>
 
     <div class="page-heading">
@@ -32,7 +38,7 @@
 
             <a
                 href="{% url 'admin_add_project' %}"
-                class="project-card"
+                class="project-card project-card-add"
             >
 
                 <div class="project-content">
@@ -63,14 +69,34 @@
                 <article class="project-card">
 
                     {% if project.image %}
-                        <img
-                            src="{{ project.image.url }}"
-                            alt="{{ project.title }}"
-                            class="project-image"
-                        >
+
+                        <div class="project-image-wrapper">
+
+                            <img
+                                src="{{ project.image.url }}"
+                                alt="{{ project.title }}"
+                                class="project-image"
+                            >
+
+                        </div>
+
                     {% endif %}
 
                     <div class="project-content">
+
+                        <div class="project-card-top">
+                            <span class="project-card-label">
+                                PROJECT
+                            </span>
+
+                            <span class="project-card-number">
+                                {% if forloop.counter < 10 %}
+                                    0{{ forloop.counter }}
+                                {% else %}
+                                    {{ forloop.counter }}
+                                {% endif %}
+                            </span>
+                        </div>
 
                         <h2>
                             {{ project.title }}
@@ -84,31 +110,35 @@
                             {{ project.tech_stack }}
                         </div>
 
-                        <div class="project-links">
+                        {% if project.github_url or project.live_url %}
 
-                            {% if project.github_url %}
-                                <a
-                                    href="{{ project.github_url }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="form-submit"
-                                >
-                                    GitHub ↗
-                                </a>
-                            {% endif %}
+                            <div class="project-links">
 
-                            {% if project.live_url %}
-                                <a
-                                    href="{{ project.live_url }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="form-submit"
-                                >
-                                    Live Demo ↗
-                                </a>
-                            {% endif %}
+                                {% if project.github_url %}
+                                    <a
+                                        href="{{ project.github_url }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        GitHub
+                                        <span>↗</span>
+                                    </a>
+                                {% endif %}
 
-                        </div>
+                                {% if project.live_url %}
+                                    <a
+                                        href="{{ project.live_url }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Live Demo
+                                        <span>↗</span>
+                                    </a>
+                                {% endif %}
+
+                            </div>
+
+                        {% endif %}
 
                     </div>
 
@@ -127,14 +157,34 @@
                 <article class="project-card">
 
                     {% if project.image %}
-                        <img
-                            src="{{ project.image.url }}"
-                            alt="{{ project.title }}"
-                            class="project-image"
-                        >
+
+                        <div class="project-image-wrapper">
+
+                            <img
+                                src="{{ project.image.url }}"
+                                alt="{{ project.title }}"
+                                class="project-image"
+                            >
+
+                        </div>
+
                     {% endif %}
 
                     <div class="project-content">
+
+                        <div class="project-card-top">
+                            <span class="project-card-label">
+                                PROJECT
+                            </span>
+
+                            <span class="project-card-number">
+                                {% if forloop.counter < 10 %}
+                                    0{{ forloop.counter }}
+                                {% else %}
+                                    {{ forloop.counter }}
+                                {% endif %}
+                            </span>
+                        </div>
 
                         <h2>
                             {{ project.title }}
@@ -148,31 +198,35 @@
                             {{ project.tech_stack }}
                         </div>
 
-                        <div class="project-links">
+                        {% if project.github_url or project.live_url %}
 
-                            {% if project.github_url %}
-                                <a
-                                    href="{{ project.github_url }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="form-submit"
-                                >
-                                    GitHub ↗
-                                </a>
-                            {% endif %}
+                            <div class="project-links">
 
-                            {% if project.live_url %}
-                                <a
-                                    href="{{ project.live_url }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="form-submit"
-                                >
-                                    Live Demo ↗
-                                </a>
-                            {% endif %}
+                                {% if project.github_url %}
+                                    <a
+                                        href="{{ project.github_url }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        GitHub
+                                        <span>↗</span>
+                                    </a>
+                                {% endif %}
 
-                        </div>
+                                {% if project.live_url %}
+                                    <a
+                                        href="{{ project.live_url }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Live Demo
+                                        <span>↗</span>
+                                    </a>
+                                {% endif %}
+
+                            </div>
+
+                        {% endif %}
 
                     </div>
 
@@ -185,6 +239,10 @@
     {% else %}
 
         <div class="empty-state">
+
+            <div class="empty-state-number">
+                00
+            </div>
 
             <h2>
                 Projects are coming soon.

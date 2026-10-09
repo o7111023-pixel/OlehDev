@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}
     {{ project_request.name }} — OlehDev
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/client.css' %}">
+{% endblock %}
+
 {% block content %}
-<section class="page-section">
+
+<section class="client-page request-page">
 
     <a
         href="{% url 'client_dashboard' %}"
@@ -14,167 +21,292 @@
         ← Back to my requests
     </a>
 
-    <div class="section-label">
-        PROJECT REQUEST
-    </div>
 
-    <div class="page-heading request-heading">
+    <div class="request-detail-layout">
 
-        <div>
-            <h1>
-                {{ project_request.name }}
-            </h1>
+        <!-- =========================================
+             MAIN PROJECT CONTENT
+        ========================================== -->
 
-            <p>
-                Submitted {{ project_request.created_at|date:"d M Y" }}
-            </p>
-        </div>
+        <main class="request-main-content">
 
-        <span class="status-badge status-{{ project_request.status }}">
-            {{ project_request.get_status_display }}
-        </span>
+            <div class="request-project-header">
 
-    </div>
-
-
-    <!-- DESCRIPTION -->
-
-    <div class="request-detail-section">
-
-        <h2>
-            Project description
-        </h2>
-
-        <p>
-            {{ project_request.description }}
-        </p>
-
-    </div>
-
-
-    <!-- PROJECT DETAILS -->
-
-    <div class="request-detail-grid">
-
-        <div class="request-detail-section">
-
-            <h2>
-                Technologies
-            </h2>
-
-            <div class="skill-tags">
-
-                {% for skill in project_request.skills.all %}
-
-                    <span class="skill-tag">
-                        {{ skill.name }}
-                    </span>
-
-                {% empty %}
-
-                    <span>
-                        No technologies selected.
-                    </span>
-
-                {% endfor %}
-
-            </div>
-
-        </div>
-
-
-        <div class="request-detail-section">
-
-            <h2>
-                Project details
-            </h2>
-
-            <div class="request-meta">
-
-                <div>
-                    <span>
-                        Contact email
-                    </span>
-
-                    <strong>
-                        {{ project_request.email }}
-                    </strong>
+                <div class="request-project-label">
+                    <span></span>
+                    PROJECT REQUEST
                 </div>
 
-                <div>
-                    <span>
-                        Budget
+
+                <div class="request-project-heading">
+
+                    <div>
+
+                        <h1>
+                            {{ project_request.name }}
+                        </h1>
+
+                        <p>
+                            Submitted
+                            {{ project_request.created_at|date:"d M Y" }}
+                        </p>
+
+                    </div>
+
+
+                    <span class="client-status status-{{ project_request.status }}">
+                        {{ project_request.get_status_display }}
                     </span>
 
-                    <strong>
-                        {% if project_request.budget %}
-                            {{ project_request.budget }}
-                        {% else %}
-                            Not specified
-                        {% endif %}
-                    </strong>
-                </div>
-
-                <div>
-                    <span>
-                        Estimated time
-                    </span>
-
-                    <strong>
-                        {{ project_request.get_deadline_display }}
-                    </strong>
                 </div>
 
             </div>
 
-        </div>
 
-    </div>
+            <!-- =====================================
+                 DESCRIPTION
+            ====================================== -->
+
+            <section class="request-info-card request-description-card">
+
+                <div class="request-card-heading">
+
+                    <div class="request-card-number">
+                        01
+                    </div>
+
+                    <div>
+                        <span class="request-card-kicker">
+                            PROJECT
+                        </span>
+
+                        <h2>
+                            Project description
+                        </h2>
+                    </div>
+
+                </div>
 
 
-    <!-- CHAT -->
+                <div class="request-description">
 
-    <details class="request-detail-section chat-details">
+                    {{ project_request.description|linebreaksbr }}
 
-        <summary class="chat-summary">
+                </div>
 
-            <div>
+            </section>
 
-                <h2>
-                    Messages
-                </h2>
 
-                <p>
-                    Communicate with me directly about your project.
-                </p>
+            <!-- =====================================
+                 PROJECT DETAILS
+            ====================================== -->
+
+            <div class="request-info-grid">
+
+                <!-- TECHNOLOGIES -->
+
+                <section class="request-info-card">
+
+                    <div class="request-card-heading">
+
+                        <div class="request-card-number">
+                            02
+                        </div>
+
+                        <div>
+                            <span class="request-card-kicker">
+                                STACK
+                            </span>
+
+                            <h2>
+                                Technologies
+                            </h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill-tags">
+
+                        {% for skill in project_request.skills.all %}
+
+                            <span class="skill-tag">
+                                {{ skill.name }}
+                            </span>
+
+                        {% empty %}
+
+                            <span class="request-empty-text">
+                                No technologies selected.
+                            </span>
+
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+
+
+                <!-- PROJECT DETAILS -->
+
+                <section class="request-info-card">
+
+                    <div class="request-card-heading">
+
+                        <div class="request-card-number">
+                            03
+                        </div>
+
+                        <div>
+                            <span class="request-card-kicker">
+                                DETAILS
+                            </span>
+
+                            <h2>
+                                Project details
+                            </h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="request-meta">
+
+                        <div class="request-meta-row">
+
+                            <span>
+                                Contact email
+                            </span>
+
+                            <strong>
+                                {{ project_request.email }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="request-meta-row">
+
+                            <span>
+                                Budget
+                            </span>
+
+                            <strong>
+                                {% if project_request.budget %}
+                                    {{ project_request.budget }}
+                                {% else %}
+                                    Not specified
+                                {% endif %}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="request-meta-row">
+
+                            <span>
+                                Estimated time
+                            </span>
+
+                            <strong>
+                                {{ project_request.get_deadline_display }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
 
             </div>
 
-            <span class="chat-toggle">
-                Open conversation
-            </span>
 
-        </summary>
+            <!-- =====================================
+                 REQUEST INFORMATION
+            ====================================== -->
+
+            <section class="request-timeline-card">
+
+                <div class="request-timeline-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Request submitted successfully
+                    </strong>
+
+                    <p>
+                        Your request has been received.
+                        Use the conversation panel to discuss
+                        the project directly.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
 
 
-        <div class="chat-content">
+        <!-- =========================================
+             CHAT SIDEBAR
+        ========================================== -->
 
-            <div class="chat-messages">
+        <aside class="request-chat-panel">
+
+            <div class="request-chat-header">
+
+                <div class="request-chat-title">
+
+                    <div class="request-chat-icon">
+                        <span></span>
+                    </div>
+
+                    <div>
+
+                        <span class="request-chat-kicker">
+                            COMMUNICATION
+                        </span>
+
+                        <h2>
+                            Messages
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <span class="request-chat-online">
+                    ONLINE
+                </span>
+
+            </div>
+
+
+            <div class="request-chat-subtitle">
+                Communicate directly about your project.
+            </div>
+
+
+            <div class="request-chat-messages">
 
                 {% for message in chat_messages %}
 
                     <div
                         class="
-                            chat-message
+                            request-chat-message
                             {% if message.sender == user %}
-                                chat-message-own
+                                request-chat-message-own
                             {% else %}
-                                chat-message-admin
+                                request-chat-message-admin
                             {% endif %}
                         "
                     >
 
-                        <div class="chat-message-meta">
+                        <div class="request-chat-message-meta">
 
                             <strong>
                                 {% if message.sender == user %}
@@ -185,10 +317,11 @@
                             </strong>
 
                             <span>
-                                {{ message.created_at|date:"d M Y, H:i" }}
+                                {{ message.created_at|date:"d M, H:i" }}
                             </span>
 
                         </div>
+
 
                         <p>
                             {{ message.text|linebreaksbr }}
@@ -198,15 +331,20 @@
 
                 {% empty %}
 
-                    <div class="messages-empty">
+                    <div class="request-chat-empty">
+
+                        <div class="request-chat-empty-icon">
+                            💬
+                        </div>
+
+                        <strong>
+                            No messages yet
+                        </strong>
 
                         <p>
-                            No messages yet.
+                            Start the conversation if you
+                            have any questions about your project.
                         </p>
-
-                        <span>
-                            Send a message if you have any questions about your project.
-                        </span>
 
                     </div>
 
@@ -217,14 +355,16 @@
 
             <form
                 method="post"
-                class="chat-form"
+                class="request-chat-form"
             >
 
                 {% csrf_token %}
 
-                <div class="form-field">
+                <div class="request-chat-input">
 
-                    <label for="{{ message_form.text.id_for_label }}">
+                    <label
+                        for="{{ message_form.text.id_for_label }}"
+                    >
                         Message
                     </label>
 
@@ -234,22 +374,26 @@
 
                 </div>
 
-                <div class="chat-submit">
 
-                    <button
-                        type="submit"
-                        class="form-submit"
-                    >
+                <button
+                    type="submit"
+                    class="request-chat-submit"
+                >
+                    <span>
                         Send message
-                    </button>
+                    </span>
 
-                </div>
+                    <span class="request-chat-submit-arrow">
+                        ↑
+                    </span>
+                </button>
 
             </form>
 
-        </div>
+        </aside>
 
-    </details>
+    </div>
 
 </section>
+
 {% endblock %}

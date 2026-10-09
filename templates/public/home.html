@@ -1,66 +1,344 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}
     OlehDev — Python Backend Developer
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/public.css' %}">
+{% endblock %}
 
 {% block content %}
 
-<section class="hero">
+<section class="home-hero">
 
-    <div class="hero-content">
+    <div class="home-hero-content">
 
-        <div class="eyebrow">
-            PYTHON · BACKEND · TELEGRAM
+        <div class="home-eyebrow">
+            <span class="status-dot"></span>
+            PYTHON BACKEND DEVELOPER
         </div>
 
-        <h1>
-            Small ideas.<br>
-            <span>Real software.</span>
+        <h1 class="home-title">
+            I build
+            <span>digital systems.</span>
         </h1>
 
-        <p>
+        <p class="home-description">
             I build web applications, REST APIs, Telegram bots
             and backend services with Python.
         </p>
 
-        <div class="hero-chips">
-            <span>Junior / Intern</span>
-            <span>Backend focused</span>
-            <span>Free initial discussion</span>
+        <div class="home-actions">
+
+            <a
+                href="{% url 'portfolio' %}"
+                class="btn btn-primary"
+            >
+                View projects
+                <span>↗</span>
+            </a>
+
+            <a
+                href="#contact"
+                class="btn btn-secondary"
+            >
+                Contact me
+            </a>
+
+        </div>
+
+        <div class="home-tech-row">
+            <span>Python</span>
+            <span>FastAPI</span>
+            <span>Django</span>
+            <span>PostgreSQL</span>
+            <span>Docker</span>
         </div>
 
     </div>
 
 
-    <div class="code-card">
+    <div class="home-code-wrapper">
 
-        <div class="code-header">
-            <span>olehdev.py</span>
-            <span>PYTHON</span>
+        <div class="home-code-window">
+
+            <div class="code-window-top">
+
+                <div class="window-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="code-filename">
+                    developer.py
+                </div>
+
+                <div class="code-language">
+                    PY
+                </div>
+
+            </div>
+
+
+            <div class="code-body">
+
+                <div class="code-line">
+                    <span class="line-number">01</span>
+                    <span>
+                        <span class="code-purple">class</span>
+                        <span class="code-white">Developer:</span>
+                    </span>
+                </div>
+
+                <div class="code-line">
+                    <span class="line-number">02</span>
+                    <span></span>
+                </div>
+
+                <div class="code-line">
+                    <span class="line-number">03</span>
+                    <span class="code-indent">
+                        <span class="code-white">focus</span>
+                        =
+                        <span class="code-green">
+                            "Python Backend"
+                        </span>
+                    </span>
+                </div>
+
+                <div class="code-line">
+                    <span class="line-number">04</span>
+                    <span class="code-indent">
+                        <span class="code-white">location</span>
+                        =
+                        <span class="code-green">
+                            "Germany"
+                        </span>
+                    </span>
+                </div>
+
+                <div class="code-line">
+                    <span class="line-number">05</span>
+                    <span></span>
+                </div>
+
+                <div class="code-line">
+                    <span class="line-number">06</span>
+                    <span class="code-indent">
+                        <span class="code-purple">def</span>
+                        <span class="code-blue">build</span>(
+                        <span class="code-white">idea</span>):
+                    </span>
+                </div>
+
+                <div class="code-line">
+                    <span class="line-number">07</span>
+                    <span class="code-indent-2">
+                        <span class="code-purple">return</span>
+                        <span class="code-green">
+                            "working software"
+                        </span>
+                    </span>
+                </div>
+
+                <div class="code-line">
+                    <span class="line-number">08</span>
+                    <span></span>
+                </div>
+
+                <div class="code-line">
+                    <span class="line-number">09</span>
+                    <span class="code-indent">
+                        <span class="code-purple">def</span>
+                        <span class="code-blue">learn</span>(
+                        <span class="code-white">challenge</span>):
+                    </span>
+                </div>
+
+                <div class="code-line">
+                    <span class="line-number">10</span>
+                    <span class="code-indent-2">
+                        <span class="code-purple">return</span>
+                        <span class="code-green">
+                            "new skill"
+                        </span>
+                    </span>
+                </div>
+
+            </div>
+
         </div>
 
-        <pre><code>class Developer:
-        name = "Oleh Murachov"
-        focus = "Python Backend"
 
-        def build(self, idea):
-            return "working software"
+        <div class="floating-card floating-card-python">
 
-        def learn(self, challenge):
-            return "new skill"</code></pre>
+            <span class="floating-icon">
+                Py
+            </span>
+
+            <div>
+                <strong>Python</strong>
+                <small>Backend</small>
+            </div>
+
+        </div>
+
+
+        <div class="floating-card floating-card-api">
+
+            <span class="floating-icon">
+                API
+            </span>
+
+            <div>
+                <strong>REST API</strong>
+                <small>FastAPI / Django</small>
+            </div>
+
+        </div>
+
+
+        <div class="hero-orbit-card hero-orbit-card-db">
+
+            <span class="hero-orbit-icon">
+                DB
+            </span>
+
+
+        </div>
+
+
+        <div class="hero-orbit-card hero-orbit-card-docker">
+
+            <span class="hero-orbit-icon">
+                DO
+            </span>
+
+            <div>
+                <strong>Docker</strong>
+                <small>Containers</small>
+            </div>
+
+        </div>
+
+
+        <div class="hero-mountain">
+
+            <div class="mountain-glow"></div>
+
+            <div class="mountain mountain-back"></div>
+            <div class="mountain mountain-middle"></div>
+            <div class="mountain mountain-front"></div>
+
+            <div class="mountain-snow mountain-snow-left"></div>
+            <div class="mountain-snow mountain-snow-right"></div>
+
+        </div>
 
     </div>
 
 </section>
 
 
-<section class="services">
+<section class="home-about">
 
-    <div class="section-label">
-        WHAT I DO
+    <div class="section-heading">
+
+        <span class="section-kicker">
+            ABOUT ME
+        </span>
+
+        <h2>
+            Backend first.<br>
+            <span>Software that works.</span>
+        </h2>
+
     </div>
+
+
+    <div class="about-content">
+
+        <div class="about-text">
+
+            <p>
+                I'm Oleh, a Python backend developer focused on building
+                practical web applications and APIs.
+            </p>
+
+            <p>
+                I work with Django, FastAPI, databases, REST APIs,
+                Docker and other tools needed to turn an idea into
+                working software.
+            </p>
+
+            <a
+                href="{% url 'portfolio' %}"
+                class="text-link"
+            >
+                Explore my work
+                <span>→</span>
+            </a>
+
+        </div>
+
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <strong>Python</strong>
+                <span>Primary language</span>
+            </div>
+
+            <div class="stat-card">
+                <strong>Backend</strong>
+                <span>Main focus</span>
+            </div>
+
+            <div class="stat-card">
+                <strong>REST</strong>
+                <span>API development</span>
+            </div>
+
+            <div class="stat-card">
+                <strong>Docker</strong>
+                <span>Deployment &amp; tooling</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="home-services">
+
+    <div class="section-heading section-heading-row">
+
+        <div>
+
+            <span class="section-kicker">
+                WHAT I DO
+            </span>
+
+            <h2>
+                Building the backend<br>
+                behind the product.
+            </h2>
+
+        </div>
+
+        <p>
+            From APIs and databases to debugging existing
+            applications and adding new functionality.
+        </p>
+
+    </div>
+
 
     <div class="service-grid">
 
@@ -70,14 +348,24 @@
                 01
             </span>
 
-            <h2>
-                Backend
-            </h2>
+            <div class="service-icon">
+                API
+            </div>
+
+            <h3>
+                Backend Development
+            </h3>
 
             <p>
-                REST APIs, authentication, databases and
-                backend services built with Python.
+                REST APIs, authentication, business logic,
+                databases and backend services built with Python.
             </p>
+
+            <div class="service-tags">
+                <span>FastAPI</span>
+                <span>Django</span>
+                <span>REST</span>
+            </div>
 
         </article>
 
@@ -88,13 +376,298 @@
                 02
             </span>
 
-            <h2>
+            <div class="service-icon">
+                FIX
+            </div>
+
+            <h3>
                 Fix &amp; Improve
-            </h2>
+            </h3>
 
             <p>
-                Debugging existing projects, improving
-                structure and adding new functionality.
+                Debugging existing projects, improving structure,
+                fixing backend issues and adding new functionality.
+            </p>
+
+            <div class="service-tags">
+                <span>Debugging</span>
+                <span>Refactoring</span>
+                <span>Testing</span>
+            </div>
+
+        </article>
+
+
+        <article class="service-card">
+
+            <span class="service-number">
+                03
+            </span>
+
+            <div class="service-icon">
+                BOT
+            </div>
+
+            <h3>
+                Automation &amp; Bots
+            </h3>
+
+            <p>
+                Telegram bots and small automation tools
+                designed to solve specific business tasks.
+            </p>
+
+            <div class="service-tags">
+                <span>Telegram</span>
+                <span>Python</span>
+                <span>Automation</span>
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<section class="home-stack">
+
+    <div class="section-heading">
+
+        <span class="section-kicker">
+            TECHNOLOGY
+        </span>
+
+        <h2>
+            Tools I work with.
+        </h2>
+
+    </div>
+
+
+    <div class="stack-grid">
+
+        <div class="stack-item">
+            <strong>Python</strong>
+            <span>Core language</span>
+        </div>
+
+        <div class="stack-item">
+            <strong>Django</strong>
+            <span>Web framework</span>
+        </div>
+
+        <div class="stack-item">
+            <strong>FastAPI</strong>
+            <span>API framework</span>
+        </div>
+
+        <div class="stack-item">
+            <strong>PostgreSQL</strong>
+            <span>Database</span>
+        </div>
+
+        <div class="stack-item">
+            <strong>Docker</strong>
+            <span>Containers</span>
+        </div>
+
+        <div class="stack-item">
+            <strong>Git</strong>
+            <span>Version control</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="home-projects">
+
+    <div class="section-heading section-heading-row">
+
+        <div>
+
+            <span class="section-kicker">
+                SELECTED WORK
+            </span>
+
+            <h2>
+                Projects built<br>
+                with Python.
+            </h2>
+
+        </div>
+
+        <a
+            href="{% url 'portfolio' %}"
+            class="text-link"
+        >
+            View all projects
+            <span>→</span>
+        </a>
+
+    </div>
+
+
+    <div class="project-preview-grid">
+
+        <article class="project-preview">
+
+            <div class="project-preview-top">
+                <span>01</span>
+                <span>BACKEND</span>
+            </div>
+
+            <h3>
+                Web Applications
+            </h3>
+
+            <p>
+                Backend applications with authentication,
+                databases, APIs and business logic.
+            </p>
+
+            <div class="project-tech">
+                <span>Django</span>
+                <span>Python</span>
+                <span>SQL</span>
+            </div>
+
+        </article>
+
+
+        <article class="project-preview">
+
+            <div class="project-preview-top">
+                <span>02</span>
+                <span>API</span>
+            </div>
+
+            <h3>
+                REST APIs
+            </h3>
+
+            <p>
+                Structured API services with validation,
+                authentication, database integration and testing.
+            </p>
+
+            <div class="project-tech">
+                <span>FastAPI</span>
+                <span>PostgreSQL</span>
+                <span>Docker</span>
+            </div>
+
+        </article>
+
+
+        <article class="project-preview">
+
+            <div class="project-preview-top">
+                <span>03</span>
+                <span>AUTOMATION</span>
+            </div>
+
+            <h3>
+                Telegram Bots
+            </h3>
+
+            <p>
+                Bots and automation tools designed around
+                real-world workflows and user interactions.
+            </p>
+
+            <div class="project-tech">
+                <span>Python</span>
+                <span>Telegram</span>
+                <span>API</span>
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<section class="home-process">
+
+    <div class="section-heading">
+
+        <span class="section-kicker">
+            PROCESS
+        </span>
+
+        <h2>
+            From idea to<br>
+            working software.
+        </h2>
+
+    </div>
+
+
+    <div class="process-grid">
+
+        <article class="process-item">
+
+            <span>01</span>
+
+            <h3>
+                Describe
+            </h3>
+
+            <p>
+                Tell me what you want to build
+                and what problem it should solve.
+            </p>
+
+        </article>
+
+
+        <article class="process-item">
+
+            <span>02</span>
+
+            <h3>
+                Discuss
+            </h3>
+
+            <p>
+                I review the requirements and
+                clarify the important details.
+            </p>
+
+        </article>
+
+
+        <article class="process-item">
+
+            <span>03</span>
+
+            <h3>
+                Agree
+            </h3>
+
+            <p>
+                We define the scope, approach
+                and next steps.
+            </p>
+
+        </article>
+
+
+        <article class="process-item">
+
+            <span>04</span>
+
+            <h3>
+                Build
+            </h3>
+
+            <p>
+                Development starts and the
+                idea becomes working software.
             </p>
 
         </article>
@@ -104,68 +677,157 @@
 </section>
 
 
-<section class="process">
+<section class="home-contact" id="contact">
 
-    <h2 class="process-title">
-        Like ordering a service.
-    </h2>
+    <div class="contact-card">
 
+        <div class="contact-main">
 
-    <div class="process-card">
+            <span class="section-kicker">
+                HAVE A PROJECT?
+            </span>
 
-        <div class="process-step">
-
-            <h3>
-                01 · Describe
-            </h3>
+            <h2>
+                Let's build something<br>
+                that actually works.
+            </h2>
 
             <p>
-                Choose what you need.
+                Have an idea, an existing project that needs work,
+                or a backend problem to solve?
             </p>
 
         </div>
 
 
-        <div class="process-step">
+        <div class="contact-actions">
 
-            <h3>
-                02 · Discuss
-            </h3>
-
-            <p>
-                I review and reply.
-            </p>
-
-        </div>
-
-
-        <div class="process-step">
-
-            <h3>
-                03 · Agree
-            </h3>
-
-            <p>
-                We decide whether to proceed.
-            </p>
-
-        </div>
-
-
-        <div class="process-step">
-
-            <h3>
-                04 · Build
-            </h3>
-
-            <p>
-                Development starts.
-            </p>
+            <a
+                href="{% url 'portfolio' %}"
+                class="btn btn-light"
+            >
+                View portfolio
+                <span>↗</span>
+            </a>
 
         </div>
 
     </div>
 
 </section>
+
+
+<footer class="home-footer">
+
+    <div class="home-footer-glow"></div>
+
+    <div class="home-footer-inner">
+
+        <div class="home-footer-brand">
+
+            <a
+                href="{% url 'home' %}"
+                class="home-footer-logo"
+            >
+                Oleh<span>Dev</span>
+            </a>
+
+            <p>
+                Python Backend Developer
+            </p>
+
+            <span class="home-footer-location">
+                Germany · Building digital systems
+            </span>
+
+        </div>
+
+
+        <div class="home-footer-center">
+
+            <span class="home-footer-kicker">
+                LET'S CONNECT
+            </span>
+
+            <h3>
+                Have an idea?
+            </h3>
+
+            <p>
+                Let's turn it into working software.
+            </p>
+
+        </div>
+
+
+        <div class="home-footer-links">
+
+            <a
+                href="https://t.me/oleh_murachov"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="home-footer-social"
+            >
+                <span class="social-icon">
+                    TG
+                </span>
+
+                <span class="social-content">
+                    <strong>Telegram</strong>
+                    <small>@oleh_murachov</small>
+                </span>
+
+                <span class="social-arrow">
+                    ↗
+                </span>
+            </a>
+
+
+            {% if user.is_authenticated %}
+
+                <a
+                    href="https://github.com/o7111023-pixel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="home-footer-social"
+                >
+                    <span class="social-icon">
+                        GH
+                    </span>
+
+                    <span class="social-content">
+                        <strong>GitHub</strong>
+                        <small>o7111023-pixel</small>
+                    </span>
+
+                    <span class="social-arrow">
+                        ↗
+                    </span>
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <div class="home-footer-bottom">
+
+        <span>
+            © 2026 OlehDev
+        </span>
+
+        <span>
+            Python · Backend · APIs · Docker
+        </span>
+
+        <a href="{% url 'home' %}">
+            Back to top ↑
+        </a>
+
+    </div>
+
+</footer>
 
 {% endblock %}

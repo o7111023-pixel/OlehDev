@@ -1,136 +1,809 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+
 {% block title %}
-Admin Dashboard — OlehDev
+    Admin Dashboard — OlehDev
 {% endblock %}
 
-{% block navigation %}
-    <a href="{% url 'home' %}">Home</a>
-    <a href="{% url 'admin_dashboard' %}">Dashboard</a>
-    <a href="{% url 'admin_requests' %}">Requests</a>
-    <a href="{% url 'logout' %}">Logout</a>
+
+{% block styles %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/admin.css' %}"
+>
+
 {% endblock %}
+
 
 {% block content %}
 
-<section class="page-section admin-dashboard">
-
-    <div class="section-heading">
-        <span class="section-label">ADMIN PANEL</span>
-
-        <h1>
-            Dashboard
-        </h1>
-
-        <p>
-            Manage project requests and client communication.
-        </p>
-    </div>
+<section class="admin-dashboard">
 
 
-    <div class="admin-stats">
+    <!-- ========================================================= -->
+    <!-- HEADER -->
+    <!-- ========================================================= -->
 
-        <div class="admin-stat-card">
-            <span>New</span>
-            <strong>{{ new_count }}</strong>
+    <div class="admin-dashboard-header">
+
+        <div class="admin-dashboard-heading">
+
+            <div class="section-label">
+                ADMIN PANEL
+            </div>
+
+            <h1>
+                Dashboard.
+            </h1>
+
+            <p>
+                Overview of your portfolio activity, project requests
+                and client communication.
+            </p>
+
         </div>
 
-        <div class="admin-stat-card">
-            <span>Accepted</span>
-            <strong>{{ accepted_count }}</strong>
-        </div>
-
-        <div class="admin-stat-card">
-            <span>Completed</span>
-            <strong>{{ completed_count }}</strong>
-        </div>
-
-        <div class="admin-stat-card">
-            <span>Rejected</span>
-            <strong>{{ rejected_count }}</strong>
-        </div>
-
-    </div>
-
-
-    <div class="admin-section-header">
-
-        <div>
-            <span class="section-label">RECENT REQUESTS</span>
-
-            <h2>
-                Latest projects
-            </h2>
-        </div>
 
         <a
             href="{% url 'admin_requests' %}"
-            class="client-action"
+            class="admin-header-action"
         >
-            View all requests →
+            <span>Open requests</span>
+            <span>→</span>
         </a>
 
     </div>
 
 
-    {% if requests %}
 
-        <div class="admin-request-list">
+    <!-- ========================================================= -->
+    <!-- KPI -->
+    <!-- ========================================================= -->
 
-            {% for project_request in requests %}
+    <div class="admin-kpi-grid">
 
-                <a
-                    href="{% url 'admin_request_detail' project_request.id %}"
-                    class="admin-request-card"
+
+        <!-- NEW -->
+
+        <div class="admin-kpi-card admin-kpi-new">
+
+            <div class="admin-kpi-top">
+
+                <span class="admin-kpi-label">
+                    NEW REQUESTS
+                </span>
+
+                <span class="admin-kpi-icon">
+                    +
+                </span>
+
+            </div>
+
+            <strong class="admin-kpi-number">
+                {{ new_count }}
+            </strong>
+
+            <span class="admin-kpi-description">
+                Waiting for review
+            </span>
+
+        </div>
+
+
+
+        <!-- ACCEPTED -->
+
+        <div class="admin-kpi-card admin-kpi-accepted">
+
+            <div class="admin-kpi-top">
+
+                <span class="admin-kpi-label">
+                    ACCEPTED
+                </span>
+
+                <span class="admin-kpi-icon">
+                    ✓
+                </span>
+
+            </div>
+
+            <strong class="admin-kpi-number">
+                {{ accepted_count }}
+            </strong>
+
+            <span class="admin-kpi-description">
+                Projects in progress
+            </span>
+
+        </div>
+
+
+
+        <!-- COMPLETED -->
+
+        <div class="admin-kpi-card admin-kpi-completed">
+
+            <div class="admin-kpi-top">
+
+                <span class="admin-kpi-label">
+                    COMPLETED
+                </span>
+
+                <span class="admin-kpi-icon">
+                    ↗
+                </span>
+
+            </div>
+
+            <strong class="admin-kpi-number">
+                {{ completed_count }}
+            </strong>
+
+            <span class="admin-kpi-description">
+                Finished projects
+            </span>
+
+        </div>
+
+
+
+        <!-- REJECTED -->
+
+        <div class="admin-kpi-card admin-kpi-rejected">
+
+            <div class="admin-kpi-top">
+
+                <span class="admin-kpi-label">
+                    REJECTED
+                </span>
+
+                <span class="admin-kpi-icon">
+                    ×
+                </span>
+
+            </div>
+
+            <strong class="admin-kpi-number">
+                {{ rejected_count }}
+            </strong>
+
+            <span class="admin-kpi-description">
+                Declined requests
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- ANALYTICS -->
+    <!-- ========================================================= -->
+
+    <div class="admin-analytics-grid">
+
+
+        <!-- REQUEST ACTIVITY -->
+
+        <section class="admin-panel admin-activity-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+
+                    <span class="admin-panel-label">
+                        REQUEST ACTIVITY
+                    </span>
+
+                    <h2>
+                        Project pipeline
+                    </h2>
+
+                    <p>
+                        Current distribution of project requests.
+                    </p>
+
+                </div>
+
+                <div class="admin-panel-badge">
+                    LIVE
+                </div>
+
+            </div>
+
+
+            <div class="admin-bar-chart">
+
+
+                <div
+                    class="admin-chart-row"
+                    data-chart-value="{{ new_count }}"
                 >
 
-                    <div class="admin-request-main">
-
-                        <div class="admin-request-title">
-                            {{ project_request.name }}
-                        </div>
-
-                        <div class="admin-request-email">
-                            {{ project_request.email }}
-                        </div>
-
-                    </div>
-
-
-                    <div class="admin-request-meta">
-
-                        <span class="status-badge status-{{ project_request.status }}">
-                            {{ project_request.get_status_display }}
-                        </span>
+                    <div class="admin-chart-info">
 
                         <span>
-                            {{ project_request.created_at|date:"d M Y" }}
+                            New
+                        </span>
+
+                        <strong>
+                            {{ new_count }}
+                        </strong>
+
+                    </div>
+
+                    <div class="admin-chart-track">
+
+                        <div class="admin-chart-fill admin-chart-fill-new">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    class="admin-chart-row"
+                    data-chart-value="{{ accepted_count }}"
+                >
+
+                    <div class="admin-chart-info">
+
+                        <span>
+                            Accepted
+                        </span>
+
+                        <strong>
+                            {{ accepted_count }}
+                        </strong>
+
+                    </div>
+
+                    <div class="admin-chart-track">
+
+                        <div class="admin-chart-fill admin-chart-fill-accepted">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    class="admin-chart-row"
+                    data-chart-value="{{ completed_count }}"
+                >
+
+                    <div class="admin-chart-info">
+
+                        <span>
+                            Completed
+                        </span>
+
+                        <strong>
+                            {{ completed_count }}
+                        </strong>
+
+                    </div>
+
+                    <div class="admin-chart-track">
+
+                        <div class="admin-chart-fill admin-chart-fill-completed">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    class="admin-chart-row"
+                    data-chart-value="{{ rejected_count }}"
+                >
+
+                    <div class="admin-chart-info">
+
+                        <span>
+                            Rejected
+                        </span>
+
+                        <strong>
+                            {{ rejected_count }}
+                        </strong>
+
+                    </div>
+
+                    <div class="admin-chart-track">
+
+                        <div class="admin-chart-fill admin-chart-fill-rejected">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- STATUS OVERVIEW -->
+
+        <section class="admin-panel admin-status-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+
+                    <span class="admin-panel-label">
+                        STATUS OVERVIEW
+                    </span>
+
+                    <h2>
+                        Request status
+                    </h2>
+
+                    <p>
+                        Current project distribution.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-status-visual">
+
+
+                <div class="admin-status-ring">
+
+                    <div class="admin-status-ring-inner">
+
+                        <strong>
+                            {{ new_count|add:accepted_count|add:completed_count|add:rejected_count }}
+                        </strong>
+
+                        <span>
+                            TOTAL
                         </span>
 
                     </div>
 
+                </div>
+
+
+                <div class="admin-status-legend">
+
+
+                    <div class="admin-legend-item">
+
+                        <span class="admin-legend-dot admin-dot-new"></span>
+
+                        <div>
+                            <strong>
+                                New
+                            </strong>
+
+                            <span>
+                                {{ new_count }}
+                            </span>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="admin-legend-item">
+
+                        <span class="admin-legend-dot admin-dot-accepted"></span>
+
+                        <div>
+                            <strong>
+                                Accepted
+                            </strong>
+
+                            <span>
+                                {{ accepted_count }}
+                            </span>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="admin-legend-item">
+
+                        <span class="admin-legend-dot admin-dot-completed"></span>
+
+                        <div>
+                            <strong>
+                                Completed
+                            </strong>
+
+                            <span>
+                                {{ completed_count }}
+                            </span>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="admin-legend-item">
+
+                        <span class="admin-legend-dot admin-dot-rejected"></span>
+
+                        <div>
+                            <strong>
+                                Rejected
+                            </strong>
+
+                            <span>
+                                {{ rejected_count }}
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- RECENT REQUESTS -->
+    <!-- ========================================================= -->
+
+    <section class="admin-panel admin-recent-panel">
+
+
+        <div class="admin-panel-header admin-recent-header">
+
+            <div>
+
+                <span class="admin-panel-label">
+                    RECENT REQUESTS
+                </span>
+
+                <h2>
+                    Latest projects
+                </h2>
+
+                <p>
+                    The most recent client requests submitted to your portfolio.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{% url 'admin_requests' %}"
+                class="admin-panel-link"
+            >
+                View all
+                <span>→</span>
+            </a>
+
+        </div>
+
+
+
+        {% if requests %}
+
+            <div class="admin-request-list">
+
+
+                {% for project_request in requests %}
+
+                    <a
+                        href="{% url 'admin_request_detail' project_request.id %}"
+                        class="admin-request-card"
+                    >
+
+
+                        <div class="admin-request-index">
+
+                            <span>
+                                #
+                            </span>
+
+                            <strong>
+                                {{ project_request.id }}
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="admin-request-main">
+
+                            <div class="admin-request-title">
+
+                                {{ project_request.name }}
+
+                            </div>
+
+
+                            <div class="admin-request-email">
+
+                                {{ project_request.email }}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="admin-request-status">
+
+                            <span
+                                class="status-badge status-{{ project_request.status }}"
+                            >
+                                <span class="status-dot"></span>
+
+                                {{ project_request.get_status_display }}
+
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="admin-request-date">
+
+                            <span>
+                                {{ project_request.created_at|date:"d M Y" }}
+                            </span>
+
+                            <span>
+                                →
+                            </span>
+
+                        </div>
+
+
+                    </a>
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="admin-empty-state">
+
+                <div class="admin-empty-icon">
+                    ∅
+                </div>
+
+                <h3>
+                    No project requests yet.
+                </h3>
+
+                <p>
+                    New client requests will appear here automatically.
+                </p>
+
+                <a
+                    href="{% url 'admin_requests' %}"
+                    class="admin-empty-action"
+                >
+                    View requests
+                    <span>→</span>
                 </a>
 
-            {% endfor %}
+            </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+
+    <!-- ========================================================= -->
+    <!-- QUICK ACTIONS -->
+    <!-- ========================================================= -->
+
+    <section class="admin-quick-section">
+
+
+        <div class="admin-section-heading">
+
+            <div>
+
+                <span class="admin-panel-label">
+                    QUICK ACTIONS
+                </span>
+
+                <h2>
+                    Manage portfolio
+                </h2>
+
+            </div>
 
         </div>
 
-    {% else %}
 
-        <div class="empty-state">
 
-            <h3>
-                No project requests yet.
-            </h3>
+        <div class="admin-quick-grid">
 
-            <p>
-                New client requests will appear here.
-            </p>
+
+            <a
+                href="{% url 'admin_requests' %}"
+                class="admin-quick-card admin-quick-primary"
+            >
+
+                <div class="admin-quick-icon">
+                    ↗
+                </div>
+
+                <div>
+
+                    <strong>
+                        Project requests
+                    </strong>
+
+                    <span>
+                        Review and manage client requests.
+                    </span>
+
+                </div>
+
+                <span class="admin-quick-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="{% url 'portfolio' %}"
+                class="admin-quick-card"
+            >
+
+                <div class="admin-quick-icon">
+                    ◇
+                </div>
+
+                <div>
+
+                    <strong>
+                        Portfolio
+                    </strong>
+
+                    <span>
+                        Manage projects displayed on your website.
+                    </span>
+
+                </div>
+
+                <span class="admin-quick-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+
+            <a
+                href="{% url 'skills' %}"
+                class="admin-quick-card"
+            >
+
+                <div class="admin-quick-icon">
+                    ✦
+                </div>
+
+                <div>
+
+                    <strong>
+                        Skills
+                    </strong>
+
+                    <span>
+                        Manage technologies and proficiency levels.
+                    </span>
+
+                </div>
+
+                <span class="admin-quick-arrow">
+                    →
+                </span>
+
+            </a>
+
 
         </div>
 
-    {% endif %}
+
+    </section>
+
 
 </section>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const rows = document.querySelectorAll(
+        ".admin-chart-row"
+    );
+
+    if (!rows.length) {
+        return;
+    }
+
+    let maxValue = 0;
+
+    rows.forEach((row) => {
+
+        const value = Number(
+            row.dataset.chartValue || 0
+        );
+
+        if (value > maxValue) {
+            maxValue = value;
+        }
+
+    });
+
+
+    rows.forEach((row) => {
+
+        const value = Number(
+            row.dataset.chartValue || 0
+        );
+
+        const fill = row.querySelector(
+            ".admin-chart-fill"
+        );
+
+        if (!fill) {
+            return;
+        }
+
+        if (maxValue === 0) {
+            fill.style.width = "0%";
+            return;
+        }
+
+        const percentage =
+            Math.max(
+                8,
+                (value / maxValue) * 100
+            );
+
+        fill.style.width =
+            `${percentage}%`;
+
+    });
+
+});
+
+</script>
 
 {% endblock %}

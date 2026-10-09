@@ -1,122 +1,271 @@
 {% extends "base.html" %}
 
-{% block title %}Profile — OlehDev{% endblock %}
+{% load static %}
+
+{% block title %}
+    Profile — OlehDev
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/client.css' %}">
+{% endblock %}
 
 {% block content %}
-<section class="page-section">
 
-    <div class="page-heading">
-        <div class="section-label">Account</div>
+<section class="client-page profile-page">
 
-        <h1>Profile</h1>
+    <div class="profile-page-header">
 
-        <p>
-            Your account information and project activity.
-        </p>
+        <div>
+
+            <div class="section-label">
+                ACCOUNT
+            </div>
+
+            <h1>
+                Profile
+            </h1>
+
+            <p>
+                Your account information and project activity.
+            </p>
+
+        </div>
+
     </div>
 
+
     {% if messages %}
+
         <div class="profile-messages">
+
             {% for message in messages %}
+
                 <div class="profile-message">
                     {{ message }}
                 </div>
+
             {% endfor %}
+
         </div>
+
     {% endif %}
 
-    <div class="profile-card">
 
-        <div class="profile-row">
-            <span>Name</span>
+    <!-- =========================================
+         ACCOUNT
+    ========================================== -->
 
-            <strong>
-                {{ user.get_full_name|default:user.username }}
-            </strong>
+    <section class="profile-card profile-account-card">
+
+        <div class="profile-card-header">
+
+            <div>
+
+                <span class="profile-card-kicker">
+                    ACCOUNT
+                </span>
+
+                <h2>
+                    {{ user.get_full_name|default:user.username }}
+                </h2>
+
+                <p>
+                    Account information and project activity.
+                </p>
+
+            </div>
+
+            <div class="profile-avatar">
+
+                {% if user.get_full_name %}
+                    {{ user.get_full_name|first|upper }}
+                {% else %}
+                    {{ user.username|first|upper }}
+                {% endif %}
+
+            </div>
+
         </div>
 
-        <div class="profile-row">
-            <span>Email</span>
 
-            <strong>
-                {{ user.email|default:"Not provided" }}
-            </strong>
+        <div class="profile-information">
+
+            <div class="profile-information-row">
+
+                <span>
+                    Name
+                </span>
+
+                <strong>
+                    {{ user.get_full_name|default:user.username }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-information-row">
+
+                <span>
+                    Email
+                </span>
+
+                <strong>
+                    {{ user.email|default:"Not provided" }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-information-row">
+
+                <span>
+                    Country
+                </span>
+
+                <strong>
+                    {{ profile_form.country.value|default:"Not provided" }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-information-row">
+
+                <span>
+                    Member since
+                </span>
+
+                <strong>
+                    {{ user.date_joined|date:"F Y" }}
+                </strong>
+
+            </div>
+
         </div>
 
-        <div class="profile-row">
-            <span>Country</span>
+    </section>
 
-            <strong>
-                {{ profile_form.country.value|default:"Not provided" }}
-            </strong>
+
+    <!-- =========================================
+         ACTIVITY
+    ========================================== -->
+
+    <section class="profile-activity-section">
+
+        <div class="profile-section-heading">
+
+            <div>
+
+                <span class="profile-card-kicker">
+                    ACTIVITY
+                </span>
+
+                <h2>
+                    Project activity
+                </h2>
+
+            </div>
+
         </div>
 
-        <div class="profile-row">
-            <span>Total requests</span>
 
-            <strong>
-                {{ total_requests }}
-            </strong>
+        <div class="profile-stats">
+
+            <div class="profile-stat-card">
+
+                <span class="profile-stat-number">
+                    {{ total_requests }}
+                </span>
+
+                <span class="profile-stat-label">
+                    Total requests
+                </span>
+
+            </div>
+
+
+            <div class="profile-stat-card">
+
+                <span class="profile-stat-number">
+                    {{ active_requests }}
+                </span>
+
+                <span class="profile-stat-label">
+                    Active requests
+                </span>
+
+            </div>
+
+
+            <div class="profile-stat-card">
+
+                <span class="profile-stat-number">
+                    {{ completed_requests }}
+                </span>
+
+                <span class="profile-stat-label">
+                    Completed projects
+                </span>
+
+            </div>
+
         </div>
 
-        <div class="profile-row">
-            <span>Completed projects</span>
+    </section>
 
-            <strong>
-                {{ completed_requests }}
-            </strong>
+
+    <!-- =========================================
+         ABOUT
+    ========================================== -->
+
+    <section class="profile-card profile-about-card">
+
+        <div class="profile-about-heading">
+
+            <div>
+
+                <span class="profile-card-kicker">
+                    ABOUT
+                </span>
+
+                <h2>
+                    About you
+                </h2>
+
+            </div>
+
         </div>
 
-        <div class="profile-row">
-            <span>Active requests</span>
 
-            <strong>
-                {{ active_requests }}
-            </strong>
-        </div>
+        <p class="profile-about-text">
 
-        <div class="profile-row">
-            <span>Member since</span>
+            {{ profile_form.about.value|default:"Tell something about yourself." }}
 
-            <strong>
-                {{ user.date_joined|date:"F Y" }}
-            </strong>
-        </div>
+        </p>
 
-    </div>
+    </section>
 
 
-    <div class="profile-card profile-about-card">
-
-        <div class="profile-row profile-about-row">
-            <span>About</span>
-
-            <strong>
-                {{ profile_form.about.value|default:"Tell something about yourself." }}
-            </strong>
-        </div>
-
-    </div>
-
+    <!-- =========================================
+         EDIT PROFILE
+    ========================================== -->
 
     <div class="profile-edit-trigger">
 
         <button
             type="button"
-            class="client-action"
+            class="client-primary-button"
             id="edit-profile-button"
-            onclick="
-                document.getElementById('profile-edit-section').hidden = false;
-                this.style.display = 'none';
-            "
         >
             Edit profile
+            <span>↗</span>
         </button>
 
     </div>
 
 
-    <div
+    <section
         class="profile-edit-section"
         id="profile-edit-section"
         {% if profile_form.errors %}{% else %}hidden{% endif %}
@@ -124,27 +273,39 @@
 
         <div class="profile-edit-heading">
 
-            <div class="section-label">
-                Personal information
+            <div>
+
+                <span class="profile-card-kicker">
+                    PERSONAL INFORMATION
+                </span>
+
+                <h2>
+                    Edit profile
+                </h2>
+
+                <p>
+                    Update the information shown on your profile.
+                </p>
+
             </div>
-
-            <h2>Edit profile</h2>
-
-            <p>
-                Update the information shown on your profile.
-            </p>
 
         </div>
 
 
-        <form method="post" class="profile-form">
+        <form
+            method="post"
+            class="profile-form"
+        >
 
             {% csrf_token %}
 
+
             {% if profile_form.non_field_errors %}
+
                 <div class="form-errors">
                     {{ profile_form.non_field_errors }}
                 </div>
+
             {% endif %}
 
 
@@ -157,9 +318,11 @@
                     {{ profile_form.first_name }}
 
                     {% if profile_form.first_name.errors %}
+
                         <div class="form-errors">
                             {{ profile_form.first_name.errors }}
                         </div>
+
                     {% endif %}
 
                 </div>
@@ -172,9 +335,11 @@
                     {{ profile_form.last_name }}
 
                     {% if profile_form.last_name.errors %}
+
                         <div class="form-errors">
                             {{ profile_form.last_name.errors }}
                         </div>
+
                     {% endif %}
 
                 </div>
@@ -189,9 +354,11 @@
                 {{ profile_form.email }}
 
                 {% if profile_form.email.errors %}
+
                     <div class="form-errors">
                         {{ profile_form.email.errors }}
                     </div>
+
                 {% endif %}
 
             </div>
@@ -204,9 +371,11 @@
                 {{ profile_form.country }}
 
                 {% if profile_form.country.errors %}
+
                     <div class="form-errors">
                         {{ profile_form.country.errors }}
                     </div>
+
                 {% endif %}
 
             </div>
@@ -219,9 +388,11 @@
                 {{ profile_form.about }}
 
                 {% if profile_form.about.errors %}
+
                     <div class="form-errors">
                         {{ profile_form.about.errors }}
                     </div>
+
                 {% endif %}
 
             </div>
@@ -233,16 +404,12 @@
                     You can update your profile information at any time.
                 </p>
 
-                <div>
+                <div class="profile-form-actions">
 
                     <button
                         type="button"
                         class="client-action"
                         id="cancel-profile-button"
-                        onclick="
-                            document.getElementById('profile-edit-section').hidden = true;
-                            document.getElementById('edit-profile-button').style.display = '';
-                        "
                     >
                         Cancel
                     </button>
@@ -261,7 +428,8 @@
 
         </form>
 
-    </div>
+    </section>
 
 </section>
+
 {% endblock %}

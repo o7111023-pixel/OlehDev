@@ -5,54 +5,57 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
         {% block title %}
-            OlehDev — Python Backend Developer
+            OlehDev
         {% endblock %}
     </title>
 
-    <link
-        rel="stylesheet"
-        href="{% static 'css/main.css' %}"
-    >
+    {% block styles %}
+    {% endblock %}
+
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 
 <body>
 
 <header class="site-header">
 
-    <a
-        href="{% url 'home' %}"
-        class="brand"
-    >
+    <a href="{% url 'home' %}" class="brand">
         Oleh<span>Dev</span>
     </a>
-
 
     <nav class="navigation">
 
         {% if user.is_authenticated and user.is_staff %}
 
-            <!-- ADMIN NAVIGATION -->
-            <a href="{% url 'admin_requests' %}">
+            <a
+                href="{% url 'admin_requests' %}"
+                class="{% if request.resolver_match.url_name == 'admin_requests' %}nav-active{% endif %}"
+            >
                 Requests
             </a>
 
-            <a href="{% url 'portfolio' %}">
+            <a
+                href="{% url 'portfolio' %}"
+                class="{% if request.resolver_match.url_name == 'portfolio' %}nav-active{% endif %}"
+            >
                 Portfolio
             </a>
 
-            <a href="{% url 'skills' %}">
+            <a
+                href="{% url 'skills' %}"
+                class="{% if request.resolver_match.url_name == 'skills' %}nav-active{% endif %}"
+            >
                 Skills
             </a>
 
-            <a href="{% url 'admin_dashboard' %}">
+            <a
+                href="{% url 'admin_dashboard' %}"
+                class="{% if request.resolver_match.url_name == 'admin_dashboard' %}nav-active{% endif %}"
+            >
                 Admin Panel
             </a>
 
@@ -62,29 +65,45 @@
 
         {% elif user.is_authenticated %}
 
-            <!-- CLIENT NAVIGATION -->
-
-            <a href="{% url 'home' %}">
+            <a
+                href="{% url 'home' %}"
+                class="{% if request.resolver_match.url_name == 'home' %}nav-active{% endif %}"
+            >
                 Home
             </a>
 
-            <a href="{% url 'portfolio' %}">
+            <a
+                href="{% url 'portfolio' %}"
+                class="{% if request.resolver_match.url_name == 'portfolio' %}nav-active{% endif %}"
+            >
                 Portfolio
             </a>
 
-            <a href="{% url 'skills' %}">
+            <a
+                href="{% url 'skills' %}"
+                class="{% if request.resolver_match.url_name == 'skills' %}nav-active{% endif %}"
+            >
                 Skills
             </a>
 
-            <a href="{% url 'start_project' %}">
+            <a
+                href="{% url 'start_project' %}"
+                class="{% if request.resolver_match.url_name == 'start_project' %}nav-active{% endif %}"
+            >
                 Start a project
             </a>
 
-            <a href="{% url 'client_dashboard' %}">
+            <a
+                href="{% url 'client_dashboard' %}"
+                class="{% if request.resolver_match.url_name == 'client_dashboard' or request.resolver_match.url_name == 'client_request_detail' %}nav-active{% endif %}"
+            >
                 My requests
             </a>
 
-            <a href="{% url 'client_profile' %}">
+            <a
+                href="{% url 'client_profile' %}"
+                class="{% if request.resolver_match.url_name == 'client_profile' %}nav-active{% endif %}"
+            >
                 Profile
             </a>
 
@@ -94,21 +113,31 @@
 
         {% else %}
 
-            <!-- PUBLIC NAVIGATION -->
-
-            <a href="{% url 'home' %}">
+            <a
+                href="{% url 'home' %}"
+                class="{% if request.resolver_match.url_name == 'home' %}nav-active{% endif %}"
+            >
                 Home
             </a>
 
-            <a href="{% url 'portfolio' %}">
+            <a
+                href="{% url 'portfolio' %}"
+                class="{% if request.resolver_match.url_name == 'portfolio' %}nav-active{% endif %}"
+            >
                 Portfolio
             </a>
 
-            <a href="{% url 'skills' %}">
+            <a
+                href="{% url 'skills' %}"
+                class="{% if request.resolver_match.url_name == 'skills' %}nav-active{% endif %}"
+            >
                 Skills
             </a>
 
-            <a href="{% url 'login' %}">
+            <a
+                href="{% url 'login' %}"
+                class="{% if request.resolver_match.url_name == 'login' %}nav-active{% endif %}"
+            >
                 Login
             </a>
 
@@ -129,51 +158,73 @@
 
 <footer class="site-footer">
 
-    <div>
+    <div class="site-footer-glow"></div>
 
-        <strong>
-            OlehDev
-        </strong>
+    <div class="site-footer-compact">
 
-        <span>
-            Junior Python Backend Developer · Germany
-        </span>
-
-    </div>
-
-
-    <div class="footer-links">
-
-        {% if user.is_authenticated %}
+        <div class="site-footer-identity">
 
             <a
-                href="https://github.com/o7111023-pixel"
+                href="{% url 'home' %}"
+                class="site-footer-logo"
+            >
+                Oleh<span>Dev</span>
+            </a>
+
+            <span>
+                Junior Python Backend Developer · Germany
+            </span>
+
+        </div>
+
+
+        <div class="site-footer-links">
+
+            <a
+                href="https://t.me/oleh_murachov"
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                GitHub ↗
+                Telegram ↗
             </a>
 
-        {% endif %}
+            {% if user.is_authenticated %}
+
+                <a
+                    href="https://github.com/o7111023-pixel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    GitHub ↗
+                </a>
+
+            {% endif %}
+
+        </div>
 
 
-        <a
-            href="https://t.me/oleh_murachov"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            Telegram ↗
-        </a>
+        <div class="site-footer-copyright">
+
+            <span>
+                © 2026 OlehDev
+            </span>
+
+            <span>
+                Python · Django · PostgreSQL
+            </span>
+
+            <a href="{% url 'home' %}">
+                ↑
+            </a>
+
+        </div>
 
     </div>
 
 </footer>
 
 
-<script
-    src="{% static 'js/main.js' %}"
-></script>
+<script src="{% static 'js/main.js' %}"></script>
 
 </body>
-
 </html>
