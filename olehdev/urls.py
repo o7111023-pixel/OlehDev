@@ -59,6 +59,12 @@ urlpatterns = [
     ),
 
     path(
+        "client/requests/<int:request_id>/cancel/",
+        views.client_cancel_request,
+        name="client_cancel_request",
+    ),
+
+    path(
         "client/profile/",
         views.client_profile,
         name="client_profile",
@@ -81,6 +87,12 @@ urlpatterns = [
         "admin-panel/requests/<int:request_id>/",
         views.admin_request_detail,
         name="admin_request_detail",
+    ),
+
+    path(
+        "admin-panel/requests/<int:request_id>/delete/",
+        views.admin_delete_request,
+        name="admin_delete_request",
     ),
 
     path(

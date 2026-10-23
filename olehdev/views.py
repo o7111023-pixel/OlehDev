@@ -3,6 +3,7 @@ from functools import wraps
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -222,6 +223,39 @@ def client_request_detail(request, request_id):
 
 
 @login_required
+@require_POST
+def client_cancel_request(request, request_id):
+    project_request = get_object_or_404(
+        ProjectRequest,
+        id=request_id,
+        user=request.user,
+    )
+
+    if project_request.status in {
+        ProjectRequest.Status.COMPLETED,
+        ProjectRequest.Status.REJECTED,
+        ProjectRequest.Status.CANCELLED,
+    }:
+        messages.error(
+            request,
+            "This request cannot be cancelled.",
+        )
+    else:
+        project_request.status = ProjectRequest.Status.CANCELLED
+        project_request.save(update_fields=["status", "updated_at"])
+
+        messages.success(
+            request,
+            "Your project request has been cancelled.",
+        )
+
+    return redirect(
+        "client_request_detail",
+        request_id=project_request.id,
+    )
+
+
+@login_required
 def client_profile(request):
     user_requests = ProjectRequest.objects.filter(
         user=request.user
@@ -285,6 +319,24 @@ def admin_required(view_func):
         return view_func(request, *args, **kwargs)
 
     return wrapper
+
+
+@admin_required
+@require_POST
+def admin_delete_request(request, request_id):
+    project_request = get_object_or_404(
+        ProjectRequest,
+        id=request_id,
+    )
+
+    project_request.delete()
+
+    messages.success(
+        request,
+        "Project request and its messages were deleted.",
+    )
+
+    return redirect("admin_requests")
 
 
 @admin_required

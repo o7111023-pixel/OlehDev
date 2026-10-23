@@ -60,11 +60,24 @@
             </div>
 
 
-            <span
-                class="status-badge status-{{ project_request.status }}"
-            >
-                {{ project_request.get_status_display }}
-            </span>
+
+            <div class="request-admin-actions">
+                <span class="status-badge status-{{ project_request.status }}">
+                    {{ project_request.get_status_display }}
+                </span>
+
+                <form
+                    method="post"
+                    action="{% url 'admin_delete_request' request_id=project_request.id %}"
+                    onsubmit="return confirm('Permanently delete this request and all its messages? This action cannot be undone.');"
+                >
+                    {% csrf_token %}
+                    <button type="submit" class="request-delete-button">
+                        Delete request
+                    </button>
+                </form>
+            </div>
+
 
         </div>
 

@@ -88,6 +88,7 @@ class ProjectRequest(models.Model):
         ACCEPTED = "accepted", "Accepted"
         REJECTED = "rejected", "Rejected"
         COMPLETED = "completed", "Completed"
+        CANCELLED = "cancelled", "Cancelled"
 
     class Deadline(models.TextChoices):
         FIVE_SEVEN_DAYS = "5_7_days", "5–7 days"
