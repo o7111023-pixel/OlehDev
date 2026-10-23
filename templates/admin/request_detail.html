@@ -1,65 +1,536 @@
-{% extends "base.html" %}
 
+{% extends "base.html" %}
 {% load static %}
 
-
-{% block title %}
-    {{ project_request.name }} — Admin — OlehDev
-{% endblock %}
-
+{% block title %}{{ project_request.name }} — Admin — OlehDev{% endblock %}
 
 {% block styles %}
-    <link
-        rel="stylesheet"
-        href="{% static 'css/admin.css' %}"
-    >
+<link rel="stylesheet" href="{% static 'css/admin.css' %}?v=3">
+
+<style>
+    .admin-request-detail {
+        max-width: 1120px;
+        margin-inline: auto;
+    }
+
+    .admin-request-detail .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 26px;
+        color: var(--admin-text-soft);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .admin-request-detail .back-link:hover {
+        color: var(--admin-purple-dark);
+        transform: translateX(-2px);
+    }
+
+    .admin-request-detail .request-detail-header {
+        margin-bottom: 28px;
+    }
+
+    .admin-request-detail .request-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+
+    .admin-request-detail .request-heading h1 {
+        margin: 10px 0 12px;
+        color: var(--admin-text);
+        font-size: clamp(32px, 5vw, 54px);
+        line-height: 1.08;
+        letter-spacing: -0.05em;
+        overflow-wrap: anywhere;
+    }
+
+    .admin-request-detail .request-heading p {
+        margin: 0;
+        color: var(--admin-text-soft);
+        font-size: 13px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+    }
+
+    .admin-request-detail .request-admin-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .admin-request-detail .request-delete-button {
+        min-height: 40px;
+        padding: 0 14px;
+        border: 1px solid #e4b8b2;
+        border-radius: 10px;
+        background: #fff0ed;
+        color: #963d35;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .admin-request-detail .request-delete-button:hover {
+        background: #ffe2dc;
+        border-color: #d99a91;
+    }
+
+    .admin-request-detail .request-detail-section {
+        margin-bottom: 22px;
+        padding: clamp(20px, 3vw, 28px);
+        border: 1px solid var(--admin-border);
+        border-radius: 16px;
+        background: var(--admin-surface);
+        box-shadow: 0 4px 16px rgba(45, 43, 32, 0.035);
+    }
+
+    .admin-request-detail .admin-detail-section-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+    }
+
+    .admin-request-detail .admin-section-kicker {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--admin-purple);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+    }
+
+    .admin-request-detail .admin-detail-section-heading h2 {
+        margin: 0;
+        color: var(--admin-text);
+        font-size: 23px;
+        letter-spacing: -0.035em;
+    }
+
+    .admin-request-detail .admin-detail-section-heading p {
+        margin: 8px 0 0;
+        color: var(--admin-text-soft);
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .admin-request-detail .request-description {
+        margin: 0;
+        color: var(--admin-text);
+        font-size: 14px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+        white-space: pre-line;
+    }
+
+    .admin-request-detail .request-detail-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 22px;
+        align-items: start;
+    }
+
+    .admin-request-detail .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .admin-request-detail .skill-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 11px;
+        border: 1px solid var(--admin-border);
+        border-radius: 9px;
+        background: var(--admin-surface-2);
+        color: var(--admin-text);
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .admin-request-detail .admin-muted {
+        color: var(--admin-text-muted);
+        font-size: 13px;
+    }
+
+    .admin-request-detail .request-meta {
+        display: grid;
+        gap: 0;
+    }
+
+    .admin-request-detail .request-meta > div {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--admin-border);
+    }
+
+    .admin-request-detail .request-meta > div:first-child {
+        padding-top: 0;
+    }
+
+    .admin-request-detail .request-meta > div:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+
+    .admin-request-detail .request-meta span {
+        color: var(--admin-text-muted);
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .admin-request-detail .request-meta strong {
+        color: var(--admin-text);
+        font-size: 13px;
+        font-weight: 650;
+        overflow-wrap: anywhere;
+    }
+
+    .admin-request-detail .admin-status-form {
+        display: flex;
+        align-items: flex-end;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .admin-request-detail .admin-status-form .form-field {
+        display: flex;
+        flex: 1 1 240px;
+        flex-direction: column;
+        gap: 8px;
+        margin: 0;
+    }
+
+    .admin-request-detail .form-field label {
+        color: var(--admin-text);
+        font-size: 13px;
+        font-weight: 650;
+    }
+
+    .admin-request-detail .form-field select,
+    .admin-request-detail .form-field textarea,
+    .admin-request-detail .form-field input {
+        width: 100%;
+        min-height: 46px;
+        box-sizing: border-box;
+        padding: 11px 13px;
+        border: 1px solid var(--admin-border-strong);
+        border-radius: 10px;
+        outline: none;
+        background: var(--admin-surface-2);
+        color: var(--admin-text);
+        font: inherit;
+        font-size: 13px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .admin-request-detail .form-field textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .admin-request-detail .form-field select:focus,
+    .admin-request-detail .form-field textarea:focus,
+    .admin-request-detail .form-field input:focus {
+        border-color: var(--admin-purple);
+        box-shadow: 0 0 0 3px rgba(115, 123, 84, 0.14);
+    }
+
+    .admin-request-detail .form-submit {
+        min-height: 46px;
+        padding: 0 17px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 1px solid var(--admin-purple);
+        border-radius: 10px;
+        background: var(--admin-purple);
+        color: #fffefa;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .admin-request-detail .form-submit:hover {
+        background: var(--admin-purple-dark);
+        transform: translateY(-1px);
+    }
+
+    .admin-request-detail .form-submit span {
+        font-size: 16px;
+    }
+
+    .admin-request-detail .chat-details {
+        overflow: hidden;
+        border: 1px solid var(--admin-border);
+        border-radius: 13px;
+        background: var(--admin-surface);
+    }
+
+    .admin-request-detail .chat-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 19px 21px;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .admin-request-detail .chat-summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .admin-request-detail .admin-chat-label {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--admin-purple);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+    }
+
+    .admin-request-detail .chat-summary h3 {
+        margin: 0;
+        color: var(--admin-text);
+        font-size: 18px;
+    }
+
+    .admin-request-detail .chat-toggle {
+        flex-shrink: 0;
+        color: var(--admin-text-soft);
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .admin-request-detail .chat-toggle::after {
+        content: "＋";
+        display: inline-block;
+        margin-left: 8px;
+        color: var(--admin-purple);
+    }
+
+    .admin-request-detail .chat-details[open] .chat-toggle::after {
+        content: "−";
+    }
+
+    .admin-request-detail .chat-details[open] .chat-toggle {
+        font-size: 0;
+    }
+
+    .admin-request-detail .chat-details[open] .chat-toggle::before {
+        content: "Collapse";
+        font-size: 12px;
+    }
+
+    .admin-request-detail .chat-content {
+        padding: 0 21px 21px;
+        border-top: 1px solid var(--admin-border);
+    }
+
+    .admin-request-detail .chat-messages {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px 0;
+    }
+
+    .admin-request-detail .chat-message {
+        max-width: 82%;
+        padding: 13px 15px;
+        border: 1px solid var(--admin-border);
+        border-radius: 12px;
+        background: var(--admin-surface-2);
+    }
+
+    .admin-request-detail .chat-message-own {
+        align-self: flex-end;
+        border-color: rgba(115, 123, 84, 0.25);
+        background: rgba(115, 123, 84, 0.09);
+    }
+
+    .admin-request-detail .chat-message-client {
+        align-self: flex-start;
+    }
+
+    .admin-request-detail .chat-message-meta {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        margin-bottom: 8px;
+    }
+
+    .admin-request-detail .chat-message-meta strong {
+        color: var(--admin-text);
+        font-size: 12px;
+    }
+
+    .admin-request-detail .chat-message-meta span {
+        color: var(--admin-text-muted);
+        font-size: 10px;
+    }
+
+    .admin-request-detail .chat-message p {
+        margin: 0;
+        color: var(--admin-text);
+        font-size: 13px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+    }
+
+    .admin-request-detail .messages-empty {
+        padding: 28px 16px;
+        text-align: center;
+    }
+
+    .admin-request-detail .messages-empty-icon {
+        margin-bottom: 8px;
+        color: var(--admin-purple);
+        font-size: 28px;
+        letter-spacing: 3px;
+    }
+
+    .admin-request-detail .messages-empty p {
+        margin: 0 0 6px;
+        color: var(--admin-text);
+        font-size: 14px;
+        font-weight: 650;
+    }
+
+    .admin-request-detail .messages-empty > span {
+        color: var(--admin-text-soft);
+        font-size: 12px;
+    }
+
+    .admin-request-detail .chat-form {
+        padding-top: 20px;
+        border-top: 1px solid var(--admin-border);
+    }
+
+    .admin-request-detail .chat-form .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+
+    .admin-request-detail .chat-submit {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .admin-request-detail .form-errors,
+    .admin-request-detail .errorlist {
+        color: #963d35;
+        font-size: 12px;
+    }
+
+    .admin-request-detail .request-delete-button:focus-visible,
+    .admin-request-detail .form-submit:focus-visible,
+    .admin-request-detail .chat-summary:focus-visible,
+    .admin-request-detail .back-link:focus-visible {
+        outline: 3px solid rgba(115, 123, 84, 0.3);
+        outline-offset: 3px;
+    }
+
+    @media (max-width: 760px) {
+        .admin-request-detail .request-detail-grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0;
+        }
+
+        .admin-request-detail .request-heading {
+            flex-direction: column;
+        }
+
+        .admin-request-detail .request-admin-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .admin-request-detail .admin-status-form {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .admin-request-detail .admin-status-form .form-field,
+        .admin-request-detail .admin-status-form .form-submit {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .admin-request-detail .request-admin-actions {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .admin-request-detail .chat-summary {
+            padding: 16px;
+        }
+
+        .admin-request-detail .chat-content {
+            padding: 0 14px 15px;
+        }
+
+        .admin-request-detail .chat-message {
+            max-width: 94%;
+        }
+
+        .admin-request-detail .chat-message-meta {
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .admin-request-detail .chat-submit .form-submit {
+            width: 100%;
+        }
+    }
+</style>
 {% endblock %}
 
-
 {% block content %}
+<section class="admin-dashboard admin-request-detail">
 
-<section class="admin-dashboard">
-
-
-    <!-- =====================================================
-         BACK
-    ====================================================== -->
-
-    <a
-        href="{% url 'admin_requests' %}"
-        class="back-link"
-    >
-        ← Back to requests
+    <!-- Back link -->
+    <a href="{% url 'admin_requests' %}" class="back-link">
+        <span aria-hidden="true">←</span>
+        Back to requests
     </a>
 
-
-    <!-- =====================================================
-         PROJECT HEADER
-    ====================================================== -->
-
+    <!-- Project header -->
     <div class="request-detail-header">
-
         <div class="page-heading request-heading">
-
             <div>
-
-                <div class="section-label">
-                    ADMIN · PROJECT REQUEST
-                </div>
-
-                <h1>
-                    {{ project_request.name }}
-                </h1>
-
+                <div class="section-label">ADMIN · PROJECT REQUEST</div>
+                <h1>{{ project_request.name }}</h1>
                 <p>
                     {{ project_request.email }}
                     ·
                     {{ project_request.created_at|date:"d M Y, H:i" }}
                 </p>
-
             </div>
-
-
 
             <div class="request-admin-actions">
                 <span class="status-badge status-{{ project_request.status }}">
@@ -77,433 +548,180 @@
                     </button>
                 </form>
             </div>
-
-
         </div>
-
     </div>
 
-
-    <!-- =====================================================
-         DESCRIPTION
-    ====================================================== -->
-
+    <!-- Project description -->
     <section class="request-detail-section">
-
         <div class="admin-detail-section-heading">
-
             <div>
-
-                <span class="admin-section-kicker">
-                    01 · OVERVIEW
-                </span>
-
-                <h2>
-                    Project description
-                </h2>
-
+                <span class="admin-section-kicker">01 · OVERVIEW</span>
+                <h2>Project description</h2>
             </div>
-
         </div>
 
-
-        <p class="request-description">
-            {{ project_request.description }}
-        </p>
-
+        <p class="request-description">{{ project_request.description }}</p>
     </section>
 
-
-    <!-- =====================================================
-         PROJECT INFORMATION
-    ====================================================== -->
-
+    <!-- Project information -->
     <div class="request-detail-grid">
 
-
-        <!-- TECHNOLOGIES -->
-
         <section class="request-detail-section">
-
             <div class="admin-detail-section-heading">
-
                 <div>
-
-                    <span class="admin-section-kicker">
-                        02 · STACK
-                    </span>
-
-                    <h2>
-                        Technologies
-                    </h2>
-
+                    <span class="admin-section-kicker">02 · STACK</span>
+                    <h2>Technologies</h2>
                 </div>
-
             </div>
-
 
             <div class="skill-tags">
-
                 {% for skill in project_request.skills.all %}
-
-                    <span class="skill-tag">
-                        {{ skill.name }}
-                    </span>
-
+                    <span class="skill-tag">{{ skill.name }}</span>
                 {% empty %}
-
-                    <span class="admin-muted">
-                        No technologies selected.
-                    </span>
-
+                    <span class="admin-muted">No technologies selected.</span>
                 {% endfor %}
-
             </div>
-
         </section>
 
-
-        <!-- PROJECT DETAILS -->
-
         <section class="request-detail-section">
-
             <div class="admin-detail-section-heading">
-
                 <div>
-
-                    <span class="admin-section-kicker">
-                        03 · DETAILS
-                    </span>
-
-                    <h2>
-                        Project details
-                    </h2>
-
+                    <span class="admin-section-kicker">03 · DETAILS</span>
+                    <h2>Project details</h2>
                 </div>
-
             </div>
 
-
             <div class="request-meta">
-
-
                 <div>
-
-                    <span>
-                        Contact email
-                    </span>
-
-                    <strong>
-                        {{ project_request.email }}
-                    </strong>
-
+                    <span>Contact email</span>
+                    <strong>{{ project_request.email }}</strong>
                 </div>
 
-
                 <div>
-
-                    <span>
-                        Budget
-                    </span>
-
+                    <span>Budget</span>
                     <strong>
-
                         {% if project_request.budget %}
                             {{ project_request.budget }}
                         {% else %}
                             Not specified
                         {% endif %}
-
                     </strong>
-
                 </div>
-
 
                 <div>
-
-                    <span>
-                        Estimated time
-                    </span>
-
-                    <strong>
-                        {{ project_request.get_deadline_display }}
-                    </strong>
-
+                    <span>Estimated time</span>
+                    <strong>{{ project_request.get_deadline_display }}</strong>
                 </div>
-
-
             </div>
-
         </section>
 
     </div>
 
-
-    <!-- =====================================================
-         STATUS
-    ====================================================== -->
-
+    <!-- Status workflow -->
     <section class="request-detail-section admin-status-section">
-
         <div class="admin-detail-section-heading">
-
             <div>
-
-                <span class="admin-section-kicker">
-                    04 · WORKFLOW
-                </span>
-
-                <h2>
-                    Request status
-                </h2>
-
-                <p>
-                    Update the current state of this project request.
-                </p>
-
+                <span class="admin-section-kicker">04 · WORKFLOW</span>
+                <h2>Request status</h2>
+                <p>Update the current state of this project request.</p>
             </div>
-
         </div>
 
-
-        <form
-            method="post"
-            class="admin-status-form"
-        >
-
+        <form method="post" class="admin-status-form">
             {% csrf_token %}
-
-
-            <input
-                type="hidden"
-                name="action"
-                value="status"
-            >
-
+            <input type="hidden" name="action" value="status">
 
             <div class="form-field">
-
-                <label for="status">
-                    Status
-                </label>
-
-                <select
-                    name="status"
-                    id="status"
-                >
-
+                <label for="status">Status</label>
+                <select name="status" id="status">
                     {% for value, label in project_request.Status.choices %}
-
                         <option
                             value="{{ value }}"
-                            {% if project_request.status == value %}
-                                selected
-                            {% endif %}
+                            {% if project_request.status == value %}selected{% endif %}
                         >
                             {{ label }}
                         </option>
-
                     {% endfor %}
-
                 </select>
-
             </div>
 
-
-            <button
-                type="submit"
-                class="form-submit"
-            >
+            <button type="submit" class="form-submit">
                 Update status
-                <span>→</span>
+                <span aria-hidden="true">→</span>
             </button>
-
         </form>
-
     </section>
 
-
-    <!-- =====================================================
-         CLIENT CHAT
-    ====================================================== -->
-
+    <!-- Client conversation -->
     <section class="request-detail-section admin-chat-section">
-
-
         <div class="admin-detail-section-heading">
-
             <div>
-
-                <span class="admin-section-kicker">
-                    05 · COMMUNICATION
-                </span>
-
-                <h2>
-                    Client conversation
-                </h2>
-
-                <p>
-                    Private conversation with the client about this project.
-                </p>
-
+                <span class="admin-section-kicker">05 · COMMUNICATION</span>
+                <h2>Client conversation</h2>
+                <p>Private conversation with the client about this project.</p>
             </div>
-
         </div>
 
-
-        <details
-            class="chat-details"
-            open
-        >
-
+        <details class="chat-details" open>
             <summary class="chat-summary">
-
                 <div>
-
-                    <span class="admin-chat-label">
-                        PRIVATE CHAT
-                    </span>
-
-                    <h3>
-                        Messages
-                    </h3>
-
+                    <span class="admin-chat-label">PRIVATE CHAT</span>
+                    <h3>Messages</h3>
                 </div>
-
-
-                <span class="chat-toggle">
-                    Collapse
-                </span>
-
+                <span class="chat-toggle">Collapse</span>
             </summary>
-
 
             <div class="chat-content">
 
-
-                <!-- =================================================
-                     MESSAGES
-                ================================================== -->
-
+                <!-- Messages -->
                 <div class="chat-messages">
-
                     {% for message in chat_messages %}
-
-                        <div
-                            class="
-                                chat-message
-                                {% if message.sender == user %}
-                                    chat-message-own
-                                {% else %}
-                                    chat-message-client
-                                {% endif %}
-                            "
-                        >
-
+                        <div class="chat-message {% if message.sender == user %}chat-message-own{% else %}chat-message-client{% endif %}">
                             <div class="chat-message-meta">
-
                                 <strong>
-
                                     {% if message.sender == user %}
                                         You
                                     {% else %}
                                         {{ message.sender.username }}
                                     {% endif %}
-
                                 </strong>
 
-
-                                <span>
-                                    {{ message.created_at|date:"d M Y, H:i" }}
-                                </span>
-
+                                <span>{{ message.created_at|date:"d M Y, H:i" }}</span>
                             </div>
 
-
-                            <p>
-                                {{ message.text|linebreaksbr }}
-                            </p>
-
+                            <p>{{ message.text|linebreaksbr }}</p>
                         </div>
-
                     {% empty %}
-
                         <div class="messages-empty">
-
-                            <div class="messages-empty-icon">
-                                ···
-                            </div>
-
-                            <p>
-                                No messages yet.
-                            </p>
-
-                            <span>
-                                Start the conversation with the client.
-                            </span>
-
+                            <div class="messages-empty-icon" aria-hidden="true">···</div>
+                            <p>No messages yet.</p>
+                            <span>Start the conversation with the client.</span>
                         </div>
-
                     {% endfor %}
-
                 </div>
 
-
-                <!-- =================================================
-                     MESSAGE FORM
-                ================================================== -->
-
-                <form
-                    method="post"
-                    class="chat-form"
-                >
-
+                <!-- Send message -->
+                <form method="post" class="chat-form">
                     {% csrf_token %}
-
-
-                    <input
-                        type="hidden"
-                        name="action"
-                        value="message"
-                    >
-
+                    <input type="hidden" name="action" value="message">
 
                     <div class="form-field">
-
-                        <label for="{{ message_form.text.id_for_label }}">
-                            Message
-                        </label>
-
+                        <label for="{{ message_form.text.id_for_label }}">Message</label>
                         {{ message_form.text }}
-
                         {{ message_form.text.errors }}
-
                     </div>
-
 
                     <div class="chat-submit">
-
-                        <button
-                            type="submit"
-                            class="form-submit"
-                        >
+                        <button type="submit" class="form-submit">
                             Send message
-                            <span>→</span>
+                            <span aria-hidden="true">→</span>
                         </button>
-
                     </div>
-
                 </form>
 
-
             </div>
-
         </details>
-
-
     </section>
 
-
 </section>
-
 {% endblock %}

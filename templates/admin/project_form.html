@@ -1,566 +1,400 @@
-{% extends "base.html" %}
 
+{% extends "base.html" %}
 {% load static %}
 
-
-{% block title %}
-    Add project — Admin — OlehDev
-{% endblock %}
-
+{% block title %}Add project — Admin — OlehDev{% endblock %}
 
 {% block styles %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}?v=3">
 
-    <link
-        rel="stylesheet"
-        href="{% static 'css/admin.css' %}"
-    >
+<style>
+    .admin-form-page {
+        position: relative;
+        max-width: 100%;
+    }
 
-    <style>
+    .admin-form-page .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 28px;
+        color: var(--admin-text-soft);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
 
-        /* =========================================================
-           ADD PROJECT — PAGE ONLY
-           These styles are scoped to .admin-form-page
-           and do not affect other admin pages.
-        ========================================================= */
+    .admin-form-page .back-link:hover {
+        color: var(--admin-purple-dark);
+        transform: translateX(-2px);
+    }
 
-        .admin-form-page {
-            position: relative;
-        }
+    .admin-form-page .admin-form-header {
+        max-width: 760px;
+        margin-bottom: 34px;
+    }
 
+    .admin-form-page .admin-form-header h1 {
+        margin: 12px 0 14px;
+        color: var(--admin-text);
+        font-size: clamp(36px, 5vw, 58px);
+        line-height: 1.08;
+        letter-spacing: -0.055em;
+    }
 
-        /* HEADER */
+    .admin-form-page .admin-form-header p {
+        max-width: 650px;
+        margin: 0;
+        color: var(--admin-text-soft);
+        font-size: 14px;
+        line-height: 1.7;
+    }
 
-        .admin-form-page .admin-form-header {
-            max-width: 760px;
-            margin-bottom: 42px;
-        }
+    .admin-form-page .admin-form {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        max-width: 900px;
+    }
 
-        .admin-form-page .admin-form-header h1 {
-            margin: 12px 0 14px;
-        }
+    .admin-form-page .admin-form-card {
+        position: relative;
+        padding: clamp(22px, 4vw, 30px);
+        border: 1px solid var(--admin-border);
+        border-radius: 18px;
+        background: var(--admin-surface);
+        box-shadow: var(--admin-shadow);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        .admin-form-page .admin-form-header p {
-            max-width: 650px;
-        }
+    .admin-form-page .admin-form-card:hover {
+        border-color: var(--admin-border-strong);
+    }
 
+    .admin-form-page .admin-form-card-header {
+        display: grid;
+        grid-template-columns: 52px minmax(0, 1fr);
+        gap: 18px;
+        align-items: start;
+        margin-bottom: 28px;
+    }
 
-        /* FORM */
+    .admin-form-page .admin-form-number {
+        width: 52px;
+        height: 52px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--admin-border-strong);
+        border-radius: 14px;
+        background: var(--admin-surface-2);
+        color: var(--admin-purple);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+    }
 
-        .admin-form-page .admin-form {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            max-width: 900px;
-        }
+    .admin-form-page .admin-form-kicker {
+        display: inline-block;
+        margin-bottom: 8px;
+        color: var(--admin-purple);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+    }
 
+    .admin-form-page .admin-form-card-header h2 {
+        margin: 0 0 7px;
+        color: var(--admin-text);
+        font-size: 23px;
+        letter-spacing: -0.035em;
+    }
 
-        /* CARDS */
+    .admin-form-page .admin-form-card-header p {
+        margin: 0;
+        color: var(--admin-text-soft);
+        font-size: 13px;
+        line-height: 1.6;
+    }
 
-        .admin-form-page .admin-form-card {
-            position: relative;
-            overflow: hidden;
+    .admin-form-page .admin-form-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+    }
 
-            padding: 30px;
+    .admin-form-page .admin-field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+    }
 
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
+    .admin-form-page .admin-field label {
+        color: var(--admin-text);
+        font-size: 13px;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+    }
 
-            background:
-                radial-gradient(
-                    circle at 100% 0%,
-                    rgba(124, 92, 255, 0.08),
-                    transparent 32%
-                ),
-                linear-gradient(
-                    145deg,
-                    rgba(18, 21, 34, 0.96),
-                    rgba(10, 12, 22, 0.96)
-                );
+    .admin-form-page .admin-field input,
+    .admin-form-page .admin-field textarea,
+    .admin-form-page .admin-field select {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 48px;
+        padding: 13px 15px;
+        border: 1px solid var(--admin-border-strong);
+        border-radius: 11px;
+        outline: none;
+        background: var(--admin-surface-2);
+        color: var(--admin-text);
+        font-family: inherit;
+        font-size: 13px;
+        transition:
+            border-color 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease;
+    }
 
-            box-shadow:
-                0 18px 45px rgba(0, 0, 0, 0.22);
+    .admin-form-page .admin-field textarea {
+        min-height: 135px;
+        resize: vertical;
+        line-height: 1.7;
+    }
 
-            transition:
-                border-color 0.2s ease,
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
-        }
+    .admin-form-page .admin-field input::placeholder,
+    .admin-form-page .admin-field textarea::placeholder {
+        color: var(--admin-text-muted);
+    }
 
+    .admin-form-page .admin-field input:hover,
+    .admin-form-page .admin-field textarea:hover,
+    .admin-form-page .admin-field select:hover {
+        border-color: var(--admin-purple);
+    }
 
-        .admin-form-page .admin-form-card:hover {
-            border-color: rgba(139, 92, 246, 0.24);
+    .admin-form-page .admin-field input:focus,
+    .admin-form-page .admin-field textarea:focus,
+    .admin-form-page .admin-field select:focus {
+        border-color: var(--admin-purple);
+        background: var(--admin-surface);
+        box-shadow: 0 0 0 3px rgba(115, 123, 84, 0.14);
+    }
 
-            box-shadow:
-                0 22px 55px rgba(0, 0, 0, 0.28);
-        }
+    .admin-form-page .admin-field select {
+        cursor: pointer;
+    }
 
+    .admin-form-page .admin-field-hint {
+        color: var(--admin-text-muted);
+        font-size: 12px;
+        line-height: 1.5;
+    }
 
-        /* CARD HEADER */
+    .admin-form-page .admin-form-errors,
+    .admin-form-page .admin-field-error {
+        padding: 11px 13px;
+        border: 1px solid #f0c8c1;
+        border-radius: 10px;
+        background: #fff0ed;
+        color: #963d35;
+        font-size: 12px;
+        line-height: 1.6;
+    }
 
+    .admin-form-page .admin-form-errors {
+        margin-bottom: 2px;
+    }
+
+    .admin-form-page .admin-form-errors ul,
+    .admin-form-page .admin-field-error ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+    .admin-form-page .admin-form-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+        margin-top: 2px;
+        padding: 24px 26px;
+        border: 1px solid var(--admin-border);
+        border-radius: 17px;
+        background: var(--admin-surface);
+        box-shadow: var(--admin-shadow);
+    }
+
+    .admin-form-page .admin-form-actions p {
+        max-width: 520px;
+        margin: 5px 0 0;
+        color: var(--admin-text-soft);
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .admin-form-page .admin-form-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+
+    .admin-form-page .admin-secondary-button,
+    .admin-form-page .admin-primary-button {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0 17px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .admin-form-page .admin-secondary-button {
+        border: 1px solid var(--admin-border-strong);
+        background: var(--admin-surface);
+        color: var(--admin-text-soft);
+    }
+
+    .admin-form-page .admin-secondary-button:hover {
+        border-color: var(--admin-purple);
+        background: var(--admin-surface-2);
+        color: var(--admin-text);
+        transform: translateY(-1px);
+    }
+
+    .admin-form-page .admin-primary-button {
+        border: 1px solid var(--admin-purple);
+        background: var(--admin-purple);
+        color: #fffefa;
+        box-shadow: none;
+    }
+
+    .admin-form-page .admin-primary-button span {
+        font-size: 15px;
+        transition: transform 0.2s ease;
+    }
+
+    .admin-form-page .admin-primary-button:hover {
+        background: var(--admin-purple-dark);
+        transform: translateY(-1px);
+        box-shadow: var(--admin-shadow);
+    }
+
+    .admin-form-page .admin-primary-button:hover span {
+        transform: translateX(3px);
+    }
+
+    .admin-form-page .admin-primary-button:active,
+    .admin-form-page .admin-secondary-button:active {
+        transform: translateY(0);
+    }
+
+    .admin-form-page .admin-primary-button:focus-visible,
+    .admin-form-page .admin-secondary-button:focus-visible,
+    .admin-form-page .back-link:focus-visible {
+        outline: 3px solid rgba(115, 123, 84, 0.3);
+        outline-offset: 3px;
+    }
+
+    @media (max-width: 700px) {
         .admin-form-page .admin-form-card-header {
-            display: grid;
-            grid-template-columns: 52px 1fr;
-            gap: 18px;
-            align-items: start;
-
-            margin-bottom: 30px;
+            grid-template-columns: 44px minmax(0, 1fr);
+            gap: 13px;
         }
-
 
         .admin-form-page .admin-form-number {
-            width: 52px;
-            height: 52px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border: 1px solid rgba(139, 92, 246, 0.32);
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(124, 92, 255, 0.18),
-                    rgba(124, 92, 255, 0.05)
-                );
-
-            color: #a78bfa;
-
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-
-            box-shadow:
-                inset 0 0 18px rgba(124, 92, 255, 0.06);
+            width: 44px;
+            height: 44px;
         }
-
-
-        .admin-form-page .admin-form-kicker {
-            display: inline-block;
-
-            margin-bottom: 8px;
-
-            color: #a78bfa;
-
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-        }
-
-
-        .admin-form-page .admin-form-card-header h2 {
-            margin: 0 0 7px;
-        }
-
-
-        .admin-form-page .admin-form-card-header p {
-            margin: 0;
-
-            color: rgba(255, 255, 255, 0.48);
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-
-        /* FIELDS */
-
-        .admin-form-page .admin-form-fields {
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-        }
-
-
-        .admin-form-page .admin-field {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-
-        .admin-form-page .admin-field label {
-            color: rgba(255, 255, 255, 0.82);
-
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-        }
-
-
-        /* INPUTS */
-
-        .admin-form-page .admin-field input,
-        .admin-form-page .admin-field textarea,
-        .admin-form-page .admin-field select {
-            width: 100%;
-            box-sizing: border-box;
-
-            min-height: 48px;
-
-            padding: 13px 15px;
-
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            border-radius: 11px;
-
-            outline: none;
-
-            background:
-                rgba(7, 9, 18, 0.82);
-
-            color: #f8fafc;
-
-            font-family: inherit;
-            font-size: 13px;
-
-            transition:
-                border-color 0.2s ease,
-                background 0.2s ease,
-                box-shadow 0.2s ease;
-        }
-
-
-        .admin-form-page .admin-field textarea {
-            min-height: 135px;
-            resize: vertical;
-            line-height: 1.6;
-        }
-
-
-        .admin-form-page .admin-field input::placeholder,
-        .admin-form-page .admin-field textarea::placeholder {
-            color: rgba(255, 255, 255, 0.28);
-        }
-
-
-        .admin-form-page .admin-field input:hover,
-        .admin-form-page .admin-field textarea:hover,
-        .admin-form-page .admin-field select:hover {
-            border-color: rgba(255, 255, 255, 0.16);
-        }
-
-
-        .admin-form-page .admin-field input:focus,
-        .admin-form-page .admin-field textarea:focus,
-        .admin-form-page .admin-field select:focus {
-            border-color: rgba(139, 92, 246, 0.7);
-
-            background:
-                rgba(10, 12, 24, 0.96);
-
-            box-shadow:
-                0 0 0 3px rgba(139, 92, 246, 0.10),
-                0 0 24px rgba(139, 92, 246, 0.07);
-        }
-
-
-        /* SELECT */
-
-        .admin-form-page .admin-field select {
-            cursor: pointer;
-        }
-
-
-        /* HINT */
-
-        .admin-form-page .admin-field-hint {
-            color: rgba(255, 255, 255, 0.38);
-
-            font-size: 11px;
-            line-height: 1.5;
-        }
-
-
-        /* ERRORS */
-
-        .admin-form-page .admin-form-errors,
-        .admin-form-page .admin-field-error {
-            padding: 11px 13px;
-
-            border: 1px solid rgba(248, 113, 113, 0.25);
-            border-radius: 10px;
-
-            background: rgba(127, 29, 29, 0.12);
-
-            color: #fca5a5;
-
-            font-size: 12px;
-        }
-
-
-        .admin-form-page .admin-form-errors {
-            margin-bottom: 2px;
-        }
-
-
-        /* SUBMIT AREA */
 
         .admin-form-page .admin-form-actions {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 28px;
-
-            margin-top: 2px;
-            padding: 24px 26px;
-
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 17px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(17, 20, 32, 0.92),
-                    rgba(10, 12, 20, 0.92)
-                );
+            align-items: stretch;
+            flex-direction: column;
+            padding: 22px;
         }
-
-
-        .admin-form-page .admin-form-actions p {
-            margin: 5px 0 0;
-
-            max-width: 520px;
-
-            color: rgba(255, 255, 255, 0.42);
-
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-
-        /* BUTTONS */
 
         .admin-form-page .admin-form-buttons {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            flex-shrink: 0;
+            width: 100%;
         }
-
 
         .admin-form-page .admin-secondary-button,
         .admin-form-page .admin-primary-button {
-            min-height: 44px;
+            flex: 1;
+        }
+    }
 
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-
-            padding: 0 17px;
-
-            border-radius: 10px;
-
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 600;
-
-            text-decoration: none;
-
-            cursor: pointer;
-
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease,
-                background 0.2s ease,
-                box-shadow 0.2s ease;
+    @media (max-width: 420px) {
+        .admin-form-page .admin-form-buttons {
+            flex-direction: column-reverse;
         }
 
-
-        .admin-form-page .admin-secondary-button {
-            border: 1px solid rgba(255, 255, 255, 0.10);
-
-            background: rgba(255, 255, 255, 0.025);
-
-            color: rgba(255, 255, 255, 0.62);
-        }
-
-
-        .admin-form-page .admin-secondary-button:hover {
-            border-color: rgba(255, 255, 255, 0.18);
-
-            background: rgba(255, 255, 255, 0.055);
-
-            color: #ffffff;
-
-            transform: translateY(-1px);
-        }
-
-
+        .admin-form-page .admin-secondary-button,
         .admin-form-page .admin-primary-button {
-            border: 1px solid rgba(139, 92, 246, 0.65);
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #7c3aed,
-                    #8b5cf6
-                );
-
-            color: #ffffff;
-
-            box-shadow:
-                0 8px 24px rgba(124, 58, 237, 0.20);
+            width: 100%;
         }
-
-
-        .admin-form-page .admin-primary-button span {
-            font-size: 15px;
-            transition: transform 0.2s ease;
-        }
-
-
-        .admin-form-page .admin-primary-button:hover {
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 12px 30px rgba(124, 58, 237, 0.30);
-        }
-
-
-        .admin-form-page .admin-primary-button:hover span {
-            transform: translateX(3px);
-        }
-
-
-        .admin-form-page .admin-primary-button:active,
-        .admin-form-page .admin-secondary-button:active {
-            transform: translateY(0);
-        }
-
-
-        /* MOBILE */
-
-        @media (max-width: 700px) {
-
-            .admin-form-page .admin-form-card {
-                padding: 22px;
-            }
-
-
-            .admin-form-page .admin-form-card-header {
-                grid-template-columns: 44px 1fr;
-                gap: 13px;
-            }
-
-
-            .admin-form-page .admin-form-number {
-                width: 44px;
-                height: 44px;
-            }
-
-
-            .admin-form-page .admin-form-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-
-            .admin-form-page .admin-form-buttons {
-                width: 100%;
-            }
-
-
-            .admin-form-page .admin-secondary-button,
-            .admin-form-page .admin-primary-button {
-                flex: 1;
-            }
-
-        }
-
-    </style>
-
+    }
+</style>
 {% endblock %}
 
-
 {% block content %}
-
 <section class="admin-dashboard admin-form-page">
 
-    <!-- BACK -->
-
-    <a
-        href="{% url 'portfolio' %}"
-        class="back-link"
-    >
-        ← Back to portfolio
+    <!-- Back -->
+    <a href="{% url 'portfolio' %}" class="back-link">
+        <span aria-hidden="true">←</span>
+        Back to portfolio
     </a>
 
-
-    <!-- HEADER -->
-
+    <!-- Header -->
     <div class="admin-form-header">
-
-        <div class="section-label">
-            ADMIN · PORTFOLIO
-        </div>
-
-        <h1>
-            Add a project.
-        </h1>
-
+        <div class="section-label">ADMIN · PORTFOLIO</div>
+        <h1>Add a project.</h1>
         <p>
             Add a new project that will appear in your public portfolio.
         </p>
-
     </div>
 
-
-    <!-- FORM -->
-
-    <form
-        method="post"
-        class="admin-form"
-    >
-
+    <!-- Form -->
+    <form method="post" class="admin-form">
         {% csrf_token %}
 
-
         {% if form.non_field_errors %}
-
             <div class="admin-form-errors">
                 {{ form.non_field_errors }}
             </div>
-
         {% endif %}
 
-
-        <!-- PROJECT INFORMATION -->
-
+        <!-- Project information -->
         <section class="admin-form-card">
-
             <div class="admin-form-card-header">
-
-                <div class="admin-form-number">
-                    01
-                </div>
+                <div class="admin-form-number">01</div>
 
                 <div>
-
-                    <span class="admin-form-kicker">
-                        PROJECT INFORMATION
-                    </span>
-
-                    <h2>
-                        Project details
-                    </h2>
-
-                    <p>
-                        Basic information about the project.
-                    </p>
-
+                    <span class="admin-form-kicker">PROJECT INFORMATION</span>
+                    <h2>Project details</h2>
+                    <p>Basic information about the project.</p>
                 </div>
-
             </div>
 
-
             <div class="admin-form-fields">
-
-
                 <div class="admin-field">
-
                     <label for="{{ form.title.id_for_label }}">
                         {{ form.title.label }}
                     </label>
@@ -576,12 +410,9 @@
                     <span class="admin-field-hint">
                         Give your project a clear and recognizable name.
                     </span>
-
                 </div>
 
-
                 <div class="admin-field">
-
                     <label for="{{ form.description.id_for_label }}">
                         {{ form.description.label }}
                     </label>
@@ -597,12 +428,9 @@
                     <span class="admin-field-hint">
                         Briefly explain what this project does.
                     </span>
-
                 </div>
 
-
                 <div class="admin-field">
-
                     <label for="{{ form.tech_stack.id_for_label }}">
                         {{ form.tech_stack.label }}
                     </label>
@@ -618,49 +446,26 @@
                     <span class="admin-field-hint">
                         Example: Django REST · PostgreSQL · Docker
                     </span>
-
                 </div>
-
-
             </div>
-
         </section>
 
-
-        <!-- PROJECT LINKS -->
-
+        <!-- Project links -->
         <section class="admin-form-card">
-
             <div class="admin-form-card-header">
-
-                <div class="admin-form-number">
-                    02
-                </div>
+                <div class="admin-form-number">02</div>
 
                 <div>
-
-                    <span class="admin-form-kicker">
-                        PROJECT LINKS
-                    </span>
-
-                    <h2>
-                        External links
-                    </h2>
-
+                    <span class="admin-form-kicker">PROJECT LINKS</span>
+                    <h2>External links</h2>
                     <p>
                         Connect the project with GitHub or a live deployment.
                     </p>
-
                 </div>
-
             </div>
 
-
             <div class="admin-form-fields">
-
-
                 <div class="admin-field">
-
                     <label for="{{ form.github_url.id_for_label }}">
                         {{ form.github_url.label }}
                     </label>
@@ -676,12 +481,9 @@
                     <span class="admin-field-hint">
                         Optional · GitHub repository URL.
                     </span>
-
                 </div>
 
-
                 <div class="admin-field">
-
                     <label for="{{ form.live_url.id_for_label }}">
                         {{ form.live_url.label }}
                     </label>
@@ -697,57 +499,32 @@
                     <span class="admin-field-hint">
                         Optional · Live project or deployment URL.
                     </span>
-
                 </div>
-
-
             </div>
-
         </section>
 
-
-        <!-- SUBMIT -->
-
+        <!-- Submit -->
         <div class="admin-form-actions">
-
             <div>
-
-                <span class="admin-form-kicker">
-                    READY TO PUBLISH
-                </span>
-
+                <span class="admin-form-kicker">READY TO PUBLISH</span>
                 <p>
                     The project will become available in your portfolio
                     after submission.
                 </p>
-
             </div>
 
-
             <div class="admin-form-buttons">
-
-                <a
-                    href="{% url 'portfolio' %}"
-                    class="admin-secondary-button"
-                >
+                <a href="{% url 'portfolio' %}" class="admin-secondary-button">
                     Cancel
                 </a>
 
-                <button
-                    type="submit"
-                    class="admin-primary-button"
-                >
+                <button type="submit" class="admin-primary-button">
                     Add project
-                    <span>→</span>
+                    <span aria-hidden="true">→</span>
                 </button>
-
             </div>
-
         </div>
-
-
     </form>
 
 </section>
-
 {% endblock %}

@@ -1,339 +1,251 @@
-{% extends "base.html" %}
 
+{% extends "base.html" %}
 {% load static %}
 
-
-{% block title %}
-    Requests — Admin — OlehDev
-{% endblock %}
-
+{% block title %}Requests — Admin — OlehDev{% endblock %}
 
 {% block styles %}
-    <link
-        rel="stylesheet"
-        href="{% static 'css/admin.css' %}"
-    >
+<link rel="stylesheet" href="{% static 'css/admin.css' %}?v=3">
 
-    <style>
+<style>
+    .admin-requests-simple {
+        max-width: 100%;
+    }
 
-        /* =========================================================
-           REQUESTS LIST — PAGE ONLY
-        ========================================================= */
+    .admin-requests-simple .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 28px;
+        color: var(--admin-text-soft);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
 
-        .admin-requests-simple {
-            max-width: 100%;
-        }
+    .admin-requests-simple .back-link:hover {
+        color: var(--admin-purple-dark);
+        transform: translateX(-2px);
+    }
 
+    .admin-requests-simple .admin-dashboard-header {
+        margin-bottom: 34px;
+    }
 
+    .admin-requests-simple .admin-header-action {
+        cursor: default;
+    }
+
+    .admin-requests-simple .admin-request-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .admin-requests-simple .admin-request-card {
+        display: grid;
+        grid-template-columns: 55px minmax(0, 1fr) 42px;
+        align-items: center;
+        gap: 18px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 22px 24px;
+        border: 1px solid var(--admin-border);
+        border-radius: 15px;
+        background: var(--admin-surface);
+        color: inherit;
+        text-decoration: none;
+        box-shadow: 0 4px 14px rgba(45, 43, 32, 0.035);
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .admin-requests-simple .admin-request-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--admin-purple);
+        background: var(--admin-surface);
+        box-shadow: var(--admin-shadow);
+    }
+
+    .admin-requests-simple .admin-request-index {
+        color: var(--admin-purple);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+    }
+
+    .admin-requests-simple .admin-request-main {
+        min-width: 0;
+    }
+
+    .admin-requests-simple .admin-request-title {
+        margin-bottom: 6px;
+        color: var(--admin-text);
+        font-size: 17px;
+        font-weight: 650;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+    }
+
+    .admin-requests-simple .admin-request-description {
+        overflow: hidden;
+        margin: 0;
+        color: var(--admin-text-soft);
+        font-size: 13px;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    .admin-requests-simple .admin-request-arrow {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        border: 1px solid var(--admin-border);
+        border-radius: 10px;
+        background: var(--admin-surface-2);
+        color: var(--admin-purple);
+        font-size: 18px;
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+    .admin-requests-simple .admin-request-card:hover .admin-request-arrow {
+        transform: translateX(3px);
+        border-color: var(--admin-purple);
+        background: var(--admin-surface);
+    }
+
+    .admin-requests-simple .admin-empty-state {
+        padding: 55px 30px;
+        border: 1px solid var(--admin-border);
+        border-radius: 15px;
+        background: var(--admin-surface);
+        box-shadow: var(--admin-shadow);
+        text-align: center;
+    }
+
+    .admin-requests-simple .admin-empty-state h3 {
+        margin: 0 0 8px;
+        color: var(--admin-text);
+        font-size: 20px;
+    }
+
+    .admin-requests-simple .admin-empty-state p {
+        margin: 0;
+        color: var(--admin-text-soft);
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .admin-requests-simple .admin-request-card:focus-visible,
+    .admin-requests-simple .back-link:focus-visible {
+        outline: 3px solid rgba(115, 123, 84, 0.3);
+        outline-offset: 3px;
+    }
+
+    @media (max-width: 650px) {
         .admin-requests-simple .admin-dashboard-header {
-            margin-bottom: 42px;
-        }
-
-
-        .admin-requests-simple .admin-request-list {
-            display: flex;
+            align-items: flex-start;
             flex-direction: column;
-            gap: 12px;
+            gap: 18px;
         }
-
 
         .admin-requests-simple .admin-request-card {
-            display: grid;
-            grid-template-columns: 55px minmax(0, 1fr) 42px;
-            align-items: center;
-            gap: 18px;
-
-            width: 100%;
-            box-sizing: border-box;
-
-            padding: 22px 24px;
-
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(18, 21, 34, 0.96),
-                    rgba(10, 12, 22, 0.96)
-                );
-
-            color: inherit;
-            text-decoration: none;
-
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease,
-                background 0.2s ease,
-                box-shadow 0.2s ease;
+            grid-template-columns: 38px minmax(0, 1fr) 32px;
+            gap: 12px;
+            padding: 17px 14px;
         }
-
-
-        .admin-requests-simple .admin-request-card:hover {
-            transform: translateY(-2px);
-
-            border-color: rgba(139, 92, 246, 0.35);
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(22, 25, 42, 0.98),
-                    rgba(12, 14, 26, 0.98)
-                );
-
-            box-shadow:
-                0 14px 35px rgba(0, 0, 0, 0.22);
-        }
-
-
-        /* NUMBER */
-
-        .admin-requests-simple .admin-request-index {
-            color: rgba(167, 139, 250, 0.75);
-
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-        }
-
-
-        /* MAIN CONTENT */
-
-        .admin-requests-simple .admin-request-main {
-            min-width: 0;
-        }
-
 
         .admin-requests-simple .admin-request-title {
-            margin-bottom: 6px;
-
-            color: #ffffff;
-
-            font-size: 17px;
-            font-weight: 650;
-            line-height: 1.3;
+            font-size: 15px;
         }
-
 
         .admin-requests-simple .admin-request-description {
-            overflow: hidden;
-
-            margin: 0;
-
-            color: rgba(255, 255, 255, 0.48);
-
             font-size: 12px;
-            line-height: 1.5;
-
-            white-space: nowrap;
-            text-overflow: ellipsis;
         }
-
-
-        /* ARROW */
 
         .admin-requests-simple .admin-request-arrow {
-            width: 36px;
-            height: 36px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border: 1px solid rgba(139, 92, 246, 0.25);
-            border-radius: 10px;
-
-            background: rgba(124, 92, 246, 0.07);
-
-            color: #a78bfa;
-
-            font-size: 18px;
-
-            transition:
-                transform 0.2s ease,
-                background 0.2s ease,
-                border-color 0.2s ease;
+            width: 32px;
+            height: 32px;
         }
-
-
-        .admin-requests-simple .admin-request-card:hover .admin-request-arrow {
-            transform: translateX(3px);
-
-            border-color: rgba(139, 92, 246, 0.55);
-
-            background: rgba(124, 92, 246, 0.14);
-        }
-
-
-        /* EMPTY */
 
         .admin-requests-simple .admin-empty-state {
-            padding: 55px 30px;
-
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
-
-            background:
-                rgba(13, 16, 27, 0.8);
-
-            text-align: center;
+            padding: 38px 20px;
         }
-
-
-        .admin-requests-simple .admin-empty-state h3 {
-            margin-bottom: 8px;
-        }
-
-
-        .admin-requests-simple .admin-empty-state p {
-            margin: 0;
-
-            color: rgba(255, 255, 255, 0.45);
-        }
-
-
-        /* MOBILE */
-
-        @media (max-width: 650px) {
-
-            .admin-requests-simple .admin-request-card {
-                grid-template-columns: 40px minmax(0, 1fr) 36px;
-
-                padding: 18px;
-                gap: 12px;
-            }
-
-
-            .admin-requests-simple .admin-request-title {
-                font-size: 15px;
-            }
-
-
-            .admin-requests-simple .admin-request-description {
-                font-size: 11px;
-            }
-
-
-            .admin-requests-simple .admin-request-arrow {
-                width: 32px;
-                height: 32px;
-            }
-
-        }
-
-    </style>
-
+    }
+</style>
 {% endblock %}
 
-
 {% block content %}
-
 <section class="admin-dashboard admin-requests-simple">
 
-
-    <!-- HEADER -->
-
-    <a
-        href="{% url 'admin_dashboard' %}"
-        class="back-link"
-    >
-        ← Back to dashboard
+    <!-- Header -->
+    <a href="{% url 'admin_dashboard' %}" class="back-link">
+        <span aria-hidden="true">←</span>
+        Back to dashboard
     </a>
 
-
     <div class="admin-dashboard-header">
-
         <div class="admin-dashboard-heading">
-
-            <div class="section-label">
-                ADMIN · REQUESTS
-            </div>
-
-            <h1>
-                All requests.
-            </h1>
-
-            <p>
-                Review every project request submitted by clients.
-            </p>
-
+            <div class="section-label">ADMIN · REQUESTS</div>
+            <h1>All requests.</h1>
+            <p>Review every project request submitted by clients.</p>
         </div>
 
-
         <div class="admin-header-action">
-
             <span>
                 {{ requests|length }} request{{ requests|length|pluralize }}
             </span>
-
         </div>
-
     </div>
 
-
-    <!-- REQUESTS -->
-
+    <!-- Requests list -->
     {% if requests %}
-
         <div class="admin-request-list">
-
             {% for project_request in requests %}
-
                 <a
                     href="{% url 'admin_request_detail' project_request.id %}"
                     class="admin-request-card"
                 >
-
                     <div class="admin-request-index">
                         #{{ project_request.id }}
                     </div>
 
-
                     <div class="admin-request-main">
-
                         <div class="admin-request-title">
                             {{ project_request.name }}
                         </div>
 
-
                         {% if project_request.description %}
-
                             <p class="admin-request-description">
                                 {{ project_request.description|truncatewords:25 }}
                             </p>
-
                         {% endif %}
-
                     </div>
 
-
-                    <div class="admin-request-arrow">
+                    <div class="admin-request-arrow" aria-hidden="true">
                         →
                     </div>
-
                 </a>
-
             {% endfor %}
-
         </div>
-
     {% else %}
-
         <div class="admin-empty-state">
-
-            <h3>
-                No requests yet.
-            </h3>
-
+            <h3>No requests yet.</h3>
             <p>
                 New project requests submitted by clients will appear here.
             </p>
-
         </div>
-
     {% endif %}
 
-
 </section>
-
 {% endblock %}

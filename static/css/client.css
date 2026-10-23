@@ -2733,3 +2733,359 @@ a {
     }
 
 }
+
+/* Project request actions */
+.request-project-actions,
+.request-admin-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.request-project-actions form,
+.request-admin-actions form {
+    margin: 0;
+}
+
+.request-cancel-button,
+.request-delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.request-cancel-button {
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.10);
+    border-color: rgba(245, 158, 11, 0.30);
+}
+
+.request-cancel-button:hover {
+    background: rgba(245, 158, 11, 0.18);
+    border-color: rgba(245, 158, 11, 0.55);
+}
+
+.request-delete-button {
+    color: #fecaca;
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.35);
+}
+
+.request-delete-button:hover {
+    background: rgba(239, 68, 68, 0.22);
+    border-color: rgba(239, 68, 68, 0.60);
+}
+
+.request-cancel-button:focus-visible,
+.request-delete-button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+.request-cancel-button:active,
+.request-delete-button:active {
+    transform: translateY(1px);
+}
+
+@media (max-width: 640px) {
+    .request-project-actions,
+    .request-admin-actions {
+        align-items: stretch;
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .request-project-actions form,
+    .request-admin-actions form {
+        flex: 1 1 100%;
+    }
+
+    .request-cancel-button,
+    .request-delete-button {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   OlehDev — Unified Light Theme Overrides
+   Keeps the existing layout and component classes intact.
+   ========================================================= */
+:root {
+    color-scheme: light;
+    --client-bg: #f7f5ef;
+    --client-bg-soft: #efede5;
+    --client-surface: #fffefa;
+    --client-surface-solid: #fffefa;
+    --client-border: #e5e2d8;
+    --client-border-strong: #d5d1c4;
+    --client-text: #35372f;
+    --client-text-soft: #5d5f55;
+    --client-text-muted: #77796e;
+    --client-accent: #737b54;
+    --client-accent-light: #626b43;
+    --client-accent-soft: rgba(115, 123, 84, 0.12);
+    --client-success: #287a52;
+    --client-warning: #94651b;
+    --client-danger: #b53f4a;
+}
+
+body {
+    background: var(--client-bg) !important;
+    background-image: none !important;
+    color: var(--client-text) !important;
+}
+
+.site-header {
+    background: rgba(255, 254, 250, 0.94) !important;
+    border-bottom-color: var(--client-border) !important;
+    box-shadow: 0 8px 28px rgba(48, 47, 37, 0.06) !important;
+    backdrop-filter: blur(16px);
+}
+.site-header::after,
+.request-info-card::before,
+.profile-card::before,
+.profile-edit-section::before {
+    background: linear-gradient(90deg, transparent, rgba(115, 123, 84, 0.28), transparent) !important;
+}
+.brand { color: var(--client-text) !important; }
+.brand span,
+.section-label,
+.request-project-label,
+.request-card-number,
+.request-card-kicker,
+.request-chat-kicker,
+.profile-card-kicker,
+.client-request-number,
+.back-link:hover {
+    color: var(--client-accent-light) !important;
+}
+.navigation a { color: var(--client-text-muted) !important; }
+.navigation a:hover {
+    border-color: var(--client-border) !important;
+    background: rgba(115, 123, 84, 0.08) !important;
+    color: var(--client-text) !important;
+}
+
+.client-page,
+.client-page-header h1,
+.request-project-heading h1,
+.request-card-heading h2,
+.request-meta-row strong,
+.request-chat-title h2,
+.request-chat-message-meta strong,
+.request-chat-empty strong,
+.client-request-main h2,
+.client-empty-state h2,
+.form-section-heading h2,
+.project-ideas-header h2,
+.profile-page-header h1,
+.profile-card-header h2,
+.profile-section-heading h2,
+.profile-about-heading h2,
+.profile-edit-heading h2,
+.profile-stat-number {
+    color: var(--client-text);
+}
+.client-page-header p,
+.request-project-heading p,
+.request-description,
+.request-meta-row span,
+.request-timeline-card p,
+.request-chat-subtitle,
+.request-chat-message p,
+.request-chat-empty p,
+.client-request-main p,
+.client-empty-state p,
+.form-section-heading p,
+.project-ideas-header p,
+.project-idea span,
+.form-submit-area p,
+.profile-page-header p,
+.profile-card-header p,
+.profile-information-row span,
+.profile-about-text,
+.profile-edit-heading p,
+.profile-stat-label {
+    color: var(--client-text-soft) !important;
+}
+
+.request-info-card,
+.client-request-card,
+.form-section,
+.project-ideas,
+.profile-card,
+.profile-stat-card,
+.profile-edit-section {
+    background: var(--client-surface) !important;
+    border-color: var(--client-border) !important;
+    box-shadow: 0 12px 34px rgba(48, 47, 37, 0.055) !important;
+}
+.client-request-card:hover,
+.profile-stat-card:hover {
+    border-color: rgba(115, 123, 84, 0.45) !important;
+    box-shadow: 0 18px 40px rgba(48, 47, 37, 0.09) !important;
+}
+.request-meta-row,
+.request-chat-message,
+.project-idea,
+.skill-checkbox,
+.profile-about-text {
+    background: #f7f5ef !important;
+    border-color: var(--client-border) !important;
+}
+.project-idea:hover,
+.skill-checkbox:hover {
+    background: #f0eee5 !important;
+    border-color: rgba(115, 123, 84, 0.4) !important;
+}
+.request-chat-panel {
+    background: #fffefa !important;
+    border-color: var(--client-border) !important;
+    box-shadow: 0 16px 42px rgba(48, 47, 37, 0.08) !important;
+}
+.request-chat-panel::before { background: linear-gradient(90deg, transparent, rgba(115, 123, 84, 0.35), transparent) !important; }
+.request-chat-messages {
+    border-top-color: var(--client-border) !important;
+    border-bottom-color: var(--client-border) !important;
+    scrollbar-color: rgba(115, 123, 84, 0.4) transparent !important;
+}
+.request-chat-message-own {
+    background: #eef0e5 !important;
+    border-color: #dce0ce !important;
+}
+.request-chat-input textarea,
+.form-field input,
+.form-field textarea,
+.form-field select,
+.profile-form .form-field input,
+.profile-form .form-field textarea,
+.profile-form .form-field select {
+    background: #fffefa !important;
+    color: var(--client-text) !important;
+    border-color: var(--client-border-strong) !important;
+}
+.request-chat-input textarea::placeholder { color: #96978c !important; }
+.form-field label { color: var(--client-text) !important; }
+.request-chat-input textarea:focus,
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus,
+.profile-form .form-field input:focus,
+.profile-form .form-field textarea:focus,
+.profile-form .form-field select:focus {
+    border-color: var(--client-accent) !important;
+    box-shadow: 0 0 0 3px rgba(115, 123, 84, 0.12) !important;
+}
+
+.client-primary-button,
+.request-chat-submit,
+.form-submit {
+    background: var(--client-accent) !important;
+    border-color: var(--client-accent) !important;
+    color: #fffefa !important;
+    box-shadow: 0 8px 20px rgba(83, 91, 58, 0.18) !important;
+}
+.client-primary-button:hover,
+.request-chat-submit:hover,
+.form-submit:hover {
+    background: #626b43 !important;
+    box-shadow: 0 12px 25px rgba(83, 91, 58, 0.22) !important;
+}
+.request-card-number,
+.form-section-number,
+.profile-avatar,
+.request-chat-icon,
+.request-chat-empty-icon {
+    background: #f0f0e7 !important;
+    border-color: #dfe1d3 !important;
+    color: var(--client-accent-light) !important;
+    box-shadow: none !important;
+}
+.skill-tag {
+    background: #f0f0e7 !important;
+    border-color: #dfe1d3 !important;
+    color: var(--client-accent-light) !important;
+}
+.client-status {
+    background: #f4f2ea !important;
+    border-color: var(--client-border) !important;
+    color: var(--client-text-soft) !important;
+}
+.client-status.status-new,
+.client-status.status-pending {
+    background: #fbf1dc !important;
+    border-color: #ecd8a9 !important;
+    color: #875d18 !important;
+}
+.client-status.status-in_progress,
+.client-status.status-progress {
+    background: #eef0e5 !important;
+    border-color: #dce0ce !important;
+    color: #626b43 !important;
+}
+.client-status.status-completed,
+.client-status.status-done,
+.client-status.status-approved {
+    background: #e8f4eb !important;
+    border-color: #cce4d2 !important;
+    color: #287a52 !important;
+}
+.client-status.status-rejected,
+.client-status.status-cancelled,
+.client-status.status-canceled {
+    background: #fbeaec !important;
+    border-color: #f0cbd0 !important;
+    color: #a93743 !important;
+}
+.request-timeline-card,
+.profile-message {
+    background: #edf5ed !important;
+    border-color: #d1e5d2 !important;
+    color: #287a52 !important;
+}
+.project-ideas {
+    background: #fbf8ed !important;
+    border-color: #e8dfc2 !important;
+}
+.skill-checkbox { color: var(--client-text-soft) !important; }
+.skill-checkbox span::before { border-color: #c9c8bc !important; }
+.skill-checkbox input:checked + span::before {
+    border-color: var(--client-accent) !important;
+    background: var(--client-accent) !important;
+}
+.profile-card-header,
+.profile-information-row {
+    border-bottom-color: var(--client-border) !important;
+}
+.profile-information-row:last-child { border-bottom: 0 !important; }
+.profile-stat-card::after { background: radial-gradient(circle, rgba(115, 123, 84, 0.09), transparent 68%) !important; }
+.client-empty-state {
+    background: #fffefa !important;
+    border-color: var(--client-border) !important;
+}
+.client-empty-number { color: rgba(115, 123, 84, 0.28) !important; }
+.profile-edit-section { background: #fffefa !important; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
