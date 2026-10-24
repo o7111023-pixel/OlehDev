@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: olehdev-portfolio
+    runtime: python
+    plan: free
+    region: frankfurt
+    branch: main
+
+    buildCommand: "pip install poetry && poetry install --no-root --only main && poetry run python manage.py collectstatic --noinput && poetry run python manage.py migrate"
+
+    startCommand: "poetry run gunicorn Oleh.wsgi:application"
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+
+      - key: DEBUG
+        value: "False"
+
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+
+      - key: DATABASE_URL
+        sync: false
