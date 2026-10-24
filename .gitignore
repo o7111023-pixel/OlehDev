@@ -1,44 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Python virtual environments
+# Virtual environments
 .venv/
 venv/
 env/
+ENV/
 
 # Environment variables and secrets
 .env
 .env.*
 !.env.example
 
-# IDE settings
-.idea/
-.vscode/
-
-# Python cache
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Local databases
-*.sqlite3
-*.db
-
-# Django generated files
-staticfiles/
-media/
-
-# Logs
+# Django
 *.log
+*.pot
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+*.sqlite3
+media/
+staticfiles/
 
-# Operating system files
-.DS_Store
-Thumbs.db
-
-# Test and coverage artifacts
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Build artifacts
+# Build and distribution
 build/
 dist/
 *.egg-info/
+.eggs/
+wheels/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# IDEs
+.idea/
+.vscode/
+
+# Python tooling
+.mypy_cache/
+.ruff_cache/
+.pyright/
+.pytest_cache/
+
+# Poetry
+# Keep poetry.lock tracked for reproducible deployments.
+
+# OS files
+.DS_Store
+Thumbs.db

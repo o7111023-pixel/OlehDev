@@ -1,0 +1,526 @@
+/* =====================================================
+   ALINA CHAT — OlehDev
+   Clean, compact and responsive design
+   ===================================================== */
+
+.alina-chat {
+    --bg: #fffefa;
+    --surface: #ffffff;
+    --text: #292d27;
+    --muted: #85877f;
+    --accent: #456b50;
+    --accent-dark: #34553e;
+    --border: #e5e7df;
+    --soft: #f2f3ed;
+
+    position: fixed;
+    right: 26px;
+    bottom: 24px;
+    z-index: 9999;
+
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.alina-chat,
+.alina-chat * {
+    box-sizing: border-box;
+}
+
+/* Floating button */
+
+.alina-chat__launcher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+
+    min-height: 56px;
+    padding: 0 21px;
+
+    border: 0;
+    border-radius: 999px;
+    background: #252720;
+    color: #fffefa;
+
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    box-shadow: 0 10px 30px rgba(28, 31, 25, 0.2);
+    cursor: pointer;
+
+    transition: background 180ms ease, transform 180ms ease;
+}
+
+.alina-chat__launcher:hover {
+    background: #363a30;
+    transform: translateY(-2px);
+}
+
+.alina-chat__launcher-icon {
+    display: grid;
+    place-items: center;
+
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #d7e7ce;
+    font-size: 20px;
+}
+
+.alina-chat__launcher-label {
+    white-space: nowrap;
+}
+
+/* Chat window */
+
+.alina-chat__panel {
+    position: fixed;
+    right: 26px;
+    bottom: 96px;
+
+    display: flex;
+    flex-direction: column;
+
+    width: min(400px, calc(100vw - 40px));
+    height: min(570px, calc(100dvh - 120px));
+    min-height: 300px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(40, 45, 36, 0.08);
+    border-radius: 23px;
+    background: var(--bg);
+    box-shadow: 0 20px 60px rgba(31, 37, 29, 0.18);
+
+    transform-origin: bottom right;
+    animation: alina-enter 180ms ease both;
+}
+
+.alina-chat__panel[hidden] {
+    display: none;
+}
+
+@keyframes alina-enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+
+.alina-chat__header {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    min-height: 84px;
+    padding: 15px 19px;
+
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.alina-chat__identity {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.alina-chat__avatar {
+    display: block;
+    flex: 0 0 50px;
+
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+
+    border: 1px solid #dce3d7;
+    border-radius: 50%;
+    background: #e7eee2;
+}
+
+.alina-chat__avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+}
+
+.alina-chat__identity h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.alina-chat__identity p {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.alina-chat__status {
+    flex: 0 0 8px;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+    background: #6d9b69;
+    box-shadow: 0 0 0 4px rgba(109, 155, 105, 0.12);
+}
+
+.alina-chat__close {
+    display: grid;
+    place-items: center;
+    flex: 0 0 34px;
+
+    width: 34px;
+    height: 34px;
+    padding: 0;
+
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--muted);
+
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.alina-chat__close:hover {
+    background: var(--soft);
+    color: var(--text);
+}
+
+/* Messages and welcome text */
+
+.alina-chat__messages {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 13px;
+
+    min-height: 0;
+    padding: 19px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    scrollbar-width: thin;
+    scrollbar-color: #d5d8cf transparent;
+}
+
+.alina-message {
+    max-width: 94%;
+    padding: 13px 15px;
+
+    border-radius: 15px;
+
+    font-size: 13px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.alina-message p {
+    margin: 0;
+}
+
+.alina-message p + p {
+    margin-top: 9px;
+}
+
+.alina-message--assistant {
+    align-self: flex-start;
+
+    border: 1px solid rgba(37, 39, 32, 0.05);
+    border-top-left-radius: 5px;
+    background: var(--soft);
+    color: #36382f;
+}
+
+.alina-message--user {
+    align-self: flex-end;
+
+    border-top-right-radius: 5px;
+    background: var(--accent);
+    color: #ffffff;
+}
+
+/* Questions menu */
+
+.alina-chat__suggestions {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+
+    width: 100%;
+}
+
+.alina-chat__suggestions[hidden] {
+    display: none;
+}
+
+.alina-chat__questions-toggle {
+    display: block;
+    width: 100%;
+    padding: 12px 14px;
+
+    border: 1px solid #dce2d7;
+    border-radius: 12px;
+    background: #edf2e9;
+    color: var(--accent-dark);
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+
+    cursor: pointer;
+    transition: background 160ms ease;
+}
+
+.alina-chat__questions-toggle:hover {
+    background: #e3ebdf;
+}
+
+.alina-chat__question-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.alina-chat__question-list[hidden] {
+    display: none;
+}
+
+.alina-chat__question {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: #36382f;
+
+    font: inherit;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+    overflow-wrap: anywhere;
+
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease;
+}
+
+.alina-chat__question:hover {
+    border-color: #b9cbb7;
+    background: #f5f7f1;
+}
+
+/* Contact link */
+
+.alina-chat__contact {
+    display: block;
+    flex: 0 0 auto;
+
+    margin: 0;
+    padding: 15px 18px 17px;
+
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--accent-dark);
+
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+
+    transition: background 160ms ease, color 160ms ease;
+}
+
+.alina-chat__contact:hover {
+    background: #f5f7f1;
+    color: #243d2b;
+}
+
+/* Keyboard accessibility */
+
+.alina-chat button:focus-visible,
+.alina-chat a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* Compact desktop screens */
+
+@media (max-height: 650px) and (min-width: 521px) {
+    .alina-chat__panel {
+        height: calc(100dvh - 115px);
+        min-height: 260px;
+        bottom: 88px;
+    }
+
+    .alina-chat__header {
+        min-height: 70px;
+        padding-top: 9px;
+        padding-bottom: 9px;
+    }
+
+    .alina-chat__avatar {
+        flex-basis: 44px;
+        width: 44px;
+        height: 44px;
+    }
+
+    .alina-chat__messages {
+        padding: 13px;
+        gap: 9px;
+    }
+
+    .alina-chat__contact {
+        padding-top: 10px;
+        padding-bottom: 11px;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 520px) {
+    .alina-chat {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .alina-chat__launcher {
+        min-height: 53px;
+        padding: 0 17px;
+    }
+
+    .alina-chat__panel {
+        top: 12px;
+        right: 10px;
+        bottom: 80px;
+        left: 10px;
+
+        width: auto;
+        height: auto;
+        min-height: 0;
+
+        border-radius: 20px;
+    }
+
+    .alina-chat__header {
+        min-height: 74px;
+        padding: 11px 14px;
+    }
+
+    .alina-chat__identity {
+        gap: 10px;
+    }
+
+    .alina-chat__avatar {
+        flex-basis: 44px;
+        width: 44px;
+        height: 44px;
+    }
+
+    .alina-chat__identity h2 {
+        font-size: 18px;
+    }
+
+    .alina-chat__identity p {
+        font-size: 10px;
+    }
+
+    .alina-chat__messages {
+        padding: 14px;
+        gap: 10px;
+    }
+
+    .alina-message {
+        padding: 11px 13px;
+    }
+
+    .alina-chat__question-list {
+        max-height: 180px;
+    }
+
+    .alina-chat__contact {
+        padding: 12px;
+    }
+}
+
+/* Very short screens */
+
+@media (max-height: 480px) {
+    .alina-chat__header {
+        min-height: 60px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+    }
+
+    .alina-chat__avatar {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+    }
+
+    .alina-chat__messages {
+        padding-top: 9px;
+        padding-bottom: 9px;
+    }
+
+    .alina-chat__contact {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+    .alina-chat *,
+    .alina-chat *::before,
+    .alina-chat *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
